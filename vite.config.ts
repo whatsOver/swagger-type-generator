@@ -63,7 +63,7 @@ export default defineConfig({
           if (assetInfo.name === "getAPIList") {
             return "getAPIList.js";
           }
-          return "src/pages/[name]/index.js";
+          return `src/pages/${assetInfo.name}/index.js`;
         },
         chunkFileNames: isDev
           ? "assets/js/[name].js"
