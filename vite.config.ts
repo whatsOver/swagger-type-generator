@@ -6,6 +6,7 @@ import customDynamicImport from "./utils/plugins/custom-dynamic-import";
 import addHmr from "./utils/plugins/add-hmr";
 import manifest from "./manifest";
 import { vanillaExtractPlugin } from "@vanilla-extract/vite-plugin";
+import { PreRenderedChunk } from "rollup";
 
 const root = resolve(__dirname, "src");
 const pagesDir = resolve(root, "pages");
@@ -51,16 +52,13 @@ export default defineConfig({
         background: resolve(pagesDir, "background", "index.ts"),
         contentStyle: resolve(pagesDir, "content", "style.scss"),
         popup: resolve(pagesDir, "popup", "index.html"),
+        getAPIList: resolve(pagesDir, "content/modules", "getAPIList.ts"),
       },
       watch: {
         include: ["src/**", "vite.config.ts"],
         exclude: ["node_modules/**", "src/**/*.spec.ts"],
       },
       output: {
-        entryFileNames: "src/pages/[name]/index.js",
-        chunkFileNames: isDev
-          ? "assets/js/[name].js"
-          : "assets/js/[name].[hash].js",
         assetFileNames: (assetInfo) => {
           const { dir, name: _name } = path.parse(assetInfo.name);
           const assetFolder = dir.split("/").at(-1);
@@ -70,6 +68,12 @@ export default defineConfig({
           }
           return `assets/[ext]/${name}.chunk.[ext]`;
         },
+      },
+      manualChunks: (id) => {
+        if (id.includes("content/modules/getAPIList.ts")) {
+          return "getAPIList";
+        }
+        return;
       },
     },
   },
