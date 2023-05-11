@@ -4,7 +4,7 @@ import { vars } from "./theme.css";
 export const popupStyle = {
   app: style({
     position: "absolute",
-    backgroundColor: vars.color.backgroundColor,
+    backgroundColor: vars.color.background,
     top: 0,
     bottom: 0,
     left: 0,
@@ -21,26 +21,31 @@ export const popupStyle = {
         width: "10px",
       },
       "&::-webkit-scrollbar-thumb": {
-        backgroundColor: vars.color.scrollbarColor,
+        backgroundColor: vars.color.scrollbar,
         borderRadius: "10px",
         backgroundClip: "padding-box",
         border: "2px solid transparent",
       },
       "&::-webkit-scrollbar-track": {
-        backgroundColor: vars.color.scrollbarTrackColor,
+        backgroundColor: vars.color.scrollbarTrack,
         borderRadius: "10px",
         boxShadow: vars.color.scrollbarTrackBoxShadow,
       },
     },
   }),
 
+  header: style({
+    width: "100%",
+  }),
+
   tag: style({
     width: "100%",
     marginLeft: "20%",
     display: "flex",
-    color: "white",
+    color: vars.color.white,
     textAlign: "left",
     justifyContent: "flex-start",
+    transition: "color 0.2s ease",
   }),
 
   apiList: style({
@@ -60,7 +65,7 @@ export const popupStyle = {
     flexDirection: "column",
     alignItems: "center",
     width: "100%",
-    backgroundColor: vars.color.backgroundColor,
+    backgroundColor: vars.color.background,
     borderRadius: "10px",
     marginBottom: "10px",
   }),
@@ -76,13 +81,12 @@ export const popupStyle = {
     flexDirection: "column",
     alignItems: "flex-start",
     justifyContent: "center",
-    padding: "10px",
+    padding: "3px ",
     borderRadius: "10px",
     cursor: "pointer",
     width: "80%",
     marginBottom: "10px",
     ":hover": {
-      backgroundColor: vars.color.backgroundColor,
       opacity: 0.8,
     },
     transition: "opacity 0.3s ease",
@@ -90,11 +94,12 @@ export const popupStyle = {
 
   methodItem: style({
     display: "flex",
-    padding: "10px",
-    backgroundColor: vars.color.mainColor,
+    padding: "7px",
+    backgroundColor: vars.color.main,
     borderRadius: "10px",
     color: "white",
     fontWeight: "bold",
+    fontSize: "12px",
   }),
 
   flexRow: style({
