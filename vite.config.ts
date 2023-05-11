@@ -59,6 +59,15 @@ export default defineConfig({
         exclude: ["node_modules/**", "src/**/*.spec.ts"],
       },
       output: {
+        entryFileNames: (assetInfo: PreRenderedChunk) => {
+          if (assetInfo.name === "getAPIList") {
+            return "getAPIList.js";
+          }
+          return `src/pages/${assetInfo.name}/index.js`;
+        },
+        chunkFileNames: isDev
+          ? "assets/js/[name].js"
+          : "assets/js/[name].[hash].js",
         assetFileNames: (assetInfo) => {
           const { dir, name: _name } = path.parse(assetInfo.name);
           const assetFolder = dir.split("/").at(-1);
@@ -68,12 +77,6 @@ export default defineConfig({
           }
           return `assets/[ext]/${name}.chunk.[ext]`;
         },
-      },
-      manualChunks: (id) => {
-        if (id.includes("content/modules/getAPIList.ts")) {
-          return "getAPIList";
-        }
-        return;
       },
     },
   },
