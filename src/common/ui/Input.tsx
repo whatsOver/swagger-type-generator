@@ -1,12 +1,10 @@
-import { vars } from "@src/pages/popup/styles/theme.css";
-import { style } from "@vanilla-extract/css";
 import { ChangeEvent } from "react";
 import { ComponentPropsWithRef } from "react";
 import { ForwardRefRenderFunction } from "react";
 import { inputStyle } from "./styles/input.css";
 
 export type InputProps = {
-  value: string;
+  value?: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 } & ComponentPropsWithRef<"input">;
 
