@@ -1,5 +1,5 @@
-import { vars } from "@src/pages/popup/styles/theme.css";
 import { style } from "@vanilla-extract/css";
+import { vars } from "./theme.css";
 
 export const inputStyle = {
   input: style({
@@ -17,7 +17,7 @@ export const inputStyle = {
       backgroundColor: vars.color.lightGrey,
     },
     "::placeholder": {
-      color: vars.color.white,
+      color: vars.color.lightGrey2,
     },
   }),
 };
