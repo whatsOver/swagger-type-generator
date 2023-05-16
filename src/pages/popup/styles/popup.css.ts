@@ -1,5 +1,5 @@
+import { vars } from "@src/common/ui/styles/theme.css";
 import { style } from "@vanilla-extract/css";
-import { vars } from "./theme.css";
 
 export const popupStyle = {
   app: style({
