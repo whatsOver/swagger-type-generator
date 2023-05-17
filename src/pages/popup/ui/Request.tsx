@@ -22,7 +22,6 @@ export interface RequestProps {
 
 const Request = () => {
   const { method, params, path, body } = useLocation().state as RequestProps;
-  console.log(method, params, path, body);
 
   const [formValues, setFormValues] = useState({});
 
