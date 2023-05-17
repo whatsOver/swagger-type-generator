@@ -5,10 +5,11 @@ export interface Parameters {
   name: string;
   in: string;
   description: string;
-  example?: string;
+  example?: string | number;
   required: boolean;
   schema: {
     type: string;
+    format?: string;
   };
 }
 
