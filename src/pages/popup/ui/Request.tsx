@@ -11,6 +11,7 @@ import { useLocation } from "react-router-dom";
 import { popupStyle } from "../styles/popup.css";
 import Header from "@src/common/ui/Header";
 import Modal from "@src/common/ui/Modal";
+import { getBody, getQueryParams } from "../util/request";
 
 export interface RequestProps {
   method: Method;
@@ -21,8 +22,8 @@ export interface RequestProps {
 
 const Request = () => {
   const { method, params, path, body } = useLocation().state as RequestProps;
+  console.log(method, params, path, body);
 
-  console.log(method, path, body, params);
   const [formValues, setFormValues] = useState({});
 
   const [response, setResponse] = useState(null);
@@ -37,38 +38,19 @@ const Request = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const queryParams = params.reduce((acc, param) => {
-      if (formValues[param.name]) {
-        acc[param.name] = formValues[param.name];
-      }
-      return acc;
-    }, {});
-
     const transformPath = params.reduce((acc, param) => {
-      if (param.in === "path") {
-        acc = acc.replace(`{${param.name}}`, formValues[param.name]);
-        console.log(formValues[param.name]);
-      }
-      return acc;
+      return param.in === "path"
+        ? acc.replace(`{${param.name}}`, formValues[param.name])
+        : acc;
     }, path);
-
-    const reqBody =
-      body &&
-      Object.keys(body?.properties).reduce((acc, property) => {
-        if (formValues[property]) {
-          acc[property] = formValues[property];
-        }
-        return acc;
-      }, {});
 
     try {
       const response = await axios({
         method,
         url: "http://localhost:8080" + transformPath,
-        params: queryParams,
-        data: reqBody,
+        params: getQueryParams(params, formValues) ?? {},
+        data: body ? getBody(body, formValues) : {},
       });
-      console.log(response.data);
       setResponse(response.data);
     } catch (error) {
       console.error(error);
@@ -80,21 +62,27 @@ const Request = () => {
       <Header />
       <div className={popupStyle.app}>
         <form className={requestStyle.body} onSubmit={handleSubmit}>
-          <h3 className={requestStyle.description}>Params</h3>
-          {params?.map((param) => (
-            <div className={requestStyle.inputBox} key={param.name}>
-              <label className={requestStyle.label}>{param.name}</label>
-              <label className={requestStyle.type}>{param.schema.type}</label>
-              <Input
-                style={{ width: "40%", textAlign: "right" }}
-                type={param.schema.type}
-                name={param.name}
-                placeholder={param.example ?? ""}
-                required={param.required}
-                onChange={handleChange}
-              />
-            </div>
-          ))}
+          {params && (
+            <>
+              <h3 className={requestStyle.description}>Params</h3>
+              {params?.map((param) => (
+                <div className={requestStyle.inputBox} key={param.name}>
+                  <label className={requestStyle.label}>{param.name}</label>
+                  <label className={requestStyle.type}>
+                    {param.schema.type}
+                  </label>
+                  <Input
+                    style={{ width: "40%", textAlign: "right" }}
+                    type={param.schema.type}
+                    name={param.name}
+                    placeholder={param.example + "" ?? ""}
+                    required={param.required}
+                    onChange={handleChange}
+                  />
+                </div>
+              ))}
+            </>
+          )}
 
           {body && (
             <>
