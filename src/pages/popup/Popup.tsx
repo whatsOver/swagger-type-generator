@@ -9,6 +9,7 @@ import { RequestProps } from "./ui/Request";
 import { vars } from "@src/common/ui/styles/theme.css";
 import { Method } from "axios";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 export interface API {
   method: "GET" | "POST" | "PUT" | "DELETE";
@@ -54,11 +55,9 @@ const Popup = () => {
       path: api.path,
     }));
     if (data) {
-      const parameter =
-        data.paths[api.path][method.toLowerCase() as Method].parameters;
       setSelectedAPI((prev) => ({
         ...prev,
-        params: parameter,
+        params: data.paths[api.path][method.toLowerCase() as Method].parameters,
       }));
       if (data.paths[api.path][method.toLowerCase()].requestBody) {
         const schemaName =
@@ -72,15 +71,16 @@ const Popup = () => {
         }));
       }
     }
-    navigate("/request", {
-      state: {
-        method,
-        path: api.path,
-        params: selectedAPI.params,
-        body: selectedAPI.body,
-      },
-    });
   };
+
+  useEffect(() => {
+    selectedAPI &&
+      navigate("/request", {
+        state: {
+          ...selectedAPI,
+        },
+      });
+  }, [selectedAPI]);
 
   return (
     <div className={popupStyle.app}>
