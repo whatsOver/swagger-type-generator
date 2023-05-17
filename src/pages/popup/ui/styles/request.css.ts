@@ -4,6 +4,7 @@ import { style } from "@vanilla-extract/css";
 export const requestStyle = {
   body: style({
     marginTop: "50px",
+    width: "385px",
     backgroundColor: vars.color.darkGrey,
     color: vars.color.white,
     borderRadius: "10px",
