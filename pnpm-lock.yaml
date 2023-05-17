@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@fxts/core': ^0.15.1
   '@rollup/plugin-typescript': ^11.1.0
   '@tanstack/react-query': ^4.29.5
   '@testing-library/react': 14.0.0
@@ -42,6 +43,7 @@ specifiers:
   ws: 8.13.0
 
 dependencies:
+  '@fxts/core': 0.15.1
   '@tanstack/react-query': 4.29.5_biqbaboplfbrettd7655fr4n2y
   '@vanilla-extract/css': 1.11.0
   axios: 1.4.0
@@ -895,6 +897,12 @@ packages:
     resolution: {integrity: sha512-lxJ9R5ygVm8ZWgYdUweoq5ownDlJ4upvoWmO4eLxBYHdMo+vZ/Rx0EN6MbKWDJOSUGrqJy2Gt+Dyv/VKml0fjg==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
+
+  /@fxts/core/0.15.1:
+    resolution: {integrity: sha512-nPdewzdMsgqPQ1WlqvUPfzdYCnAZh8HRh+EjXE1nzTBTkVMVO+9/F7HDQxNwE5eVR9OjUNg+y/bkewGHyP4S9w==}
+    dependencies:
+      tslib: 2.5.0
+    dev: false
 
   /@humanwhocodes/config-array/0.11.8:
     resolution: {integrity: sha512-UybHIJzJnR5Qc/MsD9Kr+RpO2h+/P1GhOwdiLPXK5TWk5sgTdu88bTD9UP+CKbPPh5Rni1u0GjAdYQLemG8g+g==}
@@ -5378,6 +5386,10 @@ packages:
   /tslib/1.14.1:
     resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}
     dev: true
+
+  /tslib/2.5.0:
+    resolution: {integrity: sha512-336iVw3rtn2BUK7ORdIAHTyxHGRIHVReokCR3XjbckJMK7ms8FysBfhLR8IXnAgy7T0PTPNBWKiH514FOW/WSg==}
+    dev: false
 
   /tsutils/3.21.0_typescript@5.0.4:
     resolution: {integrity: sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==}

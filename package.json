@@ -13,10 +13,12 @@
     "build:hmr": "node node_modules/rollup/dist/bin/rollup --config utils/reload/rollup.config.js",
     "wss": "node utils/reload/initReloadServer.js",
     "dev": "npm run build:hmr && run-p wss build:watch",
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "type": "module",
   "dependencies": {
+    "@fxts/core": "^0.15.1",
     "@tanstack/react-query": "^4.29.5",
     "@vanilla-extract/css": "^1.11.0",
     "axios": "^1.4.0",
