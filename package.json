@@ -22,6 +22,8 @@
     "@tanstack/react-query": "^4.29.5",
     "@vanilla-extract/css": "^1.11.0",
     "axios": "^1.4.0",
+    "classnames": "^2.3.2",
+    "highlight.js": "^11.8.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.8.0",
