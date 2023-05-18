@@ -33,12 +33,18 @@ export const requestStyle = {
     marginTop: "40px",
     backgroundColor: vars.color.darkGrey,
     color: vars.color.white,
-
-    height: "300px",
+    width: "400px",
+    height: "400px",
     borderRadius: "10px",
     padding: "20px",
     display: "flex",
     flexDirection: "column",
+    alignItems: "center",
+  }),
+
+  descriptionWrapper: style({
+    display: "flex",
+    justifyContent: "space-between",
   }),
 
   description: style({
