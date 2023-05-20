@@ -57,4 +57,27 @@ describe("jsonToTs", () => {
 
     expect(jsonToTs("json", json).join("\n")).toEqual(expected);
   });
+  it("배열 형태의 JSON에 대해 적절한 TypeScript 인터페이스 문자열을 생성한다", () => {
+    const json = [
+      {
+        bookmarkId: 1,
+        title: "리액트 쌈싸먹기",
+        url: "https://google.com",
+        isUserLike: true,
+      },
+    ];
+
+    const expected =
+      "export interface Json {\n" +
+      "  items: JsonItem[];\n" +
+      "}\n" +
+      "export interface JsonItem {\n" +
+      "  bookmarkId: number;\n" +
+      "  title: string;\n" +
+      "  url: string;\n" +
+      "  isUserLike: boolean;\n" +
+      "}";
+
+    expect(jsonToTs("json", json).join("\n")).toEqual(expected);
+  });
 });
