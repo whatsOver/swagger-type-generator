@@ -38,16 +38,18 @@ const ModalCodeBlock: ForwardRefRenderFunction<
           >
             {description}
           </h3>
-          {onClickCopy && (
-            <Button color="green" onClick={onClickCopy}>
-              COPY
-            </Button>
-          )}
-          {onClickTS && (
-            <Button color="blue" onClick={onClickTS}>
-              TS
-            </Button>
-          )}
+          <div className={requestStyle.buttonWrapper}>
+            {onClickCopy && (
+              <Button color="green" onClick={onClickCopy}>
+                COPY
+              </Button>
+            )}
+            {onClickTS && (
+              <Button color="blue" onClick={onClickTS}>
+                TS
+              </Button>
+            )}
+          </div>
         </div>
         <CodeBlock ref={ref} code={code} />
       </div>
