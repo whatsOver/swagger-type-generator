@@ -91,7 +91,7 @@ const Request = () => {
         <form className={requestStyle.body} onSubmit={handleSubmit}>
           {params && <Params params={params} handleChange={handleChange} />}
           {body && <Body body={body} handleChange={handleChange} />}
-          <div className={requestStyle.buttonWrapper}>
+          <div className={requestStyle.fixedButtonWrapper}>
             <Modal>
               <Modal.Trigger
                 as={
