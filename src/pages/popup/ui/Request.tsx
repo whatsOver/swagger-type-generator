@@ -1,9 +1,7 @@
 import { Parameters, Schemas } from "../api/docs";
 import { requestStyle } from "./styles/request.css";
 import axios, { Method } from "axios";
-import { useState } from "react";
-import { ChangeEvent } from "react";
-import { FormEvent } from "react";
+import { useState, ChangeEvent, FormEvent, useRef } from "react";
 import Button from "@src/common/ui/Button";
 import { useLocation } from "react-router-dom";
 import { popupStyle } from "../styles/popup.css";
@@ -13,9 +11,10 @@ import { getBody, getQueryParams } from "../util/request";
 import Params from "./Params";
 import Body from "./Body";
 import { jsonToTs } from "@src/common/util/typeGenerator";
-import CodeBlock from "./CodeBlock";
-import { useRef } from "react";
 import useCopy from "../hooks/useCopy";
+import ModalCodeBlock from "./ModalCodeBlock";
+import { Flip, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export interface RequestProps {
   method: Method;
@@ -24,7 +23,7 @@ export interface RequestProps {
   body?: Schemas;
 }
 
-type Mode = "REQUEST" | "TS";
+type Mode = "REQUEST" | "TS" | "ERROR";
 
 const Request = () => {
   // FIRST RENDER
@@ -59,7 +58,9 @@ const Request = () => {
       });
       setResponse(response.data);
     } catch (error) {
-      console.error(error);
+      setMode("ERROR");
+      setResponse(error.response.data);
+      console.log(error);
     }
   };
 
@@ -75,6 +76,14 @@ const Request = () => {
   const codeRef = useRef(null);
   const { copyToClipboard } = useCopy({ codeRef });
 
+  // 5. 모달 닫기
+  const onCloseModal = () => {
+    // modal 애니메이션 끝나고 mode 변경
+    setTimeout(() => {
+      setMode("REQUEST");
+    }, 500);
+  };
+
   return (
     <>
       <Header />
@@ -82,7 +91,7 @@ const Request = () => {
         <form className={requestStyle.body} onSubmit={handleSubmit}>
           {params && <Params params={params} handleChange={handleChange} />}
           {body && <Body body={body} handleChange={handleChange} />}
-          <div className={requestStyle.buttonWrapper}>
+          <div className={requestStyle.fixedButtonWrapper}>
             <Modal>
               <Modal.Trigger
                 as={
@@ -92,37 +101,43 @@ const Request = () => {
                   </Button>
                 }
               />
-              <Modal.Content onClose={() => setMode("REQUEST")}>
+              <Modal.Content onClose={onCloseModal}>
                 {response && mode === "REQUEST" && (
-                  <div className={requestStyle.modal}>
-                    <div className={requestStyle.response}>
-                      <div className={requestStyle.descriptionWrapper}>
-                        <h3 className={requestStyle.description}>Response</h3>
-                        <Button color="blue" onClick={onClickTS}>
-                          TS
-                        </Button>
-                      </div>
-                      <CodeBlock code={JSON.stringify(response, null, 2)} />
-                    </div>
-                  </div>
+                  <ModalCodeBlock
+                    description="Response"
+                    code={JSON.stringify(response, null, 2)}
+                    ref={codeRef}
+                    onClickCopy={copyToClipboard}
+                    onClickTS={onClickTS}
+                  />
                 )}
                 {mode === "TS" && (
-                  <div className={requestStyle.modal}>
-                    <div className={requestStyle.response}>
-                      <div className={requestStyle.descriptionWrapper}>
-                        <h3 className={requestStyle.description}>Type</h3>
-                        <Button color="blue" onClick={copyToClipboard}>
-                          COPY
-                        </Button>
-                      </div>
-                      <CodeBlock ref={codeRef} code={type} />
-                    </div>
-                  </div>
+                  <ModalCodeBlock
+                    description="Type"
+                    code={type}
+                    ref={codeRef}
+                    onClickCopy={copyToClipboard}
+                  />
+                )}
+                {mode === "ERROR" && (
+                  <ModalCodeBlock
+                    description="Error"
+                    descriptionColor="red"
+                    code={JSON.stringify(response, null, 2)}
+                    ref={codeRef}
+                    onClickCopy={copyToClipboard}
+                  />
                 )}
               </Modal.Content>
             </Modal>
           </div>
         </form>
+        <ToastContainer
+          position="top-center"
+          autoClose={1000}
+          theme="dark"
+          transition={Flip}
+        />
       </div>
     </>
   );

@@ -40,3 +40,13 @@ export const blueButtonStyles = style({
     },
   },
 });
+
+export const greenButtonStyles = style({
+  width: "50px",
+  backgroundColor: vars.color.green,
+  selectors: {
+    "&:active": {
+      backgroundColor: vars.color.darkGreen,
+    },
+  },
+});

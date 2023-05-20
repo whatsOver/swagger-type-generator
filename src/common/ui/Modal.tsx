@@ -1,8 +1,15 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { useState, useEffect, useMemo, useRef, createContext } from "react";
-import { modalStyle } from "./styles/modal.css";
+import {
+  modalFadeIn,
+  modalFadeOut,
+  modalShowOut,
+  modalShowUp,
+  modalStyle,
+} from "./styles/modal.css";
 import { useContext } from "react";
 import { cloneElement } from "react";
+import classNames from "classnames";
 
 const ModalContext = createContext<{
   modalOpen: boolean;
@@ -74,15 +81,30 @@ interface ContentProps {
 
 const Content = ({ children, onClose }: ContentProps) => {
   const { modalOpen, setModalOpen } = useContext(ModalContext);
+  const [open, setOpen] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  if (!modalOpen) {
+  useEffect(() => {
+    if (modalOpen === true) {
+      setOpen(true);
+      setModalOpen(true);
+    } else {
+      setTimeout(() => {
+        setOpen(false);
+      }, 450);
+    }
+  }, [modalOpen]);
+
+  if (!open) {
     return null;
   }
 
   return (
     <div
-      className={modalStyle.backdropStyle}
+      className={classNames(
+        modalStyle.backdropStyle,
+        modalOpen ? modalFadeIn : modalFadeOut
+      )}
       onClick={() => {
         setModalOpen(false);
         onClose && onClose();
@@ -94,7 +116,10 @@ const Content = ({ children, onClose }: ContentProps) => {
       }}
     >
       <section
-        className={modalStyle.modalStyle}
+        className={classNames(
+          modalStyle.modalStyle,
+          modalOpen ? modalShowUp : modalShowOut
+        )}
         ref={contentRef}
         onClick={(e) => {
           e.stopPropagation();

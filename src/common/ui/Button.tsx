@@ -1,10 +1,14 @@
 import { ButtonHTMLAttributes, FunctionComponent, ReactNode } from "react";
-import { blueButtonStyles, buttonStyles } from "./styles/button.css";
+import {
+  blueButtonStyles,
+  buttonStyles,
+  greenButtonStyles,
+} from "./styles/button.css";
 import classNames from "classnames";
 
 export type ButtonProps = {
   children: ReactNode;
-  color?: "blue" | "default";
+  color?: "blue" | "green" | "default";
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Button: FunctionComponent<ButtonProps> = ({
@@ -18,6 +22,7 @@ const Button: FunctionComponent<ButtonProps> = ({
       type={type}
       className={classNames(buttonStyles, {
         [blueButtonStyles]: color === "blue",
+        [greenButtonStyles]: color === "green",
       })}
       {...rest}
     >

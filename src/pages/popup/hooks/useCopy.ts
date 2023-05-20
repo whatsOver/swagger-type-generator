@@ -1,4 +1,5 @@
 import React from "react";
+import { toast } from "react-toastify";
 
 interface Props {
   codeRef: React.RefObject<HTMLElement>;
@@ -11,8 +12,8 @@ const useCopy = ({ codeRef }: Props) => {
       if (textToCopy) {
         navigator.clipboard
           .writeText(textToCopy)
-          .then(() => alert("복사 완료"))
-          .catch((error) => console.error("복사 실패 :", error));
+          .then(() => toast.success("Copied!"))
+          .catch((error) => toast.error("Copy Error :", error));
       }
     }
   };
