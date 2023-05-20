@@ -8,12 +8,13 @@ export const searchStyle = {
     justifySelf: "center",
     width: "80%",
     height: "40px",
-    padding: "0 40px",
+    marginLeft: "10%",
+
     marginTop: "20px",
   }),
   icon: style({
     position: "absolute",
-    left: "12%",
+    left: "10px",
     fontSize: "20px",
   }),
 };

@@ -24,6 +24,7 @@ export const vars = createGlobalTheme(":root", {
     whiteBlue: "#E7F0F9",
     purple: "#8B5AF2",
     darkPurple: "#5F3DC4",
+    darkBlue: "#2F3542",
   },
   methodColors: {
     GET: "#4CA5FD",
