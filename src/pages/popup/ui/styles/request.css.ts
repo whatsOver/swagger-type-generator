@@ -54,6 +54,11 @@ export const requestStyle = {
     color: vars.color.green,
   }),
 
+  buttonWrapper: style({
+    display: "flex",
+    columnGap: "10px",
+  }),
+
   type: style({
     color: vars.color.green,
     width: "100px",
@@ -73,7 +78,7 @@ export const requestStyle = {
     textAlign: "left",
   }),
 
-  buttonWrapper: style({
+  fixedButtonWrapper: style({
     position: "absolute",
     bottom: "20px",
     width: "85%",
