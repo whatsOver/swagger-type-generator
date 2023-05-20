@@ -7,6 +7,7 @@ import { cloneElement } from "react";
 const ModalContext = createContext<{
   modalOpen: boolean;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  onClose?: () => void;
 }>({
   modalOpen: false,
   setModalOpen: () => {},
@@ -26,11 +27,8 @@ const Modal = ({ children }: ModalProps) => {
       }
     };
 
-    if (modalOpen) {
-      document.addEventListener("keydown", keydownCB);
-    } else {
-      document.removeEventListener("keydown", keydownCB);
-    }
+    if (modalOpen) document.addEventListener("keydown", keydownCB);
+    else document.removeEventListener("keydown", keydownCB);
 
     return () => {
       document.removeEventListener("keydown", keydownCB);
@@ -61,15 +59,20 @@ const Trigger = ({ as }: TriggerProps) => {
       as.props.onClick();
       setModalOpen(!modalOpen);
     },
+    onClose: () => {
+      as.props.onClose();
+      setModalOpen(false);
+    },
   });
   return clonedTrigger;
 };
 
 interface ContentProps {
   children: React.ReactNode;
+  onClose?: () => void;
 }
 
-const Content = ({ children }: ContentProps) => {
+const Content = ({ children, onClose }: ContentProps) => {
   const { modalOpen, setModalOpen } = useContext(ModalContext);
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -80,7 +83,10 @@ const Content = ({ children }: ContentProps) => {
   return (
     <div
       className={modalStyle.backdropStyle}
-      onClick={() => setModalOpen(false)}
+      onClick={() => {
+        setModalOpen(false);
+        onClose && onClose();
+      }}
       style={{
         animation: `${
           modalOpen ? modalStyle.fadeIn : modalStyle.fadeOut
