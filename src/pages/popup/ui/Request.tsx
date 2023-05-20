@@ -92,7 +92,7 @@ const Request = () => {
                   </Button>
                 }
               />
-              <Modal.Content>
+              <Modal.Content onClose={() => setMode("REQUEST")}>
                 {response && mode === "REQUEST" && (
                   <div className={requestStyle.modal}>
                     <div className={requestStyle.response}>
@@ -102,9 +102,7 @@ const Request = () => {
                           TS
                         </Button>
                       </div>
-                      <pre className={requestStyle.responseBody}>
-                        {JSON.stringify(response, null, 2)}
-                      </pre>
+                      <CodeBlock code={JSON.stringify(response, null, 2)} />
                     </div>
                   </div>
                 )}
