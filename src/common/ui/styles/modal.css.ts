@@ -54,3 +54,19 @@ export const modalStyle = {
     "100%": { opacity: 0, transform: "scale(0%)" },
   }),
 };
+
+export const modalFadeIn = style({
+  animation: `${modalStyle.fadeIn} 500ms ease-in-out`,
+});
+
+export const modalFadeOut = style({
+  animation: `${modalStyle.fadeOut} 500ms ease-in-out`,
+});
+
+export const modalShowUp = style({
+  animation: `${modalStyle.showUp} 500ms ease-in-out`,
+});
+
+export const modalShowOut = style({
+  animation: `${modalStyle.showOut} 500ms ease-in-out`,
+});
