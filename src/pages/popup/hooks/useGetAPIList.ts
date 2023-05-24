@@ -1,4 +1,3 @@
-import React from "react";
 import { SetStateAction } from "react";
 import { Dispatch } from "react";
 import { useEffect } from "react";
@@ -9,11 +8,12 @@ export interface API {
   description: string;
 }
 
-interface APIList {
+export interface APIList {
   endpoints: {
     [key: string]: API[];
   };
   tags: string[];
+  host: string;
 }
 
 interface GetAPIListProps {
