@@ -11,7 +11,11 @@
       tags.push(tagName);
 
       tagSection.querySelectorAll(".opblock").forEach((opblock) => {
-        const method = opblock.className.split("-")[1].toUpperCase();
+        const method = opblock.className
+          .split("-")[1]
+          .toUpperCase()
+          .split(" ")[0];
+
         const path = opblock
           .querySelector(".opblock-summary-path")
           .textContent.trim();
@@ -27,7 +31,7 @@
       });
     });
 
-    return { tags, endpoints };
+    return { tags, endpoints, host: window.location.host };
   };
 
   window.addEventListener("message", async (event) => {
