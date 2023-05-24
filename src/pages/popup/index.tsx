@@ -6,6 +6,8 @@ import refreshOnUpdate from "virtual:reload-on-update-in-view";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter, Routes, Route } from "react-router-dom";
 import Request from "./ui/Request";
+import "../../common/ui/styles/reset.css.ts";
+
 refreshOnUpdate("pages/popup");
 
 function init() {
