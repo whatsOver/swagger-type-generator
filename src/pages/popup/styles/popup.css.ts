@@ -12,11 +12,12 @@ export const popupStyle = {
     display: "flex",
     flexDirection: "column",
     width: "500px",
+    height: "600px",
     alignItems: "center",
     justifyContent: "flex-start",
     textAlign: "center",
-    overflowY: "scroll",
     overflowX: "hidden",
+    overflowY: "auto",
     selectors: {
       "&::-webkit-scrollbar": {
         width: "10px",
