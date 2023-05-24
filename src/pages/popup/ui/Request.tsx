@@ -20,6 +20,7 @@ export interface RequestProps {
   method: Method;
   path: string;
   params: Parameters[];
+  host: string;
   body?: Schemas;
 }
 
