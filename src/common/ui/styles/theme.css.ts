@@ -12,6 +12,7 @@ export const vars = createGlobalTheme(":root", {
     red: "#FF2A37",
     green: "#2EC885",
     lightGreen: "#79EB3C",
+    royalBlue: "#30E1BA",
     blue: "#4CA5FD",
     orange: "#FF952D",
     grey: "#323232",
@@ -32,11 +33,13 @@ export const vars = createGlobalTheme(":root", {
     POST: "#2EC885",
     PUT: "#FF952D",
     DELETE: "#FF2A37",
+    PATCH: "#30E1BA",
   },
   methodBackgroundColors: {
     GET: "#E7F0F9",
     POST: "#E7F9F0",
     PUT: "#FFF9E7",
     DELETE: "#FFE7E7",
+    PATCH: "#E7F9F0",
   },
 });
