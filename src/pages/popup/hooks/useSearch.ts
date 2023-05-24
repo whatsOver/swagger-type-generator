@@ -1,9 +1,9 @@
 import React from "react";
 import { useState } from "react";
-import { APIList } from "../Popup";
 import { Dispatch } from "react";
 import { SetStateAction } from "react";
 import { useEffect } from "react";
+import { APIList } from "./useGetAPIList";
 
 interface SearchProps {
   apiList: APIList;
