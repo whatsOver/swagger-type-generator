@@ -2,7 +2,7 @@ import { useState } from "react";
 import { popupStyle } from "./styles/popup.css";
 import Search from "./ui/Search";
 import APIItem from "./ui/APIItem";
-import useGetAPIList from "./hooks/useGetAPIList";
+import useGetAPIList, { APIList } from "./hooks/useGetAPIList";
 import useSearch from "./hooks/useSearch";
 import { useGETDocs } from "./api/docs";
 import { RequestProps } from "./ui/Request";
@@ -10,18 +10,12 @@ import { vars } from "@src/common/ui/styles/theme.css";
 import { Method } from "axios";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { IoMdSettings as SettingIcon } from "react-icons/io";
 
 export interface API {
   method: "GET" | "POST" | "PUT" | "DELETE";
   path: string;
   description: string;
-}
-
-export interface APIList {
-  endpoints: {
-    [key: string]: API[];
-  };
-  tags: string[];
 }
 
 const Popup = () => {
@@ -32,11 +26,13 @@ const Popup = () => {
   const [apiList, setAPIList] = useState<APIList>({
     endpoints: {},
     tags: [],
+    host: "",
   });
 
   const [filteredAPIList, setFilteredAPIList] = useState<APIList>({
     endpoints: {},
     tags: [],
+    host: "",
   });
 
   useGetAPIList({ setAPIList });
@@ -85,6 +81,11 @@ const Popup = () => {
   return (
     <div className={popupStyle.app}>
       <header className={popupStyle.header}>
+        <div className={popupStyle.settingWrapper}>
+          <button>
+            <SettingIcon size={24} color="white" />
+          </button>
+        </div>
         <Search value={search} onChange={onChange} />
         <ul className={popupStyle.apiList}>
           {filteredAPIList.tags?.map((tag) => (
