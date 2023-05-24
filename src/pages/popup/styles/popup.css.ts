@@ -11,6 +11,7 @@ export const popupStyle = {
     right: 0,
     display: "flex",
     flexDirection: "column",
+    width: "500px",
     alignItems: "center",
     justifyContent: "flex-start",
     textAlign: "center",
@@ -35,7 +36,16 @@ export const popupStyle = {
   }),
 
   header: style({
-    width: "100%",
+    width: "500px",
+  }),
+
+  settingWrapper: style({
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyItems: "flex-end",
+    justifyContent: "flex-end",
+    padding: "10px 20px",
   }),
 
   tag: style({
