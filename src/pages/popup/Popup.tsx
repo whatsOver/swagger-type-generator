@@ -79,7 +79,7 @@ const Popup = () => {
   }, [selectedAPI]);
 
   return (
-    <div className={popupStyle.app}>
+    <div id="main" className={popupStyle.app}>
       <header className={popupStyle.header}>
         <div className={popupStyle.settingWrapper}>
           <button>
