@@ -116,6 +116,7 @@ const Request = () => {
       <Header />
       <div className={popupStyle.app}>
         <form className={requestStyle.body} onSubmit={handleSubmit}>
+          <h2 className={requestStyle.mainDescription}>{description}</h2>
           {params && <Params params={params} handleChange={handleChange} />}
           {body && <Body body={body} handleChange={handleChange} />}
           <div className={requestStyle.fixedButtonWrapper}>

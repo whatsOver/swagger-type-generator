@@ -47,6 +47,13 @@ export const requestStyle = {
     justifyContent: "space-between",
   }),
 
+  mainDescription: style({
+    fontWeight: "bold",
+    display: "flex",
+    alignItems: "left",
+    color: vars.color.white,
+  }),
+
   description: style({
     fontWeight: "bold",
     display: "flex",
