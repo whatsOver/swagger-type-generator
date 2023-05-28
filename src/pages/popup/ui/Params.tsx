@@ -26,7 +26,7 @@ const Params = ({ params, handleChange }: ParamsProps) => {
             placeholder={param.example + "" ?? ""}
             required={param.required}
             onChange={handleChange}
-            defaultValue={param.example ?? ""}
+            defaultValue={param.required ? param.example : ""}
             autoFocus={idx === 0}
             onFocus={(e) => e.target.select()}
           />
