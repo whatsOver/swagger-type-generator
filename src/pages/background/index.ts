@@ -1,5 +1,5 @@
 import reloadOnUpdate from "virtual:reload-on-update-in-background-script";
-
+import createContextMenu from "./utils/contextMenu";
 reloadOnUpdate("pages/background");
 
 /**
@@ -19,3 +19,5 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
   return true;
 });
+
+createContextMenu();

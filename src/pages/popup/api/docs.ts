@@ -60,13 +60,15 @@ export interface SwaggerDocs {
   };
 }
 
-const getSwaggerDocs = async (): Promise<SwaggerDocs> => {
-  const { data } = await axios.get("http://localhost:8080/api-docs");
+const getSwaggerDocs = async (host: string): Promise<SwaggerDocs> => {
+  const { data } = await axios.get(`${host}/api-docs`);
   return data;
 };
 
-const useGETDocs = () => {
-  return useQuery(["getDocs"], async () => await getSwaggerDocs(), {});
+const useGETDocs = (host: string) => {
+  return useQuery(["getDocs", host], async () => await getSwaggerDocs(host), {
+    enabled: !!host,
+  });
 };
 
 export { useGETDocs };

@@ -7,19 +7,18 @@ import useSearch from "./hooks/useSearch";
 import { useGETDocs } from "./api/docs";
 import { RequestProps } from "./ui/Request";
 import { vars } from "@src/common/ui/styles/theme.css";
-import { Method } from "axios";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { IoMdSettings as SettingIcon } from "react-icons/io";
+import { convertSelectedAPI } from "./util/convertSelectedAPI";
 
-export interface API {
+export interface API_ITEM {
   method: "GET" | "POST" | "PUT" | "DELETE";
   path: string;
   description: string;
 }
 
 const Popup = () => {
-  const { data } = useGETDocs();
   const navigate = useNavigate();
 
   // FIRST RENDER
@@ -36,37 +35,15 @@ const Popup = () => {
   });
 
   useGetAPIList({ setAPIList });
+  const { data } = useGETDocs(apiList?.host);
 
   // INTERACTION
   // 1. 유저 > 검색어 입력
   const { search, onChange } = useSearch({ apiList, setFilteredAPIList });
   const [selectedAPI, setSelectedAPI] = useState<RequestProps>(null);
 
-  const onClickAPI = (api: API) => {
-    const removeIs = (str: string) => str.split(" ")[0];
-    const method = removeIs(api.method) as Method;
-    setSelectedAPI((prev) => ({
-      ...prev,
-      method,
-      path: api.path,
-    }));
-    if (data) {
-      setSelectedAPI((prev) => ({
-        ...prev,
-        params: data.paths[api.path][method.toLowerCase() as Method].parameters,
-      }));
-      if (data.paths[api.path][method.toLowerCase()].requestBody) {
-        const schemaName =
-          data.paths[api.path][
-            method.toLowerCase() as Method
-          ].requestBody.content["application/json"].schema.$ref.split("/")[3];
-        const body = data.components.schemas[schemaName];
-        setSelectedAPI((prev) => ({
-          ...prev,
-          body,
-        }));
-      }
-    }
+  const onClickAPI = (api: API_ITEM) => {
+    setSelectedAPI({ ...convertSelectedAPI(data, api), host: apiList.host });
   };
 
   useEffect(() => {
