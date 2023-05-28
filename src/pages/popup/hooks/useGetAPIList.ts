@@ -61,6 +61,18 @@ const useGetAPIList = ({ setAPIList }: GetAPIListProps) => {
         }
       });
     });
+    // Context menu를 위한 코드
+    chrome.tabs.query({ active: true, currentWindow: false }, (tabs) => {
+      checkIfReceiverIsReady(tabs[0].id, (isReady) => {
+        if (isReady) {
+          getAPIList(tabs[0].id, (data) => {
+            setAPIList(data);
+          });
+        } else {
+          console.error("Error: Receiving end does not exist");
+        }
+      });
+    });
   }, []);
 };
 
