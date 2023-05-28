@@ -65,6 +65,12 @@ export const requestStyle = {
     textAlign: "left",
   }),
 
+  bodyType: style({
+    color: vars.color.blue,
+    width: "100px",
+    textAlign: "left",
+  }),
+
   inputBox: style({
     display: "flex",
     alignItems: "center",
