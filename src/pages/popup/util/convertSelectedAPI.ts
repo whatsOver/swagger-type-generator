@@ -15,11 +15,21 @@ const convertSelectedAPI = (
   const parameters =
     data.paths[path][method.toLowerCase() as Method].parameters;
 
-  const schemaName =
-    data.paths[api.path][method.toLowerCase() as Method].requestBody?.content[
-      "application/json"
-    ].schema.$ref.split("/")[3];
+  console.log(data.paths[api.path][method.toLowerCase() as Method].requestBody);
+
+  let schemaName = "";
+  const requestBody =
+    data.paths[api.path][method.toLowerCase() as Method].requestBody;
+  if (requestBody) {
+    const schema = requestBody.content["application/json"].schema;
+    if ("$ref" in schema) {
+      schemaName = schema.$ref.split("/")[3];
+    } else if (schema.type === "array") {
+      schemaName = schema.items.$ref.split("/")[3];
+    }
+  }
   const body = data.components.schemas[schemaName];
+  console.log(body);
 
   return {
     method,

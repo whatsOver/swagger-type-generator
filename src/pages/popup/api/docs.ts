@@ -16,12 +16,19 @@ export interface Parameters {
 interface RequestBody {
   content: {
     "application/json": {
-      schema: {
-        $ref: string;
-      };
+      schema: RefSchema | RefArraySchema;
     };
   };
 }
+
+type RefSchema = {
+  $ref: string;
+};
+
+type RefArraySchema = {
+  type: "array";
+  items: RefSchema;
+};
 
 export interface Information {
   tags: string[];
@@ -39,6 +46,8 @@ export interface Schemas {
     [key: string]: {
       type: string;
       format?: string;
+      description?: string;
+      example?: string | number;
     };
   };
 }
