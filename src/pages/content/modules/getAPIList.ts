@@ -31,7 +31,11 @@
       });
     });
 
-    return { tags, endpoints, host: window.location.host };
+    return {
+      tags,
+      endpoints,
+      host: window.location.origin,
+    };
   };
 
   window.addEventListener("message", async (event) => {
