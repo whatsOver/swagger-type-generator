@@ -63,6 +63,7 @@ const useGetAPIList = ({ setAPIList }: GetAPIListProps) => {
     });
     // Context menu를 위한 코드
     chrome.tabs.query({ active: true, currentWindow: false }, (tabs) => {
+      if (tabs.length === 0) return;
       checkIfReceiverIsReady(tabs[0].id, (isReady) => {
         if (isReady) {
           getAPIList(tabs[0].id, (data) => {
