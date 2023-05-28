@@ -20,6 +20,7 @@ export interface RequestProps {
   method: Method;
   path: string;
   params: Parameters[];
+  description: string;
   host: string;
   body?: Schemas;
 }
@@ -28,7 +29,8 @@ type Mode = "REQUEST" | "TS" | "ERROR";
 
 const Request = () => {
   // FIRST RENDER
-  const { method, params, path, body } = useLocation().state as RequestProps;
+  const { method, params, path, body, host, description } = useLocation()
+    .state as RequestProps;
 
   // INTERACTION
   // 1. 유저 > params, body 입력
@@ -53,7 +55,7 @@ const Request = () => {
     try {
       const response = await axios({
         method,
-        url: "http://localhost:8080" + transformPath,
+        url: host + transformPath,
         params: getQueryParams(params, formValues) ?? {},
         data: body ? getBody(body, formValues) : {},
       });
