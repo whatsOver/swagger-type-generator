@@ -14,6 +14,7 @@ const manifest: chrome.runtime.ManifestV3 = {
   },
   action: {
     default_popup: "src/pages/popup/index.html",
+    default_title: packageJson.name,
     default_icon: "icon-34.png",
   },
   icons: {
@@ -23,6 +24,8 @@ const manifest: chrome.runtime.ManifestV3 = {
     {
       matches: ["http://*/*", "https://*/*", "<all_urls>"],
       js: ["src/pages/content/index.js"],
+      include_globs: ["*://*/*"],
+      match_about_blank: true,
       // KEY for cache invalidation
       css: ["assets/css/Style.chunk.css"],
     },
@@ -40,7 +43,8 @@ const manifest: chrome.runtime.ManifestV3 = {
       matches: ["*://*/*"],
     },
   ],
-  permissions: ["storage", "activeTab", "scripting"],
+  permissions: ["storage", "activeTab", "scripting", "contextMenus"],
+  host_permissions: ["http://*/*", "https://*/*"],
 };
 
 export default manifest;
