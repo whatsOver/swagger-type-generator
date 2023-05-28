@@ -41,7 +41,7 @@ const Request = () => {
   useEffect(() => {
     params &&
       params.forEach((param) => {
-        if (param.example) {
+        if (param.example && param.required) {
           setFormValues((prev) => ({
             ...prev,
             [param.name]: param.example,
@@ -50,7 +50,7 @@ const Request = () => {
       });
     body &&
       Object.keys(body.properties).forEach((key) => {
-        if (body.properties[key].example) {
+        if (body.properties[key].example && body.required.includes(key)) {
           setFormValues((prev) => ({
             ...prev,
             [key]: body.properties[key].example,
