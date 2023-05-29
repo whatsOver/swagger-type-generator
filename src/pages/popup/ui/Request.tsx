@@ -15,6 +15,7 @@ import useCopy from "../hooks/useCopy";
 import ModalCodeBlock from "./ModalCodeBlock";
 import { Flip, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useEffect } from "react";
 
 export interface RequestProps {
   method: Method;
@@ -35,6 +36,29 @@ const Request = () => {
   // INTERACTION
   // 1. 유저 > params, body 입력
   const [formValues, setFormValues] = useState({});
+
+  // 기본 값이 존재하는 경우 formValues에 추가
+  useEffect(() => {
+    params &&
+      params.forEach((param) => {
+        if (param.example && param.required) {
+          setFormValues((prev) => ({
+            ...prev,
+            [param.name]: param.example,
+          }));
+        }
+      });
+    body &&
+      Object.keys(body.properties).forEach((key) => {
+        if (body.properties[key].example && body.required.includes(key)) {
+          setFormValues((prev) => ({
+            ...prev,
+            [key]: body.properties[key].example,
+          }));
+        }
+      });
+  }, [params, body]);
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormValues((prev) => ({
       ...prev,
@@ -92,6 +116,7 @@ const Request = () => {
       <Header />
       <div className={popupStyle.app}>
         <form className={requestStyle.body} onSubmit={handleSubmit}>
+          <h2 className={requestStyle.mainDescription}>{description}</h2>
           {params && <Params params={params} handleChange={handleChange} />}
           {body && <Body body={body} handleChange={handleChange} />}
           <div className={requestStyle.fixedButtonWrapper}>
