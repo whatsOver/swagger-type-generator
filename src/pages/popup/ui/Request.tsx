@@ -1,7 +1,7 @@
 import { Parameters, Schemas } from "../api/docs";
 import { requestStyle } from "./styles/request.css";
 import axios, { Method } from "axios";
-import { useState, ChangeEvent, FormEvent, useRef } from "react";
+import { useState, FormEvent, useRef, useEffect, useCallback } from "react";
 import Button from "@src/common/ui/Button";
 import { useLocation } from "react-router-dom";
 import { popupStyle } from "../styles/popup.css";
@@ -14,8 +14,9 @@ import { jsonToTs } from "@src/common/util/typeGenerator";
 import useCopy from "../hooks/useCopy";
 import ModalCodeBlock from "./ModalCodeBlock";
 import { Flip, ToastContainer } from "react-toastify";
+import { generateAPICode, generateInterface } from "../util/apiGenerator";
+import useForm from "../hooks/useForm";
 import "react-toastify/dist/ReactToastify.css";
-import { useEffect } from "react";
 
 export interface RequestProps {
   method: Method;
@@ -26,7 +27,7 @@ export interface RequestProps {
   body?: Schemas;
 }
 
-type Mode = "REQUEST" | "TS" | "ERROR";
+export type Mode = "REQUEST" | "TS" | "ERROR" | "API";
 
 const Request = () => {
   // FIRST RENDER
@@ -35,36 +36,24 @@ const Request = () => {
 
   // INTERACTION
   // 1. 유저 > params, body 입력
-  const [formValues, setFormValues] = useState({});
+  const { formValues, handleChange, setFormValues } = useForm();
 
-  // 기본 값이 존재하는 경우 formValues에 추가
+  // 1-1. 유저 > params, body 입력 > 초기값 설정
   useEffect(() => {
-    params &&
-      params.forEach((param) => {
-        if (param.example && param.required) {
-          setFormValues((prev) => ({
-            ...prev,
-            [param.name]: param.example,
-          }));
-        }
-      });
-    body &&
-      Object.keys(body.properties).forEach((key) => {
-        if (body.properties[key].example && body.required.includes(key)) {
-          setFormValues((prev) => ({
-            ...prev,
-            [key]: body.properties[key].example,
-          }));
-        }
-      });
-  }, [params, body]);
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setFormValues((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const initialValues: Record<string, any> = {};
+    params?.forEach((param) => {
+      if (param.example && param.required) {
+        initialValues[param.name] = param.example;
+      }
+    });
+    body?.required?.forEach((key) => {
+      if (body.properties[key]?.example) {
+        initialValues[key] = body.properties[key].example;
+      }
+    });
+    setFormValues(initialValues);
+  }, [params, body, setFormValues]);
 
   // 2. 유저 > 요청 버튼 클릭
   const [response, setResponse] = useState(null);
@@ -87,16 +76,35 @@ const Request = () => {
     } catch (error) {
       setMode("ERROR");
       setResponse(error.response.data);
-      console.log(error);
     }
   };
 
   // 3. 유저 > TS 버튼 클릭
   const [mode, setMode] = useState<Mode>("REQUEST");
-  const [type, setType] = useState(null);
+
   const onClickTS = () => {
     setMode("TS");
-    setType(jsonToTs("json", response).join("\n"));
+    setCode(jsonToTs("json", response).join("\n"));
+  };
+
+  // 4. code 상태 관리
+  const [code, setCode] = useState<string>("");
+
+  // 4. 유저 > API 버튼 클릭
+  const onClickAPI = () => {
+    setMode("API");
+    setCode(jsonToTs("json", response).join("\n"));
+    setCode(
+      (prev) =>
+        prev +
+        "\n\n" +
+        (generateInterface(params) +
+          "\n" +
+          generateAPICode({
+            api: { method, path, host, params, body },
+            formValues,
+          }))
+    );
   };
 
   // 4. 유저 > 복사 버튼 클릭
@@ -110,6 +118,8 @@ const Request = () => {
       setMode("REQUEST");
     }, 500);
   };
+
+  const initializeMode = useCallback(() => setMode("REQUEST"), []);
 
   return (
     <>
@@ -134,16 +144,21 @@ const Request = () => {
                   <ModalCodeBlock
                     description="Response"
                     code={JSON.stringify(response, null, 2)}
+                    mode="REQUEST"
                     ref={codeRef}
+                    onClose={onCloseModal}
                     onClickCopy={copyToClipboard}
                     onClickTS={onClickTS}
+                    onClickAPI={onClickAPI}
                   />
                 )}
                 {mode === "TS" && (
                   <ModalCodeBlock
                     description="Type"
-                    code={type}
+                    code={code}
+                    mode="TS"
                     ref={codeRef}
+                    onClickBack={initializeMode}
                     onClickCopy={copyToClipboard}
                   />
                 )}
@@ -152,7 +167,19 @@ const Request = () => {
                     description="Error"
                     descriptionColor="red"
                     code={JSON.stringify(response, null, 2)}
+                    mode="ERROR"
                     ref={codeRef}
+                    onClickBack={initializeMode}
+                    onClickCopy={copyToClipboard}
+                  />
+                )}
+                {mode === "API" && (
+                  <ModalCodeBlock
+                    description="API"
+                    code={code}
+                    mode="API"
+                    ref={codeRef}
+                    onClickBack={initializeMode}
                     onClickCopy={copyToClipboard}
                   />
                 )}
