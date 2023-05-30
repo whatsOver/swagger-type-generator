@@ -176,6 +176,7 @@ const Request = () => {
                 {mode === "API" && (
                   <ModalCodeBlock
                     description="API"
+                    descriptionColor="red"
                     code={code}
                     mode="API"
                     ref={codeRef}
