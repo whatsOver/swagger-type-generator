@@ -29,6 +29,12 @@ export const requestStyle = {
     },
   }),
 
+  iconButton: style({
+    display: "flex",
+    alignItems: "center",
+    width: "30px",
+  }),
+
   modal: style({
     marginTop: "40px",
     backgroundColor: vars.color.darkGrey,

@@ -17,9 +17,7 @@ const CodeBlock: ForwardRefRenderFunction<HTMLDivElement, CodeBlockProps> = (
   const codeRef = useRef<HTMLPreElement>(null);
 
   useEffect(() => {
-    if (codeRef.current) {
-      highlight.highlightBlock(codeRef.current);
-    }
+    codeRef.current && highlight.highlightBlock(codeRef.current);
   }, [code]);
 
   return (
