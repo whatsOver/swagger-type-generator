@@ -1,5 +1,14 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { useState, useEffect, useMemo, useRef, createContext } from "react";
+import {
+  useState,
+  useEffect,
+  useMemo,
+  useRef,
+  createContext,
+  Children,
+  isValidElement,
+  useCallback,
+} from "react";
 import {
   modalFadeIn,
   modalFadeOut,
@@ -10,6 +19,7 @@ import {
 import { useContext } from "react";
 import { cloneElement } from "react";
 import classNames from "classnames";
+import ModalCodeBlock from "@src/pages/popup/ui/ModalCodeBlock";
 
 const ModalContext = createContext<{
   modalOpen: boolean;
@@ -95,6 +105,11 @@ const Content = ({ children, onClose }: ContentProps) => {
     }
   }, [modalOpen]);
 
+  const handleCloseModal = useCallback(() => {
+    setModalOpen(false);
+    onClose && onClose();
+  }, [onClose, setModalOpen]);
+
   if (!open) {
     return null;
   }
@@ -105,10 +120,7 @@ const Content = ({ children, onClose }: ContentProps) => {
         modalStyle.backdropStyle,
         modalOpen ? modalFadeIn : modalFadeOut
       )}
-      onClick={() => {
-        setModalOpen(false);
-        onClose && onClose();
-      }}
+      onClick={handleCloseModal}
       style={{
         animation: `${
           modalOpen ? modalStyle.fadeIn : modalStyle.fadeOut
@@ -125,7 +137,15 @@ const Content = ({ children, onClose }: ContentProps) => {
           e.stopPropagation();
         }}
       >
-        {children}
+        {Children.map(children, (child) => {
+          if (
+            isValidElement<ContentProps>(child) &&
+            child.type === ModalCodeBlock
+          ) {
+            return cloneElement(child, { onClose: handleCloseModal });
+          }
+          return child;
+        })}
       </section>
     </div>
   );
