@@ -17,7 +17,8 @@ interface ModalCodeBlockProps {
   onClickBack?: () => void;
   onClickTS?: () => void;
   onClickCopy?: () => void;
-  onClickAPI?: () => void;
+  onClickAxios?: () => void;
+  onClickFetch?: () => void;
 }
 
 const ModalCodeBlock: ForwardRefRenderFunction<
@@ -33,7 +34,8 @@ const ModalCodeBlock: ForwardRefRenderFunction<
     onClickBack,
     onClickTS,
     onClickCopy,
-    onClickAPI,
+    onClickAxios,
+    onClickFetch,
   },
   ref
 ) => {
@@ -74,9 +76,14 @@ const ModalCodeBlock: ForwardRefRenderFunction<
                 TS
               </Button>
             )}
-            {onClickAPI && (
-              <Button color="red" onClick={onClickAPI}>
-                API
+            {onClickAxios && (
+              <Button color="red" onClick={onClickAxios}>
+                Axios
+              </Button>
+            )}
+            {onClickFetch && (
+              <Button color="orange" onClick={onClickFetch}>
+                Fetch
               </Button>
             )}
           </div>
