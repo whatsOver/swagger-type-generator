@@ -32,7 +32,7 @@ export const buttonStyles = style({
 });
 
 export const blueButtonStyles = style({
-  width: "50px",
+  width: "40px",
   backgroundColor: vars.color.blue,
   selectors: {
     "&:active": {
@@ -42,7 +42,7 @@ export const blueButtonStyles = style({
 });
 
 export const greenButtonStyles = style({
-  width: "50px",
+  width: "40px",
   backgroundColor: vars.color.green,
   selectors: {
     "&:active": {
@@ -52,11 +52,21 @@ export const greenButtonStyles = style({
 });
 
 export const redButtonStyles = style({
-  width: "50px",
+  width: "40px",
   backgroundColor: vars.color.red,
   selectors: {
     "&:active": {
       backgroundColor: vars.color.darkRed,
+    },
+  },
+});
+
+export const orangeButtonStyles = style({
+  width: "40px",
+  backgroundColor: vars.color.orange,
+  selectors: {
+    "&:active": {
+      backgroundColor: vars.color.darkOrange,
     },
   },
 });
