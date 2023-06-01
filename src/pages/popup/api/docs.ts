@@ -1,5 +1,6 @@
 import axios, { Method } from "axios";
 import { useQuery } from "@tanstack/react-query";
+import { Path } from "@src/pages/content/modules/getAPIList";
 
 export interface Parameters {
   name: string;
@@ -69,15 +70,21 @@ export interface SwaggerDocs {
   };
 }
 
-const getSwaggerDocs = async (host: string): Promise<SwaggerDocs> => {
-  const { data } = await axios.get(`${host}/api-docs`);
+const getSwaggerDocs = async ({ host, href }: Path): Promise<SwaggerDocs> => {
+  const isFullUrl = href.includes("http");
+  const { data } = await axios.get(isFullUrl ? href : `${host}${href}`);
   return data;
 };
 
-const useGETDocs = (host: string) => {
-  return useQuery(["getDocs", host], async () => await getSwaggerDocs(host), {
-    enabled: !!host,
-  });
+const useGETDocs = ({ host, href }: Path) => {
+  console.log("useGETDocs", href, host);
+  return useQuery(
+    ["getDocs", href],
+    async () => await getSwaggerDocs({ host, href }),
+    {
+      enabled: !!href,
+    }
+  );
 };
 
 export { useGETDocs };

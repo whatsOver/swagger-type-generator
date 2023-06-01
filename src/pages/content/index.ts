@@ -1,10 +1,9 @@
+import { GET_API_LIST_RESULT } from "./modules/getAPIList";
 import injectScript from "./modules/injectScript";
 
 injectScript(chrome.runtime.getURL("getAPIList.js"), document.documentElement);
 
-const getAPIListFromPage = async (): Promise<
-  Array<{ title: string; issueNumber: string }>
-> => {
+const getAPIListFromPage = async (): Promise<GET_API_LIST_RESULT> => {
   return new Promise((resolve) => {
     window.postMessage({ type: "GET_API_LIST" }, window.location.origin);
     window.addEventListener("message", (event) => {
@@ -12,7 +11,7 @@ const getAPIListFromPage = async (): Promise<
         event.source === window &&
         event.data.type === "GET_API_LIST_RESULT"
       ) {
-        resolve(event.data.prList);
+        resolve(event.data.data);
       }
     });
   });
@@ -25,8 +24,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
   if (request.message === "GET_SWAGGER_LIST") {
     (async () => {
-      const prList = await getAPIListFromPage();
-      sendResponse({ code: 200, data: prList });
+      const result = await getAPIListFromPage();
+      sendResponse({ code: 200, data: result });
       return true;
     })();
     return true;
