@@ -83,8 +83,6 @@ describe("API 코드 생성", () => {
       formValues: sampleFormValues,
     });
 
-    console.log(result);
-
     // 결과값의 패턴이 맞는지 확인
     expect(result).toContain(
       `const ${sampleAPI.method.toLowerCase()}API = async ({ ${sampleParams
