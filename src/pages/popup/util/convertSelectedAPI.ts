@@ -29,7 +29,6 @@ const convertSelectedAPI = (
     }
   }
   const body = data.components.schemas[schemaName];
-  console.log(body);
 
   return {
     method,

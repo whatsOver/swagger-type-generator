@@ -38,7 +38,6 @@ const useGetAPIList = ({ setAPIList, setPathInfo }: GetAPIListProps) => {
           console.log(chrome.runtime.lastError);
           setTimeout(() => getAPIList(tabId, callback), 1000);
         } else {
-          console.log(response);
           callback(response.data);
         }
       }
