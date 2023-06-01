@@ -1,5 +1,10 @@
 import { Parameters } from "../api/docs";
-import { generateAPICode, generateInterface } from "./apiGenerator";
+import {
+  generateAxiosAPICode,
+  generateFetchAPICode,
+  generateInterface,
+  objectToQueryString,
+} from "./apiGenerator";
 import { getBody, getQueryParams } from "./request";
 
 describe("API 코드 생성", () => {
@@ -41,7 +46,7 @@ describe("API 코드 생성", () => {
   });
 
   it("올바른 API 코드를 생성한다 axios 기반", () => {
-    const result = generateAPICode({
+    const result = generateAxiosAPICode({
       api: sampleAPI,
       formValues: sampleFormValues,
     });
@@ -63,6 +68,36 @@ describe("API 코드 생성", () => {
       `data: ${JSON.stringify(
         sampleAPI.body ? getBody(sampleAPI.body, sampleFormValues) : {}
       )},`
+    );
+  });
+
+  it("objectToQueryString 함수가 올바르게 동작한다", () => {
+    const result = objectToQueryString(sampleFormValues);
+
+    expect(result).toBe("param1={param1}&param2={param2}");
+  });
+
+  it("올바른 API 코드를 생성한다 fetch 기반", () => {
+    const result = generateFetchAPICode({
+      api: sampleAPI,
+      formValues: sampleFormValues,
+    });
+
+    console.log(result);
+
+    // 결과값의 패턴이 맞는지 확인
+    expect(result).toContain(
+      `const ${sampleAPI.method.toLowerCase()}API = async ({ ${sampleParams
+        .map((param) => param.name)
+        .join(", ")} }: RequestInterface) => {`
+    );
+    expect(result).toContain(`method: "${sampleAPI.method}",`);
+    expect(result).toContain(
+      sampleAPI.method !== "get"
+        ? `body: ${JSON.stringify(
+            sampleAPI.body ? getBody(sampleAPI.body, sampleFormValues) : {}
+          )},`
+        : ""
     );
   });
 });

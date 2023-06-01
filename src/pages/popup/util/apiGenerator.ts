@@ -23,7 +23,10 @@ interface GenerateAPICodeProps {
   formValues: { [key: string]: string };
 }
 
-const generateAPICode = ({ api, formValues }: GenerateAPICodeProps): string => {
+const generateAxiosAPICode = ({
+  api,
+  formValues,
+}: GenerateAPICodeProps): string => {
   const interfaceName = "RequestInterface";
   const { method, host, path, params, body } = api;
 
@@ -50,4 +53,58 @@ const ${method.toLowerCase()}API = async ({ ${args} }: ${interfaceName}) => {
   return apiFunction;
 };
 
-export { generateInterface, generateAPICode };
+const objectToQueryString = (obj: { [key: string]: string }): string =>
+  Object.keys(obj)
+    .map((key) => `${key}=` + `{${key}}`)
+    .join("&");
+
+const generateFetchAPICode = ({
+  api,
+  formValues,
+}: GenerateAPICodeProps): string => {
+  const interfaceName = "RequestInterface";
+  const { method, host, path, params, body } = api;
+
+  const args = params
+    .filter((param) => param.in === "path" || param.in === "query")
+    .map((param) => param.name)
+    .join(", ");
+
+  const queryParams = params.filter((param) => param.in === "query");
+  const pathParams = params.filter((param) => param.in === "path");
+
+  // Generate the string for path parameters dynamically
+  const dynamicPath = pathParams.reduce(
+    (accPath, param) => accPath.replace(`{${param.name}}`, `\${${param.name}}`),
+    path
+  );
+
+  const fetchParams = queryParams.length
+    ? `\`?${objectToQueryString(getQueryParams(queryParams, formValues))}\``
+    : "";
+
+  const fetchBody = JSON.stringify(body ? getBody(body, formValues) : {});
+
+  const apiFunction = `
+const ${method.toLowerCase()}API = async ({ ${args} }: ${interfaceName}) => {
+  const query = ${fetchParams};
+  const response = await fetch(\`${host}${dynamicPath}\` + query, {
+    method: "${method}",
+    ${
+      method.toLowerCase() !== "get"
+        ? `body: ${fetchBody}, headers: { 'Content-Type': 'application/json' }`
+        : ""
+    }
+  });
+  return response.json();
+};`;
+
+  return apiFunction;
+};
+
+export {
+  generateInterface,
+  generateAxiosAPICode,
+  generateFetchAPICode,
+  objectToQueryString,
+};

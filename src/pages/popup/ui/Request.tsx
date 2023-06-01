@@ -14,7 +14,11 @@ import { jsonToTs } from "@src/common/util/typeGenerator";
 import useCopy from "../hooks/useCopy";
 import ModalCodeBlock from "./ModalCodeBlock";
 import { Flip, ToastContainer } from "react-toastify";
-import { generateAPICode, generateInterface } from "../util/apiGenerator";
+import {
+  generateAxiosAPICode,
+  generateFetchAPICode,
+  generateInterface,
+} from "../util/apiGenerator";
 import useForm from "../hooks/useForm";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -27,7 +31,7 @@ export interface RequestProps {
   body?: Schemas;
 }
 
-export type Mode = "REQUEST" | "TS" | "ERROR" | "API";
+export type Mode = "REQUEST" | "TS" | "ERROR" | "AXIOS" | "FETCH";
 
 const Request = () => {
   // FIRST RENDER
@@ -91,8 +95,8 @@ const Request = () => {
   const [code, setCode] = useState<string>("");
 
   // 4. 유저 > API 버튼 클릭
-  const onClickAPI = () => {
-    setMode("API");
+  const onClickAxios = () => {
+    setMode("AXIOS");
     setCode(jsonToTs("json", response).join("\n"));
     setCode(
       (prev) =>
@@ -100,7 +104,22 @@ const Request = () => {
         "\n\n" +
         (generateInterface(params) +
           "\n" +
-          generateAPICode({
+          generateAxiosAPICode({
+            api: { method, path, host, params, body },
+            formValues,
+          }))
+    );
+  };
+  const onClickFetch = () => {
+    setMode("FETCH");
+    setCode(jsonToTs("json", response).join("\n"));
+    setCode(
+      (prev) =>
+        prev +
+        "\n\n" +
+        (generateInterface(params) +
+          "\n" +
+          generateFetchAPICode({
             api: { method, path, host, params, body },
             formValues,
           }))
@@ -149,7 +168,8 @@ const Request = () => {
                     onClose={onCloseModal}
                     onClickCopy={copyToClipboard}
                     onClickTS={onClickTS}
-                    onClickAPI={onClickAPI}
+                    onClickAxios={onClickAxios}
+                    onClickFetch={onClickFetch}
                   />
                 )}
                 {mode === "TS" && (
@@ -173,12 +193,23 @@ const Request = () => {
                     onClickCopy={copyToClipboard}
                   />
                 )}
-                {mode === "API" && (
+                {mode === "AXIOS" && (
                   <ModalCodeBlock
-                    description="API"
+                    description="AXIOS"
                     descriptionColor="red"
                     code={code}
-                    mode="API"
+                    mode="AXIOS"
+                    ref={codeRef}
+                    onClickBack={initializeMode}
+                    onClickCopy={copyToClipboard}
+                  />
+                )}
+                {mode === "FETCH" && (
+                  <ModalCodeBlock
+                    description="FETCH"
+                    descriptionColor="orange"
+                    code={code}
+                    mode="FETCH"
                     ref={codeRef}
                     onClickBack={initializeMode}
                     onClickCopy={copyToClipboard}
