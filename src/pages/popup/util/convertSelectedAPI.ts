@@ -1,11 +1,11 @@
-import { API_ITEM } from "@src/pages/popup/Popup";
+import { API } from "@src/pages/content/modules/getAPIList";
 import { SwaggerDocs } from "@src/pages/popup/api/docs";
 import { RequestProps } from "@src/pages/popup/ui/Request";
 import { Method } from "axios";
 
 const convertSelectedAPI = (
   data: SwaggerDocs,
-  api: API_ITEM
+  api: API
 ): Omit<RequestProps, "host"> => {
   if (!data) return null;
 

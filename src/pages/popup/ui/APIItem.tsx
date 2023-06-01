@@ -1,10 +1,10 @@
 import { vars } from "@src/common/ui/styles/theme.css";
 import { popupStyle } from "../styles/popup.css";
-import type { API_ITEM } from "../Popup";
+import { API } from "@src/pages/content/modules/getAPIList";
 
 interface APIItemProps {
-  api: API_ITEM;
-  onClick: (api: API_ITEM) => void;
+  api: API;
+  onClick: (api: API) => void;
 }
 
 const APIItem = ({ api, onClick }: APIItemProps) => {
