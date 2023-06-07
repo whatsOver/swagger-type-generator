@@ -32,7 +32,11 @@ const Body = ({ body, handleChange }: BodyProps) => {
             name={property}
             required={body.required?.includes(property)}
             onChange={handleChange}
-            defaultValue={body.properties[property].example ?? ""}
+            defaultValue={
+              body.properties[property].example
+                ? body.properties[property].example
+                : body.properties[property].default ?? ""
+            }
             onFocus={(e) => e.target.select()}
           />
         </div>
