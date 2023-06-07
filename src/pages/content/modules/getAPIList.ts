@@ -83,8 +83,10 @@ export interface API {
 
   const extractDocsHref = async (): Promise<Path> => {
     const info = document.querySelector(".info");
-    const href = info.querySelector("a").getAttribute("href");
-    return { href, host: window.location.origin };
+    const href = info.querySelector("a")?.getAttribute("href");
+    return { href: href ?? "", host: window.location.origin };
+  };
+
   const extractScript = async (): Promise<string> => {
     const scripts = Array.from(document.scripts);
     const swaggerScript = scripts.find((script) =>
