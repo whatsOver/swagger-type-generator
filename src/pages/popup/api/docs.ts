@@ -76,8 +76,33 @@ const getSwaggerDocs = async ({ host, href }: Path): Promise<SwaggerDocs> => {
   return data;
 };
 
+const getSwaggerDocsFromPage = async (): Promise<SwaggerDocs> => {
+  return new Promise((resolve) => {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      chrome.tabs.sendMessage(
+        tabs[0].id,
+        { message: "GET_SWAGGER_DOCS" },
+        (response) => {
+          if (chrome.runtime.lastError) {
+            console.log(chrome.runtime.lastError);
+            setTimeout(() => getSwaggerDocsFromPage(), 1000);
+          } else {
+            resolve(response.data);
+          }
+        }
+      );
+    });
+  });
+};
+
 const useGETDocs = ({ host, href }: Path) => {
-  console.log("useGETDocs", href, host);
+  if (!href) {
+    return useQuery(
+      ["getDocs", href],
+      async () => await getSwaggerDocsFromPage()
+    );
+  }
+
   return useQuery(
     ["getDocs", href],
     async () => await getSwaggerDocs({ host, href }),

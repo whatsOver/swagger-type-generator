@@ -68,14 +68,40 @@ export interface API {
     const info = document.querySelector(".info");
     const href = info.querySelector("a").getAttribute("href");
     return { href, host: window.location.origin };
+  const extractScript = async (): Promise<string> => {
+    const scripts = Array.from(document.scripts);
+    const swaggerScript = scripts.find((script) =>
+      script.src.includes("swagger-ui-init.js")
+    );
+
+    if (!swaggerScript) return "";
+    return await fetch(swaggerScript.src)
+      .then((response) => response.text())
+      .then((scriptContent) => {
+        const optionsRegex =
+          /let options = ({.*?});\s*url = options.swaggerUrl/gms;
+        const match = optionsRegex.exec(scriptContent);
+
+        if (match && match[1]) {
+          const options = JSON.parse(match[1]);
+          return options.swaggerDoc;
+        } else {
+          return "";
+        }
+      });
   };
 
   window.addEventListener("message", async (event) => {
     if (event.source === window && event.data.type === "GET_API_LIST") {
       const prList = await extractTagsAndEndpoints();
       const path = await extractDocsHref();
+      const nestScript = await extractScript();
+
       window.postMessage(
-        { type: "GET_API_LIST_RESULT", data: { prList, path } },
+        {
+          type: "GET_API_LIST_RESULT",
+          data: { prList, path, script: nestScript },
+        } as POST_API_LIST,
         window.location.origin
       );
     }
