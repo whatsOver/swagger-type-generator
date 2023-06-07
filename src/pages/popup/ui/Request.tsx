@@ -50,12 +50,19 @@ const Request = () => {
       if (param.example && param.required) {
         initialValues[param.name] = param.example;
       }
-    });
-    body?.required?.forEach((key) => {
-      if (body.properties[key]?.example) {
-        initialValues[key] = body.properties[key].example;
+      if (param.schema.default) {
+        initialValues[param.name] = param.schema.default;
       }
     });
+    body?.properties &&
+      Object.keys(body.properties).forEach((key) => {
+        if (body.properties[key].example) {
+          initialValues[key] = body.properties[key].example;
+        }
+        if (body.properties[key].default) {
+          initialValues[key] = body.properties[key].default;
+        }
+      });
     setFormValues(initialValues);
   }, [params, body, setFormValues]);
 
