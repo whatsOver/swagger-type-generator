@@ -9,6 +9,7 @@ export interface Parameters {
   example?: string | number;
   required: boolean;
   schema: {
+    default?: string | number;
     type: string;
     format?: string;
   };
@@ -17,7 +18,7 @@ export interface Parameters {
 interface RequestBody {
   content: {
     "application/json": {
-      schema: RefSchema | RefArraySchema;
+      schema: RefSchema | RefArraySchema | DefaultComplexSchema;
     };
   };
 }
@@ -29,6 +30,15 @@ type RefSchema = {
 type RefArraySchema = {
   type: "array";
   items: RefSchema;
+};
+
+export type DefaultComplexSchema = {
+  title: string;
+  default: {
+    [key: string]: Array<{
+      [key: string]: string | number;
+    }>;
+  };
 };
 
 export interface Information {
@@ -49,6 +59,7 @@ export interface Schemas {
       format?: string;
       description?: string;
       example?: string | number;
+      default?: string | number;
     };
   };
 }

@@ -1,5 +1,9 @@
 import { API } from "@src/pages/content/modules/getAPIList";
-import { SwaggerDocs } from "@src/pages/popup/api/docs";
+import {
+  DefaultComplexSchema,
+  Schemas,
+  SwaggerDocs,
+} from "@src/pages/popup/api/docs";
 import { RequestProps } from "@src/pages/popup/ui/Request";
 import { Method } from "axios";
 
@@ -15,20 +19,25 @@ const convertSelectedAPI = (
   const parameters =
     data.paths[path][method.toLowerCase() as Method].parameters;
 
-  console.log(data.paths[api.path][method.toLowerCase() as Method].requestBody);
-
   let schemaName = "";
   const requestBody =
     data.paths[api.path][method.toLowerCase() as Method].requestBody;
+  let body = null;
   if (requestBody) {
     const schema = requestBody.content["application/json"].schema;
     if ("$ref" in schema) {
       schemaName = schema.$ref.split("/")[3];
-    } else if (schema.type === "array") {
+      body = data.components.schemas[schemaName];
+    }
+    if ("type" in schema && schema.type === "array") {
       schemaName = schema.items.$ref.split("/")[3];
+      body = data.components.schemas[schemaName];
+    }
+    if ("default" in schema) {
+      console.log(schema);
+      body = transformDefaultComplexSchema(schema);
     }
   }
-  const body = data.components.schemas[schemaName];
 
   return {
     method,
@@ -40,3 +49,16 @@ const convertSelectedAPI = (
 };
 
 export { convertSelectedAPI };
+
+function transformDefaultComplexSchema(schema: DefaultComplexSchema): Schemas {
+  const required = Object.keys(schema.default);
+  const properties: { [key: string]: any } = {};
+
+  required.forEach((key) => {
+    const value = schema.default[key];
+    const type = Array.isArray(value) ? "array" : typeof value;
+    properties[key] = { type, default: value };
+  });
+
+  return { type: "object", required, properties };
+}
