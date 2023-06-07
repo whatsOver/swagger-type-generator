@@ -1,5 +1,22 @@
 import { Method } from "axios";
 
+declare global {
+  interface Window {
+    swaggerOptions: {
+      swaggerDoc: string;
+    };
+  }
+}
+
+export type POST_API_LIST = {
+  type: "GET_API_LIST_RESULT";
+  data: {
+    prList: APIList;
+    path: Path;
+    script: string;
+  };
+};
+
 export type GET_API_LIST_RESULT = {
   type: "GET_API_LIST_RESULT";
   prList: APIList;
