@@ -30,5 +30,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     })();
     return true;
   }
+  if (request.message === "GET_SWAGGER_DOCS") {
+    (async () => {
+      const result = await getAPIListFromPage();
+      sendResponse({ code: 200, data: result.script });
+      return true;
+    })();
+    return true;
+  }
   return true;
 });
