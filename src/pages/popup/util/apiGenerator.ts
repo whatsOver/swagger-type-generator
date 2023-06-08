@@ -9,7 +9,12 @@ const generateInterface = (params: Parameters[]): string => {
 
   const interfaceName = "RequestInterface";
 
-  return `interface ${interfaceName} {\n${interfaceItems}\n}`;
+  // token이 필요한 경우에만 token interface를 추가
+  const tokenLine = interfaceItems
+    ? `\n  token?: string;\n`
+    : `  token?: string;\n`;
+
+  return `interface ${interfaceName} {\n${interfaceItems}${tokenLine}}`;
 };
 
 interface GenerateAPICodeProps {
@@ -31,16 +36,18 @@ const generateAxiosAPICode = ({
   const { method, host, path, params, body } = api;
 
   const args = getParams(params);
+  const parameters = args.length > 0 ? `${args}, token` : "token";
 
   const axiosData = JSON.stringify(body ? getBody(body, formValues) : {});
 
   const apiFunction = `
-const ${method.toLowerCase()}API = async ({ ${args} }: ${interfaceName}) => {
+const ${method.toLowerCase()}API = async ({ ${parameters} }: ${interfaceName}) => {
   const { data } = await axios({
     method: "${method}",
     url: "${host}${path}",
     params: { ${args} },
     data: ${axiosData},
+    headers: token ? { 'Authorization': \`Bearer \${token}\` } : {}
   });
   return data;
 };`;
@@ -64,11 +71,11 @@ const generateFetchAPICode = ({
     .filter((param) => param.in === "path" || param.in === "query")
     .map((param) => param.name)
     .join(", ");
+  const parameters = args.length > 0 ? `${args}, token` : "token";
 
   const queryParams = params.filter((param) => param.in === "query");
   const pathParams = params.filter((param) => param.in === "path");
 
-  // Generate the string for path parameters dynamically
   const dynamicPath = pathParams.reduce(
     (accPath, param) => accPath.replace(`{${param.name}}`, `\${${param.name}}`),
     path
@@ -81,14 +88,17 @@ const generateFetchAPICode = ({
   const fetchBody = JSON.stringify(body ? getBody(body, formValues) : {});
 
   const apiFunction = `
-const ${method.toLowerCase()}API = async ({ ${args} }: ${interfaceName}) => {
-  const query = ${fetchParams};
-  const response = await fetch(\`${host}${dynamicPath}\` + query, {
+const ${method.toLowerCase()}API = async ({ ${parameters} }: ${interfaceName}) => {
+  ${queryParams.length ? `const query = ${fetchParams};` : ""}
+  const headers = token ? { 'Authorization': \`Bearer \${token}\`, 'Content-Type': 'application/json' } : { 'Content-Type': 'application/json' };
+  const response = await fetch(\`${host}${dynamicPath}\` + ${
+    queryParams.length ? "query" : '""'
+  }, {
     method: "${method}",
     ${
       method.toLowerCase() !== "get"
-        ? `body: ${fetchBody}, headers: { 'Content-Type': 'application/json' }`
-        : ""
+        ? `body: ${fetchBody}, headers: headers`
+        : `headers: headers`
     }
   });
   return response.json();
