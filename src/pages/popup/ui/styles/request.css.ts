@@ -95,6 +95,9 @@ export const requestStyle = {
   label: style({
     width: "100px",
     textAlign: "left",
+    overflow: "hidden",
+    wordBreak: "break-all",
+    lineClamp: 2,
   }),
 
   fixedButtonWrapper: style({
