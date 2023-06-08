@@ -20,6 +20,10 @@ import { useContext } from "react";
 import { cloneElement } from "react";
 import classNames from "classnames";
 import ModalCodeBlock from "@src/pages/popup/ui/ModalCodeBlock";
+import {
+  AuthModalContent,
+  AuthModalProps,
+} from "@src/pages/popup/ui/AuthModal";
 
 const ModalContext = createContext<{
   modalOpen: boolean;
@@ -144,6 +148,18 @@ const Content = ({ children, onClose }: ContentProps) => {
           ) {
             return cloneElement(child, { onClose: handleCloseModal });
           }
+          if (
+            isValidElement<AuthModalProps>(child) &&
+            child.type === AuthModalContent
+          ) {
+            return cloneElement(child, {
+              onClose: () => {
+                child.props.onClose();
+                handleCloseModal();
+              },
+            });
+          }
+
           return child;
         })}
       </section>
