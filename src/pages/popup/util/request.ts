@@ -1,4 +1,4 @@
-import { filter, map, pipe, reduce } from "@fxts/core";
+import { filter, map, pipe, reduce, toArray } from "@fxts/core";
 import { Parameters, Schemas } from "../api/docs";
 
 type FormValues = {
@@ -11,6 +11,15 @@ const getQueryParams = (params: Parameters[], formValues: FormValues) =>
     filter((param) => formValues[param.name]),
     map((param) => ({ [param.name]: formValues[param.name] })),
     reduce(Object.assign)
+  );
+
+const getParams = (params: Parameters[]) =>
+  pipe(
+    params,
+    filter((param) => param.in !== "body"),
+    map((param) => param.name),
+    toArray,
+    (params) => params.join(", ")
   );
 
 const replacePathParams = (path: string, formValues: FormValues) =>
@@ -28,4 +37,4 @@ const getBody = (body: Schemas, formValues: FormValues) =>
     reduce(Object.assign)
   );
 
-export { getQueryParams, replacePathParams, getBody };
+export { getQueryParams, getParams, replacePathParams, getBody };
