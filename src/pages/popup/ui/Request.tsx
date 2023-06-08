@@ -21,6 +21,7 @@ import {
 } from "../util/apiGenerator";
 import useForm from "../hooks/useForm";
 import "react-toastify/dist/ReactToastify.css";
+import useAuthStore from "../store/auth";
 
 export interface RequestProps {
   method: Method;
@@ -37,6 +38,8 @@ const Request = () => {
   // FIRST RENDER
   const { method, params, path, body, host, description } = useLocation()
     .state as RequestProps;
+
+  const token = useAuthStore((state) => state.token);
 
   // INTERACTION
   // 1. 유저 > params, body 입력
@@ -77,11 +80,13 @@ const Request = () => {
         : acc;
     }, path);
     try {
+      const headers = token.length ? { Authorization: `Bearer ${token}` } : {};
       const response = await axios({
         method,
         url: host + transformPath,
         params: getQueryParams(params, formValues) ?? {},
         data: body ? getBody(body, formValues) : {},
+        headers,
       });
       setResponse(response.data);
     } catch (error) {
