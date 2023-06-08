@@ -39,7 +39,7 @@ describe("API 코드 생성", () => {
   };
 
   it("주어진 Param에 대해서 올바른 interface 타입을 생성한다", () => {
-    const expectedInterface = `interface RequestInterface {\n  param1: string;\n  param2: number;\n}`;
+    const expectedInterface = `interface RequestInterface {\n  param1: string;\n  param2: number;\n  token?: string;\n}`;
     const result = generateInterface(sampleParams);
 
     expect(result).toBe(expectedInterface);
@@ -55,7 +55,7 @@ describe("API 코드 생성", () => {
     expect(result).toContain(
       `const ${sampleAPI.method.toLowerCase()}API = async ({ ${sampleParams
         .map((param) => param.name)
-        .join(", ")} }: RequestInterface) => {`
+        .join(", ")}, token }: RequestInterface) => {`
     );
     expect(result).toContain(`method: "${sampleAPI.method}",`);
     expect(result).toContain(`url: "${sampleAPI.host}${sampleAPI.path}",`);
@@ -79,11 +79,15 @@ describe("API 코드 생성", () => {
       formValues: sampleFormValues,
     });
 
+    const queryParams = sampleParams.filter(
+      (param) => param.in === "query" || param.in === "path"
+    );
+    const args = queryParams.map((param) => param.name).join(", ");
+    const parameters = args.length > 0 ? `${args}, token` : "token";
+
     // 결과값의 패턴이 맞는지 확인
     expect(result).toContain(
-      `const ${sampleAPI.method.toLowerCase()}API = async ({ ${sampleParams
-        .map((param) => param.name)
-        .join(", ")} }: RequestInterface) => {`
+      `const ${sampleAPI.method.toLowerCase()}API = async ({ ${parameters} }: RequestInterface) => {`
     );
     expect(result).toContain(`method: "${sampleAPI.method}",`);
     expect(result).toContain(
