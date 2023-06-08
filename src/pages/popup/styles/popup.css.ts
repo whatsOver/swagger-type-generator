@@ -47,6 +47,7 @@ export const popupStyle = {
     justifyItems: "flex-end",
     justifyContent: "flex-end",
     padding: "10px 20px",
+    columnGap: "20px",
   }),
 
   tag: style({
