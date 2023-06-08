@@ -153,8 +153,10 @@ const Request = () => {
       <div className={popupStyle.app}>
         <form className={requestStyle.body} onSubmit={handleSubmit}>
           <h2 className={requestStyle.mainDescription}>{description}</h2>
-          {params && <Params params={params} handleChange={handleChange} />}
-          {body && <Body body={body} handleChange={handleChange} />}
+          <div className={requestStyle.requestBlock}>
+            {params && <Params params={params} handleChange={handleChange} />}
+            {body && <Body body={body} handleChange={handleChange} />}
+          </div>
           <div className={requestStyle.fixedButtonWrapper}>
             <Modal>
               <Modal.Trigger

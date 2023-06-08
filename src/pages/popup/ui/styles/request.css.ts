@@ -4,13 +4,19 @@ import { style } from "@vanilla-extract/css";
 export const requestStyle = {
   body: style({
     marginTop: "50px",
-    width: "385px",
+    width: "425px",
     backgroundColor: vars.color.darkGrey,
     color: vars.color.white,
     borderRadius: "10px",
-    padding: "20px",
     display: "flex",
     flexDirection: "column",
+  }),
+
+  requestBlock: style({
+    overflowY: "auto",
+    maxHeight: "350px",
+    paddingRight: "0",
+    padding: "20px",
     selectors: {
       "&::-webkit-scrollbar": {
         width: "10px",
@@ -58,6 +64,7 @@ export const requestStyle = {
     display: "flex",
     alignItems: "left",
     color: vars.color.white,
+    marginLeft: "20px",
   }),
 
   description: style({
@@ -105,7 +112,6 @@ export const requestStyle = {
     bottom: "20px",
     width: "85%",
     display: "flex",
-    marginLeft: "-20px",
     marginTop: "10px",
   }),
 
