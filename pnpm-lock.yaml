@@ -44,6 +44,7 @@ specifiers:
   vite: 4.3.5
   webpack: ^5.0.0
   ws: 8.13.0
+  zustand: ^4.3.8
 
 dependencies:
   '@fxts/core': 0.15.1
@@ -57,6 +58,7 @@ dependencies:
   react-icons: 4.8.0_react@18.2.0
   react-router-dom: 6.11.2_biqbaboplfbrettd7655fr4n2y
   react-toastify: 9.1.3_biqbaboplfbrettd7655fr4n2y
+  zustand: 4.3.8_react@18.2.0
 
 devDependencies:
   '@rollup/plugin-typescript': 11.1.1_sbfqscxoci6vmyg6dypa57mo3u
@@ -5837,3 +5839,19 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
+
+  /zustand/4.3.8_react@18.2.0:
+    resolution: {integrity: sha512-4h28KCkHg5ii/wcFFJ5Fp+k1J3gJoasaIbppdgZFO4BPJnsNxL0mQXBSFgOgAdCdBj35aDTPvdAJReTMntFPGg==}
+    engines: {node: '>=12.7.0'}
+    peerDependencies:
+      immer: '>=9.0'
+      react: '>=16.8'
+    peerDependenciesMeta:
+      immer:
+        optional: true
+      react:
+        optional: true
+    dependencies:
+      react: 18.2.0
+      use-sync-external-store: 1.2.0_react@18.2.0
+    dev: false
