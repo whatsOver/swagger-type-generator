@@ -1,5 +1,5 @@
 import { Parameters, Schemas } from "../api/docs";
-import { getBody, getQueryParams } from "./request";
+import { getBody, getParams, getQueryParams } from "./request";
 
 const generateInterface = (params: Parameters[]): string => {
   const interfaceItems = params
@@ -30,12 +30,7 @@ const generateAxiosAPICode = ({
   const interfaceName = "RequestInterface";
   const { method, host, path, params, body } = api;
 
-  const args = params
-    .filter((param) => param.in !== "body")
-    .map((param) => param.name)
-    .join(", ");
-
-  const axiosParams = getQueryParams(params, formValues);
+  const args = getParams(params);
 
   const axiosData = JSON.stringify(body ? getBody(body, formValues) : {});
 
@@ -44,7 +39,7 @@ const ${method.toLowerCase()}API = async ({ ${args} }: ${interfaceName}) => {
   const { data } = await axios({
     method: "${method}",
     url: "${host}${path}",
-    params: ${JSON.stringify(axiosParams)},
+    params: { ${args} },
     data: ${axiosData},
   });
   return data;
