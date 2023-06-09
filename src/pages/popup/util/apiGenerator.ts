@@ -59,10 +59,15 @@ const ${method.toLowerCase()}API = async ({ ${parameters} }: ${interfaceName}) =
   return apiFunction;
 };
 
-const objectToQueryString = (obj: { [key: string]: string }): string =>
-  Object.keys(obj)
+const objectToQueryString = (
+  obj: { [key: string]: string } | null | undefined
+): string => {
+  if (!obj) return "";
+
+  return Object.keys(obj)
     .map((key) => `${key}=` + `{${key}}`)
     .join("&");
+};
 
 const generateFetchAPICode = ({
   api,
