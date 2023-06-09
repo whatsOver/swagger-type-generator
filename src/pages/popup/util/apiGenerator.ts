@@ -72,6 +72,7 @@ const objectToQueryString = (
 const generateFetchAPICode = ({
   api,
   formValues,
+  rootInterfaceKey,
 }: GenerateAPICodeProps): string => {
   const interfaceName = "RequestInterface";
   const { method, host, path, params, body } = api;
@@ -97,7 +98,7 @@ const generateFetchAPICode = ({
   const fetchBody = JSON.stringify(body ? getBody(body, formValues) : {});
 
   const apiFunction = `
-const ${method.toLowerCase()}API = async ({ ${parameters} }: ${interfaceName}) => {
+const ${method.toLowerCase()}API = async ({ ${parameters} }: ${interfaceName}): Promise<${rootInterfaceKey}> => {
   ${queryParams.length ? `const query = ${fetchParams};` : ""}
   const headers = token ? { 'Authorization': \`Bearer \${token}\`, 'Content-Type': 'application/json' } : { 'Content-Type': 'application/json' };
   const response = await fetch(\`${host}${dynamicPath}\` + ${
@@ -110,7 +111,12 @@ const ${method.toLowerCase()}API = async ({ ${parameters} }: ${interfaceName}) =
         : `headers: headers`
     }
   });
-  return response.json();
+  
+  if (!response.ok) {
+    throw new Error(\`HTTP error! status: \${response.status}\`);
+  }
+
+  return response.json() as Promise<${rootInterfaceKey}>;
 };`;
 
   return apiFunction;
