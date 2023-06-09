@@ -26,11 +26,13 @@ interface GenerateAPICodeProps {
     body: Schemas | null;
   };
   formValues: { [key: string]: string };
+  rootInterfaceKey?: string;
 }
 
 const generateAxiosAPICode = ({
   api,
   formValues,
+  rootInterfaceKey,
 }: GenerateAPICodeProps): string => {
   const interfaceName = "RequestInterface";
   const { method, host, path, params, body } = api;
@@ -40,9 +42,11 @@ const generateAxiosAPICode = ({
 
   const axiosData = JSON.stringify(body ? getBody(body, formValues) : {});
 
+  const responseInterface = rootInterfaceKey ? `<${rootInterfaceKey}>` : "";
+
   const apiFunction = `
 const ${method.toLowerCase()}API = async ({ ${parameters} }: ${interfaceName}) => {
-  const { data } = await axios({
+  const { data } = await axios${responseInterface}({
     method: "${method}",
     url: "${host}${path}",
     params: { ${args} },
