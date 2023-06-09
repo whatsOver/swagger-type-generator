@@ -26,11 +26,13 @@ interface GenerateAPICodeProps {
     body: Schemas | null;
   };
   formValues: { [key: string]: string };
+  rootInterfaceKey?: string;
 }
 
 const generateAxiosAPICode = ({
   api,
   formValues,
+  rootInterfaceKey,
 }: GenerateAPICodeProps): string => {
   const interfaceName = "RequestInterface";
   const { method, host, path, params, body } = api;
@@ -40,9 +42,11 @@ const generateAxiosAPICode = ({
 
   const axiosData = JSON.stringify(body ? getBody(body, formValues) : {});
 
+  const responseInterface = rootInterfaceKey ? `<${rootInterfaceKey}>` : "";
+
   const apiFunction = `
 const ${method.toLowerCase()}API = async ({ ${parameters} }: ${interfaceName}) => {
-  const { data } = await axios({
+  const { data } = await axios${responseInterface}({
     method: "${method}",
     url: "${host}${path}",
     params: { ${args} },
@@ -55,14 +59,20 @@ const ${method.toLowerCase()}API = async ({ ${parameters} }: ${interfaceName}) =
   return apiFunction;
 };
 
-const objectToQueryString = (obj: { [key: string]: string }): string =>
-  Object.keys(obj)
+const objectToQueryString = (
+  obj: { [key: string]: string } | null | undefined
+): string => {
+  if (!obj) return "";
+
+  return Object.keys(obj)
     .map((key) => `${key}=` + `{${key}}`)
     .join("&");
+};
 
 const generateFetchAPICode = ({
   api,
   formValues,
+  rootInterfaceKey,
 }: GenerateAPICodeProps): string => {
   const interfaceName = "RequestInterface";
   const { method, host, path, params, body } = api;
@@ -88,7 +98,7 @@ const generateFetchAPICode = ({
   const fetchBody = JSON.stringify(body ? getBody(body, formValues) : {});
 
   const apiFunction = `
-const ${method.toLowerCase()}API = async ({ ${parameters} }: ${interfaceName}) => {
+const ${method.toLowerCase()}API = async ({ ${parameters} }: ${interfaceName}): Promise<${rootInterfaceKey}> => {
   ${queryParams.length ? `const query = ${fetchParams};` : ""}
   const headers = token ? { 'Authorization': \`Bearer \${token}\`, 'Content-Type': 'application/json' } : { 'Content-Type': 'application/json' };
   const response = await fetch(\`${host}${dynamicPath}\` + ${
@@ -101,7 +111,12 @@ const ${method.toLowerCase()}API = async ({ ${parameters} }: ${interfaceName}) =
         : `headers: headers`
     }
   });
-  return response.json();
+  
+  if (!response.ok) {
+    throw new Error(\`HTTP error! status: \${response.status}\`);
+  }
+
+  return response.json() as Promise<${rootInterfaceKey}>;
 };`;
 
   return apiFunction;
