@@ -100,7 +100,7 @@ const Request = () => {
 
   const onClickTS = () => {
     setMode("TS");
-    setCode(jsonToTs("json", response).join("\n"));
+    setCode(jsonToTs("json", response).interfaceArray.join("\n"));
   };
 
   // 4. code 상태 관리
@@ -109,7 +109,8 @@ const Request = () => {
   // 4. 유저 > API 버튼 클릭
   const onClickAxios = () => {
     setMode("AXIOS");
-    setCode(jsonToTs("json", response).join("\n"));
+    const { interfaceArray, rootInterfaceKey } = jsonToTs("json", response);
+    setCode(interfaceArray.join("\n"));
     setCode(
       (prev) =>
         prev +
@@ -119,12 +120,14 @@ const Request = () => {
           generateAxiosAPICode({
             api: { method, path, host, params, body },
             formValues,
+            rootInterfaceKey,
           }))
     );
   };
   const onClickFetch = () => {
     setMode("FETCH");
-    setCode(jsonToTs("json", response).join("\n"));
+    const { interfaceArray, rootInterfaceKey } = jsonToTs("json", response);
+    setCode(interfaceArray.join("\n"));
     setCode(
       (prev) =>
         prev +
@@ -134,6 +137,7 @@ const Request = () => {
           generateFetchAPICode({
             api: { method, path, host, params, body },
             formValues,
+            rootInterfaceKey,
           }))
     );
   };
