@@ -77,6 +77,7 @@ describe("API 코드 생성", () => {
     const result = generateFetchAPICode({
       api: sampleAPI,
       formValues: sampleFormValues,
+      rootInterfaceKey: "RootInterface",
     });
 
     const queryParams = sampleParams.filter(
@@ -87,7 +88,7 @@ describe("API 코드 생성", () => {
 
     // 결과값의 패턴이 맞는지 확인
     expect(result).toContain(
-      `const ${sampleAPI.method.toLowerCase()}API = async ({ ${parameters} }: RequestInterface) => {`
+      `const ${sampleAPI.method.toLowerCase()}API = async ({ ${parameters} }: RequestInterface): Promise<RootInterface> => {`
     );
     expect(result).toContain(`method: "${sampleAPI.method}",`);
     expect(result).toContain(
