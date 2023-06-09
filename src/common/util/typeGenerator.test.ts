@@ -55,7 +55,7 @@ describe("jsonToTs", () => {
       "  isUserLike: boolean;\n" +
       "}";
 
-    expect(jsonToTs("json", json).join("\n")).toEqual(expected);
+    expect(jsonToTs("json", json).interfaceArray.join("\n")).toEqual(expected);
   });
   it("배열 형태의 JSON에 대해 적절한 TypeScript 인터페이스 문자열을 생성한다", () => {
     const json = [
@@ -78,6 +78,6 @@ describe("jsonToTs", () => {
       "  isUserLike: boolean;\n" +
       "}";
 
-    expect(jsonToTs("json", json).join("\n")).toEqual(expected);
+    expect(jsonToTs("json", json).interfaceArray.join("\n")).toEqual(expected);
   });
 });
