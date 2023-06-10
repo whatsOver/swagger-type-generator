@@ -38,6 +38,7 @@ export const popupStyle = {
 
   header: style({
     width: "500px",
+    height: "100%",
   }),
 
   settingWrapper: style({
