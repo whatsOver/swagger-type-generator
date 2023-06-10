@@ -6,6 +6,7 @@ import useHandlePopup from "./hooks/Popup/useHandlePopup";
 import useHandleAuth from "./hooks/Popup/useHandleAuth";
 import AuthModal from "./ui/AuthModal";
 import ApiList from "./ui/ApiList";
+import BlankApi from "./ui/error/BlankApi";
 
 const Popup = () => {
   const { apiList, filteredAPIList, onClickAPI, setFilteredAPIList } =
@@ -29,7 +30,7 @@ const Popup = () => {
           />
         </div>
         <Search value={search} onChange={onChange} />
-        {!filteredAPIList.tags.length && <BlankApiList />}
+        {!filteredAPIList.tags.length && <BlankApi />}
         {!!filteredAPIList.tags && (
           <ApiList apiList={filteredAPIList} onClickAPI={onClickAPI} />
         )}
