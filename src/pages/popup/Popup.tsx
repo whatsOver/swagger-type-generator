@@ -1,12 +1,11 @@
 import { popupStyle } from "./styles/popup.css";
 import Search from "./ui/Search";
-import APIItem from "./ui/APIItem";
 import useSearch from "./hooks/useSearch";
-import { vars } from "@src/common/ui/styles/theme.css";
 import { IoMdSettings as SettingIcon } from "react-icons/io";
 import useHandlePopup from "./hooks/Popup/useHandlePopup";
 import useHandleAuth from "./hooks/Popup/useHandleAuth";
 import AuthModal from "./ui/AuthModal";
+import ApiList from "./ui/ApiList";
 
 const Popup = () => {
   const { apiList, filteredAPIList, onClickAPI, setFilteredAPIList } =
@@ -30,31 +29,10 @@ const Popup = () => {
           />
         </div>
         <Search value={search} onChange={onChange} />
-        <ul className={popupStyle.apiList}>
-          {filteredAPIList.tags?.map((tag) => (
-            <>
-              <h2
-                style={{
-                  color: filteredAPIList.endpoints[tag]?.length
-                    ? vars.color.white
-                    : vars.color.grey,
-                }}
-                className={popupStyle.tag}
-              >
-                {tag}
-              </h2>
-              <li className={popupStyle.tagBox} key={tag}>
-                {filteredAPIList.endpoints[tag]?.map((api) => (
-                  <APIItem
-                    key={api.path}
-                    api={api}
-                    onClick={() => onClickAPI(api)}
-                  />
-                ))}
-              </li>
-            </>
-          ))}
-        </ul>
+        {!filteredAPIList.tags.length && <BlankApiList />}
+        {!!filteredAPIList.tags && (
+          <ApiList apiList={filteredAPIList} onClickAPI={onClickAPI} />
+        )}
       </header>
     </div>
   );
