@@ -16,21 +16,19 @@ const jsonToTs = (
   parentIsArray = false
 ): { interfaceArray: string[]; rootInterfaceKey: string } => {
   const capitalizedKey = key.charAt(0).toUpperCase() + key.slice(1);
-  const interfaces = [
-    `export interface ${parentIsArray ? capitalizedKey : capitalizedKey} {\n`,
-  ];
-  const rootInterfaceKey = capitalizedKey;
+  let interfaces = [];
+  let rootInterfaceKey = capitalizedKey;
 
   if (Array.isArray(json)) {
     if (typeof json[0] === "object") {
-      interfaces.push(...jsonToTs(`${key}Item`, json[0], true).interfaceArray);
-      interfaces[0] += `  items: ${
-        key.charAt(0).toUpperCase() + key.slice(1)
-      }Item[];\n`;
-    } else {
-      interfaces[0] += `  items: ${toTsType(json[0])}[];\n`;
+      const result = jsonToTs(`${key}Item`, json[0], true);
+      interfaces = result.interfaceArray;
+      rootInterfaceKey = result.rootInterfaceKey;
     }
   } else {
+    interfaces.push(
+      `export interface ${parentIsArray ? capitalizedKey : capitalizedKey} {\n`
+    );
     for (const key in json) {
       if (Array.isArray(json[key]) && typeof json[key][0] === "object") {
         interfaces[0] += `  ${key}: ${
@@ -46,9 +44,8 @@ const jsonToTs = (
         interfaces[0] += `  ${key}: ${toTsType(json[key])};\n`;
       }
     }
+    interfaces[0] += "}";
   }
-
-  interfaces[0] += "}";
 
   return { interfaceArray: interfaces, rootInterfaceKey };
 };
