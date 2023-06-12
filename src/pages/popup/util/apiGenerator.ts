@@ -42,7 +42,11 @@ const generateAxiosAPICode = ({
 
   const axiosData = JSON.stringify(body ? getBody(body, formValues) : {});
 
-  const responseInterface = rootInterfaceKey ? `<${rootInterfaceKey}>` : "";
+  const responseInterface = rootInterfaceKey
+    ? rootInterfaceKey === "Json"
+      ? `<${rootInterfaceKey}>`
+      : `<${rootInterfaceKey}[]>`
+    : "";
 
   const apiFunction = `
 const ${method.toLowerCase()}API = async ({ ${parameters} }: ${interfaceName}) => {
@@ -91,6 +95,12 @@ const generateFetchAPICode = ({
     path
   );
 
+  const responseInterface = rootInterfaceKey
+    ? rootInterfaceKey === "Json"
+      ? `<${rootInterfaceKey}>`
+      : `<${rootInterfaceKey}[]>`
+    : "";
+
   const fetchParams = queryParams.length
     ? `\`?${objectToQueryString(getQueryParams(queryParams, formValues))}\``
     : "";
@@ -98,7 +108,7 @@ const generateFetchAPICode = ({
   const fetchBody = JSON.stringify(body ? getBody(body, formValues) : {});
 
   const apiFunction = `
-const ${method.toLowerCase()}API = async ({ ${parameters} }: ${interfaceName}): Promise<${rootInterfaceKey}> => {
+const ${method.toLowerCase()}API = async ({ ${parameters} }: ${interfaceName}): Promise${responseInterface} => {
   ${queryParams.length ? `const query = ${fetchParams};` : ""}
   const headers = token ? { 'Authorization': \`Bearer \${token}\`, 'Content-Type': 'application/json' } : { 'Content-Type': 'application/json' };
   const response = await fetch(\`${host}${dynamicPath}\` + ${
@@ -116,7 +126,7 @@ const ${method.toLowerCase()}API = async ({ ${parameters} }: ${interfaceName}): 
     throw new Error(\`HTTP error! status: \${response.status}\`);
   }
 
-  return response.json() as Promise<${rootInterfaceKey}>;
+  return response.json() as Promise${responseInterface};
 };`;
 
   return apiFunction;
