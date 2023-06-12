@@ -68,9 +68,6 @@ describe("jsonToTs", () => {
     ];
 
     const expected =
-      "export interface Json {\n" +
-      "  items: JsonItem[];\n" +
-      "}\n" +
       "export interface JsonItem {\n" +
       "  bookmarkId: number;\n" +
       "  title: string;\n" +
