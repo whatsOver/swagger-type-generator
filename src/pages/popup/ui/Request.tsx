@@ -13,7 +13,7 @@ import Body from "./Body";
 import { jsonToTs } from "@src/common/util/typeGenerator";
 import useCopy from "../hooks/useCopy";
 import ModalCodeBlock from "./ModalCodeBlock";
-import { Flip, ToastContainer } from "react-toastify";
+import { Flip, ToastContainer, toast } from "react-toastify";
 import {
   generateAxiosAPICode,
   generateFetchAPICode,
@@ -22,6 +22,7 @@ import {
 import useForm from "../hooks/useForm";
 import "react-toastify/dist/ReactToastify.css";
 import useAuthStore from "../store/auth";
+import { EMPTY_RESPONSE } from "../constants/status";
 
 export interface RequestProps {
   method: Method;
@@ -74,23 +75,33 @@ const Request = () => {
   // 2-1. 유저 > 요청 버튼 클릭 > 요청 보내기
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const transformPath = params.reduce((acc, param) => {
-      return param.in === "path"
-        ? acc.replace(`{${param.name}}`, formValues[param.name])
-        : acc;
-    }, path);
+    const transformPath = params
+      ? params.reduce((acc, param) => {
+          return param.in === "path"
+            ? acc.replace(`{${param.name}}`, formValues[param.name])
+            : acc;
+        }, path)
+      : path;
     try {
       const headers = token.length ? { Authorization: `Bearer ${token}` } : {};
       const response = await axios({
         method,
         url: host + transformPath,
-        params: getQueryParams(params, formValues) ?? {},
+        params: params ? getQueryParams(params, formValues) : {},
         data: body ? getBody(body, formValues) : {},
         headers,
       });
+      if (!response.data) {
+        toast.success(`${response.status} ${response.statusText}`);
+        setResponse(EMPTY_RESPONSE);
+        setMode("REQUEST");
+        return;
+      }
+      toast.success(`${response.status} ${response.statusText}`);
       setResponse(response.data);
     } catch (error) {
       setMode("ERROR");
+      toast.error(`${error.response.status} ${error.response.statusText}`);
       setResponse(error.response.data);
     }
   };
@@ -115,11 +126,10 @@ const Request = () => {
       (prev) =>
         prev +
         "\n\n" +
-        (generateInterface(params) +
+        (generateInterface(params, body, method) +
           "\n" +
           generateAxiosAPICode({
             api: { method, path, host, params, body },
-            formValues,
             rootInterfaceKey,
           }))
     );
@@ -132,11 +142,10 @@ const Request = () => {
       (prev) =>
         prev +
         "\n\n" +
-        (generateInterface(params) +
+        (generateInterface(params, body, method) +
           "\n" +
           generateFetchAPICode({
             api: { method, path, host, params, body },
-            formValues,
             rootInterfaceKey,
           }))
     );
@@ -176,7 +185,7 @@ const Request = () => {
                   </Button>
                 }
               />
-              <Modal.Content onClose={onCloseModal}>
+              <Modal.Content>
                 {response && mode === "REQUEST" && (
                   <ModalCodeBlock
                     description="Response"
