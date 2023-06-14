@@ -4,6 +4,7 @@ import {
   replacePathParams,
   getBody,
   getParams,
+  getRequestBodyKey,
 } from "./request";
 
 describe("getQueryParams", () => {
@@ -122,5 +123,30 @@ describe("getBody", () => {
 
     // THEN
     expect(result).toEqual({ name: "장동현", emoji: "😃" });
+  });
+});
+
+describe("getRequestBodyKey", () => {
+  it("입력 값에 대해서 > Body에 필요한 값에 대해서 추출한다", () => {
+    // GIVEN
+    const body: Schemas = {
+      required: ["emoji", "name"],
+      type: "object",
+      properties: {
+        name: {
+          type: "string",
+        },
+        emoji: {
+          type: "string",
+        },
+      },
+    };
+
+    // WHEN
+    const result = getRequestBodyKey(body);
+    console.log(result);
+
+    // THEN
+    expect(result).toEqual("name, emoji");
   });
 });
