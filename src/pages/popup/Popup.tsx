@@ -7,9 +7,11 @@ import useHandleAuth from "./hooks/Popup/useHandleAuth";
 import AuthModal from "./ui/AuthModal";
 import ApiList from "./ui/ApiList";
 import BlankApi from "./ui/error/BlankApi";
+import Loading from "./ui/loading/Loading";
+import { HashLoader } from "react-spinners";
 
 const Popup = () => {
-  const { apiList, filteredAPIList, onClickAPI, setFilteredAPIList } =
+  const { loading, apiList, filteredAPIList, onClickAPI, setFilteredAPIList } =
     useHandlePopup();
 
   const { search, onChange } = useSearch({ apiList, setFilteredAPIList });
@@ -20,9 +22,10 @@ const Popup = () => {
     <div id="main" className={popupStyle.app}>
       <header className={popupStyle.header}>
         <div className={popupStyle.settingWrapper}>
-          <button>
+          <HashLoader color="#36d7b7" size={24} />
+          {/* <button>
             <SettingIcon size={24} color="white" />
-          </button>
+          </button> */}
           <AuthModal
             authorized={authorized}
             onChange={onChangeAuth}
@@ -30,8 +33,9 @@ const Popup = () => {
           />
         </div>
         <Search value={search} onChange={onChange} />
-        {!filteredAPIList.tags.length && <BlankApi />}
-        {!!filteredAPIList.tags && (
+        {!!loading && <Loading />}
+        {!loading && !filteredAPIList.tags.length && <BlankApi />}
+        {!loading && !!filteredAPIList.tags.length && (
           <ApiList apiList={filteredAPIList} onClickAPI={onClickAPI} />
         )}
       </header>

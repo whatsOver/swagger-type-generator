@@ -5,7 +5,7 @@ import {
 } from "@src/pages/content/modules/getAPIList";
 import { SetStateAction } from "react";
 import { Dispatch } from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface GetAPIListProps {
   setAPIList: Dispatch<SetStateAction<APIList>>;
@@ -13,6 +13,7 @@ interface GetAPIListProps {
 }
 
 const useGetAPIList = ({ setAPIList, setPathInfo }: GetAPIListProps) => {
+  const [loading, setLoading] = useState(true);
   const checkIfReceiverIsReady = (
     tabId: number,
     callback: (isReady: boolean) => void
@@ -20,6 +21,7 @@ const useGetAPIList = ({ setAPIList, setPathInfo }: GetAPIListProps) => {
     chrome.tabs.sendMessage(tabId, { message: "READY" }, (response) => {
       if (chrome.runtime.lastError) {
         setTimeout(() => checkIfReceiverIsReady(tabId, callback), 1000);
+        setLoading(false);
       } else {
         callback(response.data);
       }
@@ -45,6 +47,7 @@ const useGetAPIList = ({ setAPIList, setPathInfo }: GetAPIListProps) => {
   };
 
   useEffect(() => {
+    setLoading(true);
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       checkIfReceiverIsReady(tabs[0].id, (isReady) => {
         if (isReady) {
@@ -52,6 +55,7 @@ const useGetAPIList = ({ setAPIList, setPathInfo }: GetAPIListProps) => {
             setAPIList(data.prList);
             setPathInfo(data.path);
           });
+          setLoading(false);
         } else {
           console.error("Error: Receiving end does not exist");
         }
@@ -72,6 +76,8 @@ const useGetAPIList = ({ setAPIList, setPathInfo }: GetAPIListProps) => {
       });
     });
   }, []);
+
+  return { loading };
 };
 
 export default useGetAPIList;
