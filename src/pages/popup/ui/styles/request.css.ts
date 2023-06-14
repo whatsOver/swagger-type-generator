@@ -77,6 +77,7 @@ export const requestStyle = {
   buttonWrapper: style({
     display: "flex",
     columnGap: "10px",
+    alignItems: "center",
   }),
 
   type: style({
