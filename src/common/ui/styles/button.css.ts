@@ -10,7 +10,6 @@ export const buttonStyles = style({
   whiteSpace: "nowrap",
   userSelect: "none",
   width: "100%",
-  minHeight: "40px",
   height: "40px",
   fontSize: "13px",
   WebkitFontSmoothing: "antialiased",
@@ -33,6 +32,9 @@ export const buttonStyles = style({
 
 export const blueButtonStyles = style({
   width: "40px",
+  height: "30px",
+  fontSize: "11px",
+  fontWeight: "bold",
   backgroundColor: vars.color.blue,
   selectors: {
     "&:active": {
@@ -43,6 +45,9 @@ export const blueButtonStyles = style({
 
 export const greenButtonStyles = style({
   width: "40px",
+  height: "30px",
+  fontSize: "11px",
+  fontWeight: "bold",
   backgroundColor: vars.color.green,
   selectors: {
     "&:active": {
@@ -53,6 +58,9 @@ export const greenButtonStyles = style({
 
 export const redButtonStyles = style({
   width: "40px",
+  height: "30px",
+  fontSize: "11px",
+  fontWeight: "bold",
   backgroundColor: vars.color.red,
   selectors: {
     "&:active": {
@@ -63,6 +71,9 @@ export const redButtonStyles = style({
 
 export const orangeButtonStyles = style({
   width: "40px",
+  height: "30px",
+  fontSize: "11px",
+  fontWeight: "bold",
   backgroundColor: vars.color.orange,
   selectors: {
     "&:active": {
