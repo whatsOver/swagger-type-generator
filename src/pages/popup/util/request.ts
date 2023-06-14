@@ -37,4 +37,15 @@ const getBody = (body: Schemas, formValues: FormValues) =>
     reduce(Object.assign)
   );
 
-export { getQueryParams, getParams, replacePathParams, getBody };
+const getRequestBodyKey = (body: Schemas) =>
+  pipe(Object.keys(body.properties), toArray, (properties) =>
+    properties.join(", ")
+  );
+
+export {
+  getQueryParams,
+  getParams,
+  replacePathParams,
+  getBody,
+  getRequestBodyKey,
+};
