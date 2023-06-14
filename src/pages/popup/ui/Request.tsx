@@ -23,6 +23,7 @@ import useForm from "../hooks/useForm";
 import "react-toastify/dist/ReactToastify.css";
 import useAuthStore from "../store/auth";
 import { EMPTY_RESPONSE } from "../constants/status";
+import HashLoader from "react-spinners/HashLoader";
 
 export interface RequestProps {
   method: Method;
@@ -33,7 +34,7 @@ export interface RequestProps {
   body?: Schemas;
 }
 
-export type Mode = "REQUEST" | "TS" | "ERROR" | "AXIOS" | "FETCH";
+export type Mode = "REQUEST" | "TS" | "ERROR" | "AXIOS" | "FETCH" | "LOADING";
 
 const Request = () => {
   // FIRST RENDER
@@ -72,8 +73,10 @@ const Request = () => {
 
   // 2. 유저 > 요청 버튼 클릭
   const [response, setResponse] = useState(null);
+
   // 2-1. 유저 > 요청 버튼 클릭 > 요청 보내기
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    setMode("LOADING");
     e.preventDefault();
     const transformPath = params
       ? params.reduce((acc, param) => {
@@ -94,11 +97,11 @@ const Request = () => {
       if (!response.data) {
         toast.success(`${response.status} ${response.statusText}`);
         setResponse(EMPTY_RESPONSE);
-        setMode("REQUEST");
         return;
       }
       toast.success(`${response.status} ${response.statusText}`);
       setResponse(response.data);
+      setMode("REQUEST");
     } catch (error) {
       setMode("ERROR");
       toast.error(`${error.response.status} ${error.response.statusText}`);
@@ -186,6 +189,7 @@ const Request = () => {
                 }
               />
               <Modal.Content>
+                {mode === "LOADING" && <HashLoader color="#36d7b7" />}
                 {response && mode === "REQUEST" && (
                   <ModalCodeBlock
                     description="Response"
