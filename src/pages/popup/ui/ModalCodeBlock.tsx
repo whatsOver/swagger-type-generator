@@ -49,6 +49,7 @@ const ModalCodeBlock: ForwardRefRenderFunction<
               mode !== "REQUEST" && onClickBack && onClickBack();
             }}
             className={requestStyle.iconButton}
+            type="button"
           >
             {mode === "REQUEST" && (
               <CloseIcon size={24} color={vars.color.white} />
