@@ -26,7 +26,7 @@ const useHandlePopup = () => {
 
   // SERVER
   // 1. API 리스트를 가져온다 > 사용자 웹 브라우저로부터
-  useGetAPIList({ setAPIList, setPathInfo });
+  const { loading } = useGetAPIList({ setAPIList, setPathInfo });
 
   // 2. 상세 API 리스트를 가져온다 > swagger 문서로부터
   const { data: apiDocsData } = useGETDocs(pathInfo);
@@ -41,6 +41,7 @@ const useHandlePopup = () => {
   };
 
   return {
+    loading,
     apiList,
     filteredAPIList,
     apiDocsData,
