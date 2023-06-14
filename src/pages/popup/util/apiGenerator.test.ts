@@ -1,4 +1,4 @@
-import { Parameters } from "../api/docs";
+import { Parameters, Schemas } from "../api/docs";
 import {
   generateAxiosAPICode,
   generateFetchAPICode,
@@ -33,6 +33,18 @@ describe("API 코드 생성", () => {
     body: null,
   };
 
+  const sampleAPIWithBody = {
+    ...sampleAPI,
+    method: "post",
+    body: {
+      type: "object",
+      properties: {
+        property1: { type: "string", example: "value1" },
+        property2: { type: "number", example: 2 },
+      },
+    },
+  };
+
   const sampleFormValues = {
     param1: "value1",
     param2: "value2",
@@ -48,7 +60,6 @@ describe("API 코드 생성", () => {
   it("올바른 API 코드를 생성한다 axios 기반", () => {
     const result = generateAxiosAPICode({
       api: sampleAPI,
-      formValues: sampleFormValues,
     });
 
     // 결과값의 패턴이 맞는지 확인
@@ -67,24 +78,51 @@ describe("API 코드 생성", () => {
     );
   });
 
-  it("objectToQueryString 함수가 올바르게 동작한다", () => {
-    const result = objectToQueryString(sampleFormValues);
+  it("axios 기반으로 올바른 API 코드를 생성한다 (body가 있는 경우)", () => {
+    const result = generateAxiosAPICode({
+      api: sampleAPIWithBody,
+      rootInterfaceKey: "Json",
+    });
 
-    expect(result).toBe("param1={param1}&param2={param2}");
+    const args = sampleAPIWithBody.params
+      ? getParams(sampleAPIWithBody.params)
+      : "";
+    const bodyArgs = sampleAPIWithBody.body
+      ? `${args.length > 0 ? `${args}, ` : ""}${sampleAPIWithBody.method}Data`
+      : args;
+
+    const parameters = bodyArgs.length > 0 ? `${bodyArgs}, token` : "token";
+
+    // 결과값의 패턴이 맞는지 확인
+    expect(result).toContain(
+      `const ${sampleAPIWithBody.method.toLowerCase()}API = async ({ ${parameters} }: RequestInterface) => {`
+    );
+    expect(result).toContain(`method: "${sampleAPIWithBody.method}",`);
+    expect(result).toContain(`data: ${sampleAPIWithBody.method}Data,`);
+  });
+
+  it("objectToQueryString 함수가 올바르게 동작한다", () => {
+    const sampleParams = "param1, param2";
+    const result = objectToQueryString(sampleParams);
+
+    expect(result).toBe("param1=${param1}&param2=${param2}");
   });
 
   it("올바른 API 코드를 생성한다 fetch 기반", () => {
     const result = generateFetchAPICode({
       api: sampleAPI,
-      formValues: sampleFormValues,
       rootInterfaceKey: "Json",
     });
 
     const queryParams = sampleParams.filter(
       (param) => param.in === "query" || param.in === "path"
     );
-    const args = queryParams.map((param) => param.name).join(", ");
-    const parameters = args.length > 0 ? `${args}, token` : "token";
+    const args = queryParams.map((param) => param.name);
+    const bodyArgs = sampleAPI.body
+      ? args.concat(`${sampleAPI.method}Data`)
+      : args;
+    const parameters =
+      bodyArgs.length > 0 ? `${bodyArgs.join(",")}, token` : "token";
 
     // 결과값의 패턴이 맞는지 확인
     expect(result).toContain(
@@ -92,11 +130,35 @@ describe("API 코드 생성", () => {
     );
     expect(result).toContain(`method: "${sampleAPI.method}",`);
     expect(result).toContain(
-      sampleAPI.method !== "get"
-        ? `body: ${JSON.stringify(
-            sampleAPI.body ? getBody(sampleAPI.body, sampleFormValues) : {}
-          )},`
+      sampleAPI.method.toLowerCase() !== "get" && sampleAPI.body
+        ? `body: JSON.stringify(${sampleAPI.method}Data),`
         : ""
+    );
+  });
+
+  it("fetch 기반으로 올바른 API 코드를 생성한다 (body가 있는 경우)", () => {
+    const result = generateFetchAPICode({
+      api: sampleAPIWithBody,
+      rootInterfaceKey: "Json",
+    });
+
+    const queryParams = sampleParams.filter(
+      (param) => param.in === "query" || param.in === "path"
+    );
+    const args = queryParams.map((param) => param.name);
+    const bodyArgs = sampleAPIWithBody.body
+      ? args.concat(`${sampleAPIWithBody.method}Data`)
+      : args;
+    const parameters =
+      bodyArgs.length > 0 ? `${bodyArgs.join(",")}, token` : "token";
+
+    // 결과값의 패턴이 맞는지 확인
+    expect(result).toContain(
+      `const ${sampleAPIWithBody.method.toLowerCase()}API = async ({ ${parameters} }: RequestInterface): Promise<Json> => {`
+    );
+    expect(result).toContain(`method: "${sampleAPIWithBody.method}",`);
+    expect(result).toContain(
+      `body: JSON.stringify(${sampleAPIWithBody.method}Data),`
     );
   });
 });
