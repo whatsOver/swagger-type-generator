@@ -1,20 +1,40 @@
+import { Method } from "axios";
 import { Parameters, Schemas } from "../api/docs";
-import { getBody, getParams, getQueryParams } from "./request";
+import { getParams } from "./request";
+import { typeConverter } from "./typeConverter";
 
-const generateInterface = (params: Parameters[]): string => {
+const generateInterface = (
+  params: Parameters[],
+  body?: Schemas,
+  method?: Method
+): string => {
   const interfaceItems = params
-    .filter((param) => param.in !== "body")
-    .map((param) => `  ${param.name}: ${param.schema.type};`)
-    .join("\n");
+    ? params
+        .filter((param) => param.in !== "body")
+        .map((param) => `  ${param.name}: ${typeConverter(param.schema.type)};`)
+        .join("\n")
+    : "";
+
+  const postData = body
+    ? Object.keys(body.properties)
+        .map(
+          (key) => `    ${key}: ${typeConverter(body.properties[key].type)};`
+        )
+        .join("\n")
+    : "";
+
+  const postDataInterface = postData
+    ? `  ${method}Data: {\n${postData}\n  };\n`
+    : "";
 
   const interfaceName = "RequestInterface";
 
   // token이 필요한 경우에만 token interface를 추가
-  const tokenLine = interfaceItems
+  const tokenLine = interfaceItems.length
     ? `\n  token?: string;\n`
     : `  token?: string;\n`;
 
-  return `interface ${interfaceName} {\n${interfaceItems}${tokenLine}}`;
+  return `interface ${interfaceName} {\n${interfaceItems}${postDataInterface}${tokenLine}}`;
 };
 
 interface GenerateAPICodeProps {
@@ -25,22 +45,24 @@ interface GenerateAPICodeProps {
     params: Parameters[];
     body: Schemas | null;
   };
-  formValues: { [key: string]: string };
   rootInterfaceKey?: string;
 }
 
 const generateAxiosAPICode = ({
   api,
-  formValues,
   rootInterfaceKey,
 }: GenerateAPICodeProps): string => {
   const interfaceName = "RequestInterface";
   const { method, host, path, params, body } = api;
 
-  const args = getParams(params);
-  const parameters = args.length > 0 ? `${args}, token` : "token";
+  const args = params ? getParams(params) : "";
+  const bodyArgs = body
+    ? `${args.length > 0 ? `${args}, ` : ""}${method}Data`
+    : args;
 
-  const axiosData = JSON.stringify(body ? getBody(body, formValues) : {});
+  const parameters = bodyArgs.length > 0 ? `${bodyArgs}, token` : "token";
+
+  const axiosData = body ? `${method}Data` : "{}";
 
   const responseInterface = rootInterfaceKey
     ? rootInterfaceKey === "Json"
@@ -63,35 +85,35 @@ const ${method.toLowerCase()}API = async ({ ${parameters} }: ${interfaceName}) =
   return apiFunction;
 };
 
-const objectToQueryString = (
-  obj: { [key: string]: string } | null | undefined
-): string => {
-  if (!obj) return "";
+const objectToQueryString = (params: string): string => {
+  if (!params) return "";
 
-  return Object.keys(obj)
-    .map((key) => `${key}=` + `{${key}}`)
+  return params
+    .split(", ")
+    .map((param) => `${param}=\${${param}}`)
     .join("&");
 };
 
 const generateFetchAPICode = ({
   api,
-  formValues,
   rootInterfaceKey,
 }: GenerateAPICodeProps): string => {
   const interfaceName = "RequestInterface";
-  const { method, host, path, params, body } = api;
+  const { method, host, path, params = [], body } = api;
 
-  const args = params
-    .filter((param) => param.in === "path" || param.in === "query")
-    .map((param) => param.name)
-    .join(", ");
-  const parameters = args.length > 0 ? `${args}, token` : "token";
+  const queryParams = params
+    ? params.filter((param) => param.in === "query").map((param) => param.name)
+    : [];
+  const pathParams = params
+    ? params.filter((param) => param.in === "path").map((param) => param.name)
+    : [];
 
-  const queryParams = params.filter((param) => param.in === "query");
-  const pathParams = params.filter((param) => param.in === "path");
+  const args = [...pathParams, ...queryParams];
+  const bodyArgs = body ? args.concat(`${method}Data`) : args;
+  const parameters = bodyArgs.length > 0 ? `${bodyArgs}, token` : "token";
 
   const dynamicPath = pathParams.reduce(
-    (accPath, param) => accPath.replace(`{${param.name}}`, `\${${param.name}}`),
+    (accPath, param) => accPath.replace(`{${param}}`, `\${${param}}`),
     path
   );
 
@@ -102,10 +124,10 @@ const generateFetchAPICode = ({
     : "";
 
   const fetchParams = queryParams.length
-    ? `\`?${objectToQueryString(getQueryParams(queryParams, formValues))}\``
+    ? `\`?${objectToQueryString(queryParams.join(", "))}\``
     : "";
 
-  const fetchBody = JSON.stringify(body ? getBody(body, formValues) : {});
+  const fetchBody = body ? `${method}Data` : "{}";
 
   const apiFunction = `
 const ${method.toLowerCase()}API = async ({ ${parameters} }: ${interfaceName}): Promise${responseInterface} => {
@@ -116,8 +138,8 @@ const ${method.toLowerCase()}API = async ({ ${parameters} }: ${interfaceName}): 
   }, {
     method: "${method}",
     ${
-      method.toLowerCase() !== "get"
-        ? `body: ${fetchBody}, headers: headers`
+      method.toLowerCase() !== "get" && body
+        ? `body: JSON.stringify(${fetchBody}), headers: headers`
         : `headers: headers`
     }
   });
