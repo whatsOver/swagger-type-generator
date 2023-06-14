@@ -1,4 +1,3 @@
-import React from "react";
 import { blankStyle } from "../styles/blank.css";
 import { BiError as ErrorIcon } from "react-icons/bi";
 import { vars } from "@src/common/ui/styles/theme.css";
