@@ -41,6 +41,13 @@ export const requestStyle = {
     width: "30px",
   }),
 
+  flexView: style({
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    columnGap: "10px",
+  }),
+
   modal: style({
     marginTop: "40px",
     backgroundColor: vars.color.darkGrey,
