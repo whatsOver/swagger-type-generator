@@ -3,7 +3,7 @@ import { style } from "@vanilla-extract/css";
 
 export const requestStyle = {
   body: style({
-    marginTop: "50px",
+    marginTop: "20px",
     width: "425px",
     backgroundColor: vars.color.darkGrey,
     color: vars.color.white,
