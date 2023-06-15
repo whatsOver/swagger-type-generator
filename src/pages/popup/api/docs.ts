@@ -95,12 +95,29 @@ const getSwaggerDocsFromPage = async (): Promise<SwaggerDocs> => {
         { message: "GET_SWAGGER_DOCS" },
         (response) => {
           if (chrome.runtime.lastError) {
-            console.log(chrome.runtime.lastError);
-            setTimeout(() => getSwaggerDocsFromPage(), 1000);
+            // console.log(chrome.runtime.lastError);
+            // setTimeout(() => getSwaggerDocsFromPage(), 1000);
           } else {
             resolve(response.data);
           }
         }
+      );
+    });
+    // TODO : 리펙토링 하기
+    chrome.tabs.query({ active: true, currentWindow: false }, (tabs) => {
+      tabs.forEach((tab) =>
+        chrome.tabs.sendMessage(
+          tab.id,
+          { message: "GET_SWAGGER_DOCS" },
+          (response) => {
+            if (chrome.runtime.lastError) {
+              // console.log(chrome.runtime.lastError);
+              // setTimeout(() => getSwaggerDocsFromPage(), 1000);
+            } else {
+              resolve(response.data);
+            }
+          }
+        )
       );
     });
   });
