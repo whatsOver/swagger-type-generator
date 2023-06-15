@@ -24,6 +24,10 @@ const jsonToTs = (
       const result = jsonToTs(`${key}Item`, json[0], true);
       interfaces = result.interfaceArray;
       rootInterfaceKey = result.rootInterfaceKey;
+    } else {
+      interfaces.push(
+        `export type ${capitalizedKey} = ${toTsType(json[0])}[];\n`
+      );
     }
   } else {
     interfaces.push(
