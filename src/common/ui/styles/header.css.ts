@@ -9,7 +9,6 @@ export const headerStyle = {
     width: "100%",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: "0 30px",
     zIndex: 1,
   }),
   left: style({
@@ -19,5 +18,6 @@ export const headerStyle = {
     columnGap: "10px",
     width: "20%",
     cursor: "pointer",
+    marginLeft: "30px",
   }),
 };

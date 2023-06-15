@@ -171,107 +171,105 @@ const Request = () => {
   const initializeMode = useCallback(() => setMode("REQUEST"), []);
 
   return (
-    <>
+    <div className={popupStyle.app}>
       <Header />
-      <div className={popupStyle.app}>
-        <form className={requestStyle.body} onSubmit={handleSubmit}>
-          <h2 className={requestStyle.mainDescription}>{description}</h2>
-          <div className={requestStyle.requestBlock}>
-            {!!params?.length && (
-              <Params params={params} handleChange={handleChange} />
-            )}
-            {!!body?.type.length && (
-              <Body body={body} handleChange={handleChange} />
-            )}
-            {!params?.length && !body?.type.length && (
-              <div className={requestStyle.flexView}>
-                <ErrorIcon size={26} color={vars.color.green} />
-                <span className={requestStyle.description}>
-                  No parameters or body
-                </span>
-              </div>
-            )}
-          </div>
-          <div className={requestStyle.fixedButtonWrapper}>
-            <Modal>
-              <Modal.Trigger
-                as={
-                  // eslint-disable-next-line @typescript-eslint/no-empty-function
-                  <Button onClick={() => {}} type="submit">
-                    SUBMIT
-                  </Button>
-                }
-              />
-              <Modal.Content>
-                {mode === "LOADING" && <HashLoader color="#36d7b7" />}
-                {response && mode === "REQUEST" && (
-                  <ModalCodeBlock
-                    description="Response"
-                    code={JSON.stringify(response, null, 2)}
-                    mode="REQUEST"
-                    ref={codeRef}
-                    onClose={onCloseModal}
-                    onClickCopy={copyToClipboard}
-                    onClickTS={onClickTS}
-                    onClickAxios={onClickAxios}
-                    onClickFetch={onClickFetch}
-                  />
-                )}
-                {mode === "TS" && (
-                  <ModalCodeBlock
-                    description="Type"
-                    code={code}
-                    mode="TS"
-                    ref={codeRef}
-                    onClickBack={initializeMode}
-                    onClickCopy={copyToClipboard}
-                  />
-                )}
-                {mode === "ERROR" && (
-                  <ModalCodeBlock
-                    description="Error"
-                    descriptionColor="red"
-                    code={JSON.stringify(response, null, 2)}
-                    mode="ERROR"
-                    ref={codeRef}
-                    onClickBack={initializeMode}
-                    onClickCopy={copyToClipboard}
-                  />
-                )}
-                {mode === "AXIOS" && (
-                  <ModalCodeBlock
-                    description="AXIOS"
-                    descriptionColor="red"
-                    code={code}
-                    mode="AXIOS"
-                    ref={codeRef}
-                    onClickBack={initializeMode}
-                    onClickCopy={copyToClipboard}
-                  />
-                )}
-                {mode === "FETCH" && (
-                  <ModalCodeBlock
-                    description="FETCH"
-                    descriptionColor="orange"
-                    code={code}
-                    mode="FETCH"
-                    ref={codeRef}
-                    onClickBack={initializeMode}
-                    onClickCopy={copyToClipboard}
-                  />
-                )}
-              </Modal.Content>
-            </Modal>
-          </div>
-        </form>
-        <ToastContainer
-          position="top-center"
-          autoClose={1000}
-          theme="dark"
-          transition={Flip}
-        />
-      </div>
-    </>
+      <form className={requestStyle.body} onSubmit={handleSubmit}>
+        <h2 className={requestStyle.mainDescription}>{description}</h2>
+        <div className={requestStyle.requestBlock}>
+          {!!params?.length && (
+            <Params params={params} handleChange={handleChange} />
+          )}
+          {!!body?.type.length && (
+            <Body body={body} handleChange={handleChange} />
+          )}
+          {!params?.length && !body?.type.length && (
+            <div className={requestStyle.flexView}>
+              <ErrorIcon size={26} color={vars.color.green} />
+              <span className={requestStyle.description}>
+                No parameters or body
+              </span>
+            </div>
+          )}
+        </div>
+        <div className={requestStyle.fixedButtonWrapper}>
+          <Modal>
+            <Modal.Trigger
+              as={
+                // eslint-disable-next-line @typescript-eslint/no-empty-function
+                <Button onClick={() => {}} type="submit">
+                  SUBMIT
+                </Button>
+              }
+            />
+            <Modal.Content>
+              {mode === "LOADING" && <HashLoader color="#36d7b7" />}
+              {response && mode === "REQUEST" && (
+                <ModalCodeBlock
+                  description="Response"
+                  code={JSON.stringify(response, null, 2)}
+                  mode="REQUEST"
+                  ref={codeRef}
+                  onClose={onCloseModal}
+                  onClickCopy={copyToClipboard}
+                  onClickTS={onClickTS}
+                  onClickAxios={onClickAxios}
+                  onClickFetch={onClickFetch}
+                />
+              )}
+              {mode === "TS" && (
+                <ModalCodeBlock
+                  description="Type"
+                  code={code}
+                  mode="TS"
+                  ref={codeRef}
+                  onClickBack={initializeMode}
+                  onClickCopy={copyToClipboard}
+                />
+              )}
+              {mode === "ERROR" && (
+                <ModalCodeBlock
+                  description="Error"
+                  descriptionColor="red"
+                  code={JSON.stringify(response, null, 2)}
+                  mode="ERROR"
+                  ref={codeRef}
+                  onClickBack={initializeMode}
+                  onClickCopy={copyToClipboard}
+                />
+              )}
+              {mode === "AXIOS" && (
+                <ModalCodeBlock
+                  description="AXIOS"
+                  descriptionColor="red"
+                  code={code}
+                  mode="AXIOS"
+                  ref={codeRef}
+                  onClickBack={initializeMode}
+                  onClickCopy={copyToClipboard}
+                />
+              )}
+              {mode === "FETCH" && (
+                <ModalCodeBlock
+                  description="FETCH"
+                  descriptionColor="orange"
+                  code={code}
+                  mode="FETCH"
+                  ref={codeRef}
+                  onClickBack={initializeMode}
+                  onClickCopy={copyToClipboard}
+                />
+              )}
+            </Modal.Content>
+          </Modal>
+        </div>
+      </form>
+      <ToastContainer
+        position="top-center"
+        autoClose={1000}
+        theme="dark"
+        transition={Flip}
+      />
+    </div>
   );
 };
 
