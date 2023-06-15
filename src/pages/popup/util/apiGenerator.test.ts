@@ -1,4 +1,4 @@
-import { Parameters, Schemas } from "../api/docs";
+import { Parameters } from "../api/docs";
 import {
   generateAxiosAPICode,
   generateFetchAPICode,
