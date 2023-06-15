@@ -24,6 +24,8 @@ import "react-toastify/dist/ReactToastify.css";
 import useAuthStore from "../store/auth";
 import { EMPTY_RESPONSE } from "../constants/status";
 import HashLoader from "react-spinners/HashLoader";
+import { VscBracketError as ErrorIcon } from "react-icons/vsc";
+import { vars } from "@src/common/ui/styles/theme.css";
 
 export interface RequestProps {
   method: Method;
@@ -175,8 +177,20 @@ const Request = () => {
         <form className={requestStyle.body} onSubmit={handleSubmit}>
           <h2 className={requestStyle.mainDescription}>{description}</h2>
           <div className={requestStyle.requestBlock}>
-            {params && <Params params={params} handleChange={handleChange} />}
-            {body && <Body body={body} handleChange={handleChange} />}
+            {!!params?.length && (
+              <Params params={params} handleChange={handleChange} />
+            )}
+            {!!body?.type.length && (
+              <Body body={body} handleChange={handleChange} />
+            )}
+            {!params?.length && !body?.type.length && (
+              <div className={requestStyle.flexView}>
+                <ErrorIcon size={26} color={vars.color.green} />
+                <span className={requestStyle.description}>
+                  No parameters or body
+                </span>
+              </div>
+            )}
           </div>
           <div className={requestStyle.fixedButtonWrapper}>
             <Modal>
