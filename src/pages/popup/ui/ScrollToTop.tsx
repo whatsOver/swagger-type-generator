@@ -23,7 +23,7 @@ const ScrollToTop = () => {
           .querySelector("#main")
           ?.scroll({ top: savedPosition, behavior: "auto" });
         scrollPositions.delete(key);
-      }, 10);
+      }, 30);
     });
   }, [key]);
 
