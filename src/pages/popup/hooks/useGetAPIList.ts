@@ -37,8 +37,8 @@ const useGetAPIList = ({ setAPIList, setPathInfo }: GetAPIListProps) => {
       { message: "GET_SWAGGER_LIST" },
       (response) => {
         if (chrome.runtime.lastError) {
-          console.log(chrome.runtime.lastError);
-          setTimeout(() => getAPIList(tabId, callback), 1000);
+          // console.log(chrome.runtime.lastError);
+          // setTimeout(() => getAPIList(tabId, callback), 1000);
         } else {
           callback(response.data);
         }
@@ -64,16 +64,17 @@ const useGetAPIList = ({ setAPIList, setPathInfo }: GetAPIListProps) => {
     // Context menu를 위한 코드
     chrome.tabs.query({ active: true, currentWindow: false }, (tabs) => {
       if (tabs.length === 0) return;
-      checkIfReceiverIsReady(tabs[0].id, (isReady) => {
-        if (isReady) {
-          getAPIList(tabs[0].id, (data) => {
-            setAPIList(data.prList);
-            setPathInfo(data.path);
-          });
-        } else {
-          console.error("Error: Receiving end does not exist");
-        }
-      });
+      tabs.forEach((tab) =>
+        checkIfReceiverIsReady(tab.id, (isReady) => {
+          if (isReady) {
+            getAPIList(tab.id, (data) => {
+              setAPIList(data.prList);
+              setPathInfo(data.path);
+            });
+            setLoading(false);
+          }
+        })
+      );
     });
   }, []);
 

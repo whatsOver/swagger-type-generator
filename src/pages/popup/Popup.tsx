@@ -1,7 +1,6 @@
 import { popupStyle } from "./styles/popup.css";
 import Search from "./ui/Search";
 import useSearch from "./hooks/useSearch";
-import { IoMdSettings as SettingIcon } from "react-icons/io";
 import useHandlePopup from "./hooks/Popup/useHandlePopup";
 import useHandleAuth from "./hooks/Popup/useHandleAuth";
 import AuthModal from "./ui/AuthModal";
