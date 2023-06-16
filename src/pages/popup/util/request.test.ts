@@ -144,7 +144,6 @@ describe("getRequestBodyKey", () => {
 
     // WHEN
     const result = getRequestBodyKey(body);
-    console.log(result);
 
     // THEN
     expect(result).toEqual("name, emoji");
