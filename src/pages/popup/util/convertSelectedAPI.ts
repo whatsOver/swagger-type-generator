@@ -34,7 +34,6 @@ const convertSelectedAPI = (
       body = data.components.schemas[schemaName];
     }
     if ("default" in schema) {
-      console.log(schema);
       body = transformDefaultComplexSchema(schema);
     }
   }

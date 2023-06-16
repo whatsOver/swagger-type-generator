@@ -57,7 +57,7 @@ const Request = () => {
       if (param.example && param.required) {
         initialValues[param.name] = param.example;
       }
-      if (param.schema.default) {
+      if (param.schema?.default) {
         initialValues[param.name] = param.schema.default;
       }
     });
