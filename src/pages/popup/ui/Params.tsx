@@ -16,18 +16,18 @@ const Params = ({ params, handleChange }: ParamsProps) => {
       {params.map((param, idx) => (
         <div className={requestStyle.inputBox} key={param.name}>
           <label className={requestStyle.label}>{param.name}</label>
-          <label className={requestStyle.type}>
-            {typeConverter(param.schema.type)}
+          <label className={requestStyle.type ?? ""}>
+            {typeConverter(param.schema?.type)}
           </label>
           <Input
             style={{ width: "40%", textAlign: "right" }}
-            type={param.schema.type}
+            type={param.schema?.type ?? "string"}
             name={param.name}
             placeholder={param.example + "" ?? ""}
             required={param.required}
             onChange={handleChange}
             defaultValue={
-              param.required ? param.example ?? "" : param.schema.default ?? ""
+              param.required ? param.example ?? "" : param.schema?.default ?? ""
             }
             autoFocus={idx === 0}
             onFocus={(e) => e.target.select()}
