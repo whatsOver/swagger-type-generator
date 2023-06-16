@@ -12,7 +12,7 @@ const toTsType = (value: any): string => {
 
 const jsonToTs = (
   key: string,
-  json: object,
+  json: object | any,
   parentIsArray = false
 ): { interfaceArray: string[]; rootInterfaceKey: string } => {
   const capitalizedKey = key.charAt(0).toUpperCase() + key.slice(1);
@@ -30,6 +30,10 @@ const jsonToTs = (
       );
     }
   } else {
+    if (typeof json !== "object" || json === null) {
+      interfaces.push(`export type ${capitalizedKey} = ${toTsType(json)};`);
+      return { interfaceArray: interfaces, rootInterfaceKey };
+    }
     interfaces.push(
       `export interface ${parentIsArray ? capitalizedKey : capitalizedKey} {\n`
     );
