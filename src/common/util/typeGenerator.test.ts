@@ -77,4 +77,12 @@ describe("jsonToTs", () => {
 
     expect(jsonToTs("json", json).interfaceArray.join("\n")).toEqual(expected);
   });
+
+  it("단일 값에 대한 적절한 type을 생성한다", () => {
+    const value = 5;
+
+    const expected = "export type Json = number;";
+
+    expect(jsonToTs("json", value).interfaceArray.join("\n")).toEqual(expected);
+  });
 });
