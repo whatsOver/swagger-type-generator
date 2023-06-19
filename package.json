@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "swagger chrome extension generate typescript, axios, fetch code",
   "license": "MIT",
+  "author": {
+    "name": "ww8007",
+    "email": "wshmin1234@gmail.com"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/whatsOver/swagger"
