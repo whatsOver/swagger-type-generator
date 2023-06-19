@@ -26,11 +26,9 @@ const manifest: chrome.runtime.ManifestV3 = {
       js: ["src/pages/content/index.js"],
       include_globs: ["*://*/*"],
       match_about_blank: true,
-      // KEY for cache invalidation
       css: ["assets/css/Style.chunk.css"],
     },
   ],
-  devtools_page: "src/pages/devtools/index.html",
   web_accessible_resources: [
     {
       resources: [
@@ -43,8 +41,7 @@ const manifest: chrome.runtime.ManifestV3 = {
       matches: ["*://*/*"],
     },
   ],
-  permissions: ["storage", "activeTab", "scripting", "contextMenus"],
-  host_permissions: ["http://*/*", "https://*/*"],
+  permissions: ["activeTab", "scripting", "contextMenus"],
 };
 
 export default manifest;
