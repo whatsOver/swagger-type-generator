@@ -33,10 +33,10 @@ const Popup = () => {
         </div>
         <Search value={search} onChange={onChange} />
         {!!loading && <Loading />}
-        {!loading && !!filteredAPIList.endpoints && (
+        {!loading && !!filteredAPIList.tags.length && (
           <ApiList apiList={filteredAPIList} onClickAPI={onClickAPI} />
         )}
-        {!loading && !filteredAPIList.endpoints && <BlankApi />}
+        {!loading && !filteredAPIList.tags.length && <BlankApi />}
       </header>
     </div>
   );
