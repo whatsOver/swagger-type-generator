@@ -61,7 +61,9 @@ const useGetAPIList = ({ setAPIList, setPathInfo }: GetAPIListProps) => {
             setPathInfo(data.path);
             setState("loaded");
           });
-          setLoading(false);
+          setTimeout(() => {
+            setLoading(false);
+          }, 500);
         } else {
           console.error("Error: Receiving end does not exist");
         }
@@ -78,7 +80,9 @@ const useGetAPIList = ({ setAPIList, setPathInfo }: GetAPIListProps) => {
               setPathInfo(data.path);
               setState("loaded");
             });
-            setLoading(false);
+            setTimeout(() => {
+              setLoading(false);
+            }, 500);
           }
         })
       );
