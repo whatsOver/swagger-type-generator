@@ -41,7 +41,7 @@ const manifest: chrome.runtime.ManifestV3 = {
       matches: ["*://*/*"],
     },
   ],
-  permissions: ["activeTab", "scripting", "contextMenus"],
+  permissions: ["activeTab", "contextMenus"],
 };
 
 export default manifest;
