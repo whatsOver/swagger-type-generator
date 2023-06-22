@@ -11,7 +11,7 @@ const BlankApi = () => {
         supported.
         <br />
         Please ensure that you are on the correct page and that your Swagger
-        version is 3
+        version is 3.
       </span>
     </div>
   );
