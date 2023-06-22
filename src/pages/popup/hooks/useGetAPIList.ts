@@ -3,13 +3,12 @@ import {
   GET_API_LIST_RESULT,
   Path,
 } from "@src/pages/content/modules/getAPIList";
-import { SetStateAction } from "react";
-import { Dispatch } from "react";
 import { useEffect, useState } from "react";
+import useInitialStore from "../store/swaggerDoc";
 
 interface GetAPIListProps {
-  setAPIList: Dispatch<SetStateAction<APIList>>;
-  setPathInfo: Dispatch<SetStateAction<Path>>;
+  setAPIList: (apiList: APIList) => void;
+  setPathInfo: (pathInfo: Path) => void;
 }
 
 const useGetAPIList = ({ setAPIList, setPathInfo }: GetAPIListProps) => {
@@ -46,7 +45,13 @@ const useGetAPIList = ({ setAPIList, setPathInfo }: GetAPIListProps) => {
     );
   };
 
+  const { state, setState } = useInitialStore();
+
   useEffect(() => {
+    if (state === "loaded") {
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       checkIfReceiverIsReady(tabs[0].id, (isReady) => {
@@ -54,6 +59,7 @@ const useGetAPIList = ({ setAPIList, setPathInfo }: GetAPIListProps) => {
           getAPIList(tabs[0].id, (data) => {
             setAPIList(data.prList);
             setPathInfo(data.path);
+            setState("loaded");
           });
           setLoading(false);
         } else {
@@ -70,13 +76,14 @@ const useGetAPIList = ({ setAPIList, setPathInfo }: GetAPIListProps) => {
             getAPIList(tab.id, (data) => {
               setAPIList(data.prList);
               setPathInfo(data.path);
+              setState("loaded");
             });
             setLoading(false);
           }
         })
       );
     });
-  }, []);
+  }, [state]);
 
   return { loading };
 };

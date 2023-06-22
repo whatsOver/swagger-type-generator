@@ -1,28 +1,22 @@
-import { API, APIList, Path } from "@src/pages/content/modules/getAPIList";
-import { useState } from "react";
+import { API } from "@src/pages/content/modules/getAPIList";
 import useGetAPIList from "../useGetAPIList";
 import { useGETDocs } from "../../api/docs";
 import { convertSelectedAPI } from "../../util/convertSelectedAPI";
 import useRouter from "../useRouter";
+import useSwaggerDocStore from "../../store/swaggerDoc";
 
 const useHandlePopup = () => {
   const { push } = useRouter();
 
   // FIRST RENDER
-  const [apiList, setAPIList] = useState<APIList>({
-    endpoints: {},
-    tags: [],
-  });
-
-  const [pathInfo, setPathInfo] = useState<Path>({
-    host: "",
-    href: "",
-  });
-
-  const [filteredAPIList, setFilteredAPIList] = useState<APIList>({
-    endpoints: {},
-    tags: [],
-  });
+  const {
+    apiList,
+    filteredAPIList,
+    pathInfo,
+    setAPIList,
+    setFilteredAPIList,
+    setPathInfo,
+  } = useSwaggerDocStore();
 
   // SERVER
   // 1. API 리스트를 가져온다 > 사용자 웹 브라우저로부터
