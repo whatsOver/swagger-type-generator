@@ -1,6 +1,6 @@
 {
   "name": "swagger-type-generator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "swagger chrome extension generate typescript, axios, fetch code",
   "license": "MIT",
   "author": {
