@@ -7,6 +7,7 @@ import addHmr from "./utils/plugins/add-hmr";
 import manifest from "./manifest";
 import { vanillaExtractPlugin } from "@vanilla-extract/vite-plugin";
 import { PreRenderedChunk } from "rollup";
+import copy from "rollup-plugin-copy";
 
 const root = resolve(__dirname, "src");
 const pagesDir = resolve(root, "pages");
@@ -78,6 +79,12 @@ export default defineConfig({
           return `assets/[ext]/${name}.chunk.[ext]`;
         },
       },
+      plugins: [
+        copy({
+          targets: [{ src: "src/_locales/**/*", dest: "dist/_locales" }],
+          hook: "writeBundle", // notice this
+        }),
+      ],
     },
   },
 });
