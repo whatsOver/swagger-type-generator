@@ -1,18 +1,10 @@
 {
   "appName": {
-    "message": {
-      "en": "swagger-type-generator"
-    },
-    "description": {
-      "en": "swagger chrome extension generate typescript, axios, fetch code"
-    }
+    "message": "swagger-type-generator",
+    "description": "swagger chrome extension generate typescript, axios, fetch code"
   },
   "appDesc": {
-    "message": {
-      "en": "swagger chrome extension generate typescript, axios, fetch code"
-    },
-    "description": {
-      "en": "Improvement of the Swagger UI: This extension shows the Swagger UI more intuitively.\nDisplay API documents in a more readable and user-friendly way, making it easier for developers to understand and use APIs.\n\nAPI search capability: Extension provides the ability to search for APIs. Developers can quickly browse specific APIs or endpoints, and search results can quickly access the APIs they want.\n\nType generator: Automatically generates the type of API response data based on the JSON extension format. Developers can leverage automatically generated types without the need to easily analyze response data and create type definitions.\n\nAPI code generator using Axios: Extension automatically generates code for API calls using Axios. Developers can implement API requests more easily and maintain a consistent code style and structure.\n\nAPI code generator using fetch: Extension uses fetch API to automatically generate code for API calls. Using fetch, developers can write API requests more concisely and optionally with axios.\n\nThis extension, including these features, helps developers perform API tasks more efficiently. Installing and using extensions can improve the productivity of API-related tasks and make the development process smoother and more convenient."
-    }
+    "message": "swagger chrome extension generate typescript, axios, fetch code",
+    "description": "Improvement of the Swagger UI: This extension shows the Swagger UI more intuitively.\nDisplay API documents in a more readable and user-friendly way, making it easier for developers to understand and use APIs.\n\nAPI search capability: Extension provides the ability to search for APIs. Developers can quickly browse specific APIs or endpoints, and search results can quickly access the APIs they want.\n\nType generator: Automatically generates the type of API response data based on the JSON extension format. Developers can leverage automatically generated types without the need to easily analyze response data and create type definitions.\n\nAPI code generator using Axios: Extension automatically generates code for API calls using Axios. Developers can implement API requests more easily and maintain a consistent code style and structure.\n\nAPI code generator using fetch: Extension uses fetch API to automatically generate code for API calls. Using fetch, developers can write API requests more concisely and optionally with axios.\n\nThis extension, including these features, helps developers perform API tasks more efficiently. Installing and using extensions can improve the productivity of API-related tasks and make the development process smoother and more convenient."
   }
 }
