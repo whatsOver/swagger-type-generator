@@ -8,6 +8,7 @@ const manifest: chrome.runtime.ManifestV3 = {
   name: packageJson.name,
   version: packageJson.version,
   description: packageJson.description,
+  default_locale: "ko",
   background: {
     service_worker: "src/pages/background/index.js",
     type: "module",
