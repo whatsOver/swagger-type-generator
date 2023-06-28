@@ -39,6 +39,12 @@ export const requestStyle = {
     },
   }),
 
+  leftWrapper: style({
+    display: "flex",
+    columnGap: "10px",
+    alignItems: "center",
+  }),
+
   iconButton: style({
     display: "flex",
     alignItems: "center",
@@ -76,6 +82,7 @@ export const requestStyle = {
     alignItems: "left",
     color: vars.color.white,
     marginLeft: "20px",
+    marginTop: "30px",
   }),
 
   description: style({
@@ -91,7 +98,8 @@ export const requestStyle = {
     display: "flex",
     alignItems: "left",
     flex: 1,
-    justifyContent: "center",
+    fontSize: "1.1rem",
+    justifyContent: "left",
   }),
 
   buttonWrapper: style({
