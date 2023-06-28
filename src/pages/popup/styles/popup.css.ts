@@ -11,8 +11,8 @@ export const popupStyle = {
     right: 0,
     display: "flex",
     flexDirection: "column",
-    width: "500px",
-    height: "600px",
+    width: "100vw",
+    height: "100vh",
     alignItems: "center",
     justifyContent: "flex-start",
     textAlign: "center",
@@ -37,7 +37,7 @@ export const popupStyle = {
   }),
 
   header: style({
-    width: "500px",
+    width: "100%",
     height: "100%",
   }),
 

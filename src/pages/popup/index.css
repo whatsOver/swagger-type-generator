@@ -1,6 +1,6 @@
 body {
-  width: 500px;
-  height: 600px;
+  min-width: 500px;
+  min-height: 600px;
   margin: 0px;
   padding: 0px;
   background: none;
@@ -14,8 +14,8 @@ body {
 }
 
 .container {
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
