@@ -113,62 +113,25 @@ const Request = () => {
 
   // 3. 유저 > TS 버튼 클릭
   const [mode, setMode] = useState<Mode>("REQUEST");
-
-  const onClickTS = () => {
-    setMode("TS");
-    setCode(jsonToTs("json", response).interfaceArray.join("\n"));
-  };
-
-  // 4. code 상태 관리
-  const [code, setCode] = useState<string>("");
-
-  // 4. 유저 > API 버튼 클릭
-  const onClickAxios = () => {
-    setMode("AXIOS");
-    const { interfaceArray, rootInterfaceKey } = jsonToTs("json", response);
-    setCode(interfaceArray.join("\n"));
-    setCode(
-      (prev) =>
-        prev +
-        "\n\n" +
-        (generateInterface(params, body, method) +
-          "\n" +
-          generateAxiosAPICode({
-            api: { method, path, host, params, body },
-            rootInterfaceKey,
-          }))
-    );
-  };
-  const onClickFetch = () => {
-    setMode("FETCH");
-    const { interfaceArray, rootInterfaceKey } = jsonToTs("json", response);
-    setCode(interfaceArray.join("\n"));
-    setCode(
-      (prev) =>
-        prev +
-        "\n\n" +
-        (generateInterface(params, body, method) +
-          "\n" +
-          generateFetchAPICode({
-            api: { method, path, host, params, body },
-            rootInterfaceKey,
-          }))
-    );
-  };
-
-  // 4. 유저 > 복사 버튼 클릭
-  const codeRef = useRef(null);
-  const { copyToClipboard } = useCopy({ codeRef });
-
-  // 5. 모달 닫기
+  // 2. modal 닫기
   const onCloseModal = () => {
     // modal 애니메이션 끝나고 mode 변경
     setTimeout(() => {
       setMode("REQUEST");
     }, 500);
   };
-
+  // 3. modal 상태 초기화
   const initializeMode = useCallback(() => setMode("REQUEST"), []);
+
+  // 3. Code 비지니스 로직
+  const {
+    code,
+    codeRef,
+    copyToClipboard,
+    onClickAxios,
+    onClickFetch,
+    onClickTS,
+  } = useHandleCode({ response, setMode });
 
   return (
     <div className={popupStyle.app}>
