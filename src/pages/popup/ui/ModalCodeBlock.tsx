@@ -43,29 +43,31 @@ const ModalCodeBlock: ForwardRefRenderFunction<
     <div className={requestStyle.modal}>
       <div className={requestStyle.response}>
         <div className={requestStyle.descriptionWrapper}>
-          <button
-            onClick={() => {
-              mode === "REQUEST" && onClose && onClose();
-              mode !== "REQUEST" && onClickBack && onClickBack();
-            }}
-            className={requestStyle.iconButton}
-            type="button"
-          >
-            {mode === "REQUEST" && (
-              <CloseIcon size={24} color={vars.color.white} />
-            )}
-            {mode !== "REQUEST" && (
-              <BackIcon size={24} color={vars.color.white} />
-            )}
-          </button>
-          <h3
-            className={requestStyle.requestDescription}
-            style={{
-              color: vars.color[descriptionColor],
-            }}
-          >
-            {description}
-          </h3>
+          <div className={requestStyle.leftWrapper}>
+            <button
+              onClick={() => {
+                mode === "REQUEST" && onClose && onClose();
+                mode !== "REQUEST" && onClickBack && onClickBack();
+              }}
+              className={requestStyle.iconButton}
+              type="button"
+            >
+              {mode === "REQUEST" && (
+                <CloseIcon size={24} color={vars.color.white} />
+              )}
+              {mode !== "REQUEST" && (
+                <BackIcon size={24} color={vars.color.white} />
+              )}
+            </button>
+            <h3
+              className={requestStyle.requestDescription}
+              style={{
+                color: vars.color[descriptionColor],
+              }}
+            >
+              {description}
+            </h3>
+          </div>
           <div className={requestStyle.buttonWrapper}>
             {onClickCopy && (
               <Button color="green" onClick={onClickCopy}>
