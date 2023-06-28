@@ -70,7 +70,6 @@ const useHandleRequest = ({ setMode }: HandleRequest) => {
         data: body ? getBody(body, formValues) : {},
         headers,
       });
-      console.log(response.data);
       if (!response.data) {
         toast.success(`${response.status} ${response.statusText}`);
         setResponse(EMPTY_RESPONSE);
