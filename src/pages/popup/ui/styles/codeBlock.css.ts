@@ -23,7 +23,7 @@ const codeBlockStyle = {
         boxShadow: vars.color.scrollbarTrackBoxShadow,
       },
       "&::-webkit-scrollbar-corner": {
-        backgroundColor: "#16191C",
+        backgroundColor: vars.color.darkGrey,
       },
     },
   }),
