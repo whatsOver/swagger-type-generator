@@ -1,31 +1,22 @@
 import { Parameters, Schemas } from "../api/docs";
 import { requestStyle } from "./styles/request.css";
-import axios, { Method } from "axios";
-import { useState, FormEvent, useRef, useEffect, useCallback } from "react";
+import { Method } from "axios";
+import { useState, useCallback } from "react";
 import Button from "@src/common/ui/Button";
 import { useLocation } from "react-router-dom";
 import { popupStyle } from "../styles/popup.css";
 import Header from "@src/common/ui/Header";
 import Modal from "@src/common/ui/Modal";
-import { getBody, getQueryParams } from "../util/request";
 import Params from "./Params";
 import Body from "./Body";
-import { jsonToTs } from "@src/common/util/typeGenerator";
-import useCopy from "../hooks/useCopy";
 import ModalCodeBlock from "./ModalCodeBlock";
-import { Flip, ToastContainer, toast } from "react-toastify";
-import {
-  generateAxiosAPICode,
-  generateFetchAPICode,
-  generateInterface,
-} from "../util/apiGenerator";
-import useForm from "../hooks/useForm";
+import { Flip, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import useAuthStore from "../store/auth";
-import { EMPTY_RESPONSE } from "../constants/status";
 import HashLoader from "react-spinners/HashLoader";
 import { VscBracketError as ErrorIcon } from "react-icons/vsc";
 import { vars } from "@src/common/ui/styles/theme.css";
+import useHandleRequest from "../hooks/Request/useHandleRequest";
+import useHandleCode from "../hooks/Request/useHandleCode";
 
 export interface RequestProps {
   method: Method;
@@ -40,135 +31,35 @@ export type Mode = "REQUEST" | "TS" | "ERROR" | "AXIOS" | "FETCH" | "LOADING";
 
 const Request = () => {
   // FIRST RENDER
-  const { method, params, path, body, host, description } = useLocation()
-    .state as RequestProps;
-
-  const token = useAuthStore((state) => state.token);
+  const { params, body, description } = useLocation().state as RequestProps;
 
   // INTERACTION
-  // 1. 유저 > params, body 입력
-  const { formValues, handleChange, setFormValues } = useForm();
-
-  // 1-1. 유저 > params, body 입력 > 초기값 설정
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const initialValues: Record<string, any> = {};
-    params?.forEach((param) => {
-      if (param.example && param.required) {
-        initialValues[param.name] = param.example;
-      }
-      if (param.schema?.default) {
-        initialValues[param.name] = param.schema.default;
-      }
-    });
-    body?.properties &&
-      Object.keys(body.properties).forEach((key) => {
-        if (body.properties[key].example) {
-          initialValues[key] = body.properties[key].example;
-        }
-        if (body.properties[key].default) {
-          initialValues[key] = body.properties[key].default;
-        }
-      });
-    setFormValues(initialValues);
-  }, [params, body, setFormValues]);
-
-  // 2. 유저 > 요청 버튼 클릭
-  const [response, setResponse] = useState(null);
-
-  // 2-1. 유저 > 요청 버튼 클릭 > 요청 보내기
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    setMode("LOADING");
-    e.preventDefault();
-    const transformPath = params
-      ? params.reduce((acc, param) => {
-          return param.in === "path"
-            ? acc.replace(`{${param.name}}`, formValues[param.name])
-            : acc;
-        }, path)
-      : path;
-    try {
-      const headers = token.length ? { Authorization: `Bearer ${token}` } : {};
-      const response = await axios({
-        method,
-        url: host + transformPath,
-        params: params ? getQueryParams(params, formValues) : {},
-        data: body ? getBody(body, formValues) : {},
-        headers,
-      });
-      if (!response.data) {
-        toast.success(`${response.status} ${response.statusText}`);
-        setResponse(EMPTY_RESPONSE);
-        return;
-      }
-      toast.success(`${response.status} ${response.statusText}`);
-      setResponse(response.data);
-      setMode("REQUEST");
-    } catch (error) {
-      setMode("ERROR");
-      toast.error(`${error.response.status} ${error.response.statusText}`);
-      setResponse(error.response.data);
-    }
-  };
-
-  // 3. 유저 > TS 버튼 클릭
+  // 1. mode 상태 관리
   const [mode, setMode] = useState<Mode>("REQUEST");
-
-  const onClickTS = () => {
-    setMode("TS");
-    setCode(jsonToTs("json", response).interfaceArray.join("\n"));
-  };
-
-  // 4. code 상태 관리
-  const [code, setCode] = useState<string>("");
-
-  // 4. 유저 > API 버튼 클릭
-  const onClickAxios = () => {
-    setMode("AXIOS");
-    const { interfaceArray, rootInterfaceKey } = jsonToTs("json", response);
-    setCode(interfaceArray.join("\n"));
-    setCode(
-      (prev) =>
-        prev +
-        "\n\n" +
-        (generateInterface(params, body, method) +
-          "\n" +
-          generateAxiosAPICode({
-            api: { method, path, host, params, body },
-            rootInterfaceKey,
-          }))
-    );
-  };
-  const onClickFetch = () => {
-    setMode("FETCH");
-    const { interfaceArray, rootInterfaceKey } = jsonToTs("json", response);
-    setCode(interfaceArray.join("\n"));
-    setCode(
-      (prev) =>
-        prev +
-        "\n\n" +
-        (generateInterface(params, body, method) +
-          "\n" +
-          generateFetchAPICode({
-            api: { method, path, host, params, body },
-            rootInterfaceKey,
-          }))
-    );
-  };
-
-  // 4. 유저 > 복사 버튼 클릭
-  const codeRef = useRef(null);
-  const { copyToClipboard } = useCopy({ codeRef });
-
-  // 5. 모달 닫기
+  // 2. modal 닫기
   const onCloseModal = () => {
     // modal 애니메이션 끝나고 mode 변경
     setTimeout(() => {
       setMode("REQUEST");
     }, 500);
   };
-
+  // 3. modal 상태 초기화
   const initializeMode = useCallback(() => setMode("REQUEST"), []);
+
+  // 2. Request 비지니스 로직
+  const { handleChange, handleSubmit, response } = useHandleRequest({
+    setMode,
+  });
+
+  // 3. Code 비지니스 로직
+  const {
+    code,
+    codeRef,
+    copyToClipboard,
+    onClickAxios,
+    onClickFetch,
+    onClickTS,
+  } = useHandleCode({ response, setMode });
 
   return (
     <div className={popupStyle.app}>
