@@ -4,8 +4,8 @@ import { EMPTY_RESPONSE } from "@src/pages/popup/constants/status";
 
 const toTsType = (value: any): string => {
   const jsType = typeof value;
-  if (jsType === "number" || jsType === "boolean" || value === null)
-    return jsType;
+  if (jsType === "number" || jsType === "boolean") return jsType;
+  else if (jsType === "object" && value === null) return "unknown";
   else if (Array.isArray(value))
     return value.length > 0 ? `${toTsType(value[0])}[]` : "any[]";
   else if (jsType === "object") return "any";
