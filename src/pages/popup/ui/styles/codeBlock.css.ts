@@ -3,8 +3,7 @@ import { style } from "@vanilla-extract/css";
 
 const codeBlockStyle = {
   code: style({
-    width: "300px",
-    height: "300px",
+    height: "calc(70vh - 40px - 70px)",
     backgroundColor: "#16191C",
     borderRadius: "10px",
     selectors: {
@@ -22,6 +21,9 @@ const codeBlockStyle = {
         backgroundColor: vars.color.scrollbarTrack,
         borderRadius: "10px",
         boxShadow: vars.color.scrollbarTrackBoxShadow,
+      },
+      "&::-webkit-scrollbar-corner": {
+        backgroundColor: vars.color.darkGrey,
       },
     },
   }),

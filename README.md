@@ -12,6 +12,14 @@
 
 ## Installation
 
+### Chrome Extension Link
+
+- You can download from this link [here](https://chrome.google.com/webstore/detail/swagger-type-generator/keokgjdhpcjljbijodliijikjgemkgpa?hl=ko&authuser=0)
+
+### Local Install
+
+- Or You can install with developer mode
+
 1. download the latest release from [here](https://github.com/whatsOver/swagger/releases)
 2. unzip the release
 3. open chrome and go to `chrome://extensions/`

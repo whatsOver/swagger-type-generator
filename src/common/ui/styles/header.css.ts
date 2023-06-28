@@ -18,6 +18,6 @@ export const headerStyle = {
     columnGap: "10px",
     width: "20%",
     cursor: "pointer",
-    marginLeft: "30px",
+    marginLeft: "5%",
   }),
 };

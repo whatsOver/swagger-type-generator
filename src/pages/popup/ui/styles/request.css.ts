@@ -4,7 +4,8 @@ import { style } from "@vanilla-extract/css";
 export const requestStyle = {
   body: style({
     marginTop: "20px",
-    width: "425px",
+    width: "90%",
+    height: "calc(100vh - 40px - 70px)",
     backgroundColor: vars.color.darkGrey,
     color: vars.color.white,
     borderRadius: "10px",
@@ -14,7 +15,7 @@ export const requestStyle = {
 
   requestBlock: style({
     overflowY: "auto",
-    maxHeight: "350px",
+    maxHeight: "70%",
     paddingRight: "0",
     padding: "20px",
     selectors: {
@@ -32,13 +33,22 @@ export const requestStyle = {
         borderRadius: "10px",
         boxShadow: vars.color.scrollbarTrackBoxShadow,
       },
+      "&::-webkit-scrollbar-corner": {
+        backgroundColor: vars.color.darkGrey,
+      },
     },
+  }),
+
+  leftWrapper: style({
+    display: "flex",
+    columnGap: "10px",
+    alignItems: "center",
   }),
 
   iconButton: style({
     display: "flex",
     alignItems: "center",
-    width: "30px",
+    flex: 1,
   }),
 
   flexView: style({
@@ -52,8 +62,8 @@ export const requestStyle = {
     marginTop: "40px",
     backgroundColor: vars.color.darkGrey,
     color: vars.color.white,
-    width: "400px",
-    height: "400px",
+    width: "70vw",
+    height: "70vh",
     borderRadius: "10px",
     padding: "20px",
     display: "flex",
@@ -72,6 +82,7 @@ export const requestStyle = {
     alignItems: "left",
     color: vars.color.white,
     marginLeft: "20px",
+    marginTop: "30px",
   }),
 
   description: style({
@@ -79,12 +90,24 @@ export const requestStyle = {
     display: "flex",
     alignItems: "left",
     color: vars.color.green,
+    flex: 1,
+  }),
+
+  requestDescription: style({
+    fontWeight: "bold",
+    display: "flex",
+    alignItems: "left",
+    flex: 1,
+    fontSize: "1.1rem",
+    justifyContent: "left",
   }),
 
   buttonWrapper: style({
     display: "flex",
     columnGap: "10px",
     alignItems: "center",
+    justifyContent: "flex-end",
+    flex: 1,
   }),
 
   type: style({
@@ -117,10 +140,9 @@ export const requestStyle = {
 
   fixedButtonWrapper: style({
     position: "absolute",
-    bottom: "20px",
-    width: "85%",
+    bottom: "40px",
+    width: "90%",
     display: "flex",
-    marginTop: "10px",
   }),
 
   response: style({
@@ -129,13 +151,15 @@ export const requestStyle = {
     alignItems: "left",
     color: vars.color.green,
     marginTop: "10px",
+    width: "100%",
+    height: "100%",
   }),
 
   responseBody: style({
     display: "flex",
     flexDirection: "column",
-    width: "300px",
-    maxHeight: "200px",
+    width: "90%",
+    maxHeight: "80%",
     textAlign: "left",
     alignItems: "left",
     color: vars.color.white,
