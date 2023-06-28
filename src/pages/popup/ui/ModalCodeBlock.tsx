@@ -59,7 +59,7 @@ const ModalCodeBlock: ForwardRefRenderFunction<
             )}
           </button>
           <h3
-            className={requestStyle.description}
+            className={requestStyle.requestDescription}
             style={{
               color: vars.color[descriptionColor],
             }}
