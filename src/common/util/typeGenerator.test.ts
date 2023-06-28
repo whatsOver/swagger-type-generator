@@ -10,8 +10,9 @@ describe("toTsType", () => {
   });
 
   it('값이 null인 경우 "null"을 반환한다', () => {
-    // js의 typeof null은 "object"이다
-    expect(toTsType(null)).toEqual("object");
+    // null에 대한 typeof 연산은 "object"를 반환한다
+    // 이를 unknown으로 처리
+    expect(toTsType(null)).toEqual("unknown");
   });
 
   it("타입이 배열인 경우 배열 내의 첫 번째 요소 타입에 대한 배열 타입을 반환한다", () => {
