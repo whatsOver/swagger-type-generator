@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { EMPTY_RESPONSE } from "@src/pages/popup/constants/status";
+
 const toTsType = (value: any): string => {
   const jsType = typeof value;
   if (jsType === "number" || jsType === "boolean" || value === null)
@@ -15,6 +17,8 @@ const jsonToTs = (
   json: object | any,
   parentIsArray = false
 ): { interfaceArray: string[]; rootInterfaceKey: string } => {
+  if (json === EMPTY_RESPONSE)
+    return { interfaceArray: [], rootInterfaceKey: "" };
   const capitalizedKey = key.charAt(0).toUpperCase() + key.slice(1);
   let interfaces = [];
   let rootInterfaceKey = capitalizedKey;
