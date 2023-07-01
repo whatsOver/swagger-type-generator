@@ -11,7 +11,6 @@ const checkArrayAndConvert = (value: any): any => {
   } catch (error) {
     console.error(`Failed to parse JSON array: ${error}`);
   }
-
   return value;
 };
 
