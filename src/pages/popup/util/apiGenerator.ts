@@ -2,6 +2,7 @@ import { Method } from "axios";
 import { Parameters, Schemas } from "../api/docs";
 import { getParams } from "./request";
 import { typeConverter } from "./typeConverter";
+import { toTsType } from "@src/common/util/typeGenerator";
 
 const generateInterface = (
   params: Parameters[],
@@ -17,9 +18,7 @@ const generateInterface = (
 
   const postData = body
     ? Object.keys(body.properties)
-        .map(
-          (key) => `    ${key}: ${typeConverter(body.properties[key].type)};`
-        )
+        .map((key) => `    ${key}: ${toTsType(body.properties[key].example)};`)
         .join("\n")
     : "";
 
