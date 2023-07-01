@@ -2,13 +2,30 @@
 
 import { EMPTY_RESPONSE } from "@src/pages/popup/constants/status";
 
+const isArrayType = (value: any): boolean =>
+  typeof value === "string" && value.startsWith("[") && value.endsWith("]");
+
+const checkArrayAndConvert = (value: any): any => {
+  try {
+    value = JSON.parse(value);
+  } catch (error) {
+    console.error(`Failed to parse JSON array: ${error}`);
+  }
+
+  return value;
+};
+
 const toTsType = (value: any): string => {
+  if (isArrayType(value)) {
+    value = checkArrayAndConvert(value);
+  }
   const jsType = typeof value;
+
   if (jsType === "number" || jsType === "boolean") return jsType;
   else if (jsType === "object" && value === null) return "unknown";
-  else if (Array.isArray(value))
+  else if (Array.isArray(value)) {
     return value.length > 0 ? `${toTsType(value[0])}[]` : "any[]";
-  else if (jsType === "object") return "any";
+  } else if (jsType === "object") return "any";
   else return "string";
 };
 
