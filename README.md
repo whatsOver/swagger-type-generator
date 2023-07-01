@@ -1,6 +1,6 @@
 # Swagger API Documentation
 
-![image](https://github.com/whatsOver/swagger/assets/54137044/2d8fc61e-e62e-44b5-8598-f23f18b69b80)
+![image](https://github.com/whatsOver/swagger-type-generator/assets/54137044/3dc5354a-cea5-421e-bb0b-79855b271ac2)
 
 ## Features
 
@@ -9,6 +9,8 @@
 - [x] Test API
 - [x] Type Generator
 - [x] API code Generator with axios
+- [x] API code Generator with fetch
+- [x] Open with Context Menu
 
 ## Installation
 
@@ -27,3 +29,23 @@
 5. click on `Load unpacked extension...`
 6. select the unzipped folder
 7. enjoy! 😃
+
+### How can I test it?
+
+- You can test this extension in this link
+- [swagger exmaple](https://swagger.ww8007.com/api)
+
+### Development
+
+This extension is based with pnpm.
+Just follow this 
+```ts
+pnpm i
+```
+```ts
+pnpm dev
+```
+
+### License
+
+MIT
