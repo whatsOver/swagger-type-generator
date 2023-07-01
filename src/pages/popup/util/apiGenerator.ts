@@ -1,6 +1,7 @@
 import { Method } from "axios";
 import { Parameters, Schemas } from "../api/docs";
 import { getParams } from "./request";
+import { typeConverter } from "./typeConverter";
 import { toTsType } from "@src/common/util/typeGenerator";
 
 const generateInterface = (
@@ -11,7 +12,7 @@ const generateInterface = (
   const interfaceItems = params
     ? params
         .filter((param) => param.in !== "body")
-        .map((param) => `  ${param.name}: ${toTsType(param.schema.type)};`)
+        .map((param) => `  ${param.name}: ${typeConverter(param.schema.type)};`)
         .join("\n")
     : "";
 
