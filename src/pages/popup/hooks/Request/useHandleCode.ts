@@ -8,6 +8,8 @@ import {
 } from "../../util/apiGenerator";
 import { useLocation } from "react-router-dom";
 import { RequestProps } from "../../ui/Request";
+import useSettingStore from "../../store/setting";
+import { generateReactQueryHook } from "../../util/queryGenerator";
 
 interface HandleCode {
   response: unknown;
@@ -31,6 +33,8 @@ const useHandleCode = ({ response, setMode }: HandleCode) => {
   };
 
   // 3. 유저 > Axios 버튼 클릭
+  const { withReactQuery } = useSettingStore();
+
   const onClickAxios = () => {
     setMode("AXIOS");
     const { interfaceArray, rootInterfaceKey } = jsonToTs("json", response);
@@ -44,7 +48,14 @@ const useHandleCode = ({ response, setMode }: HandleCode) => {
           generateAxiosAPICode({
             api: { method, path, host, params, body },
             rootInterfaceKey,
-          }))
+          })) +
+        "\n\n" +
+        (withReactQuery
+          ? generateReactQueryHook({
+              api: { method, params },
+              apiFunctionName: `${method.toLowerCase()}API`,
+            })
+          : "")
     );
   };
 
@@ -62,7 +73,14 @@ const useHandleCode = ({ response, setMode }: HandleCode) => {
           generateFetchAPICode({
             api: { method, path, host, params, body },
             rootInterfaceKey,
-          }))
+          })) +
+        "\n\n" +
+        (withReactQuery
+          ? generateReactQueryHook({
+              api: { method, params },
+              apiFunctionName: `${method.toLowerCase()}API`,
+            })
+          : "")
     );
   };
 
