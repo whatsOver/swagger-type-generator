@@ -12,7 +12,6 @@ const useHandleAuth = () => {
   const setAuthToStore = useAuthStore((state) => state.setToken);
 
   const onSaveAuth = () => {
-    chrome.storage.sync.set({ authorized });
     setAuthToStore(authorized);
   };
 
