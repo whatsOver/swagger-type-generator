@@ -50,6 +50,13 @@ export const popupStyle = {
     columnGap: "20px",
   }),
 
+  settingButtonWrapper: style({
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    columnGap: "10px",
+  }),
+
   tag: style({
     width: "100%",
     marginLeft: "20%",
