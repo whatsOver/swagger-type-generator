@@ -80,16 +80,16 @@ const Trigger = ({ as }: TriggerProps) => {
       as.props.onClick();
       setModalOpen(!modalOpen);
     },
-    onClose: () => {
-      as.props.onClose();
-      setModalOpen(false);
-    },
   });
   return clonedTrigger;
 };
 
 interface ContentProps {
   children: React.ReactNode;
+  onClose?: () => void;
+}
+
+export interface ModalChildProps {
   onClose?: () => void;
 }
 
@@ -148,10 +148,7 @@ const Content = ({ children, onClose }: ContentProps) => {
           ) {
             return cloneElement(child, { onClose: handleCloseModal });
           }
-          if (
-            isValidElement<AuthModalProps>(child) &&
-            child.type === AuthModalContent
-          ) {
+          if (isValidElement<ModalChildProps>(child)) {
             return cloneElement(child, {
               onClose: () => {
                 child.props.onClose();
