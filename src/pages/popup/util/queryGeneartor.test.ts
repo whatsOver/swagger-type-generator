@@ -24,12 +24,13 @@ describe("generateReactQueryHook", () => {
     expect(result).toBe(`
 export interface GetDataRequest {
   param1: string;
+  token?: string;
 }
 
 const GetDataKey = (params: GetDataRequest) => ['GET', params.param1];
 
 export const useGetDataQuery = (params: GetDataRequest) => {
-  return useQuery(GetDataKey(params), async () => getData);
+  return useQuery(GetDataKey(params), async () => getData(params));
 };
 `);
   });
