@@ -26,10 +26,15 @@ const generateInterface = (
         .join("\n")
     : "";
 
+  // token이 필요한 경우에만 token interface를 추가
+  const tokenLine = interfaceItems.length
+    ? `\n  token?: string;`
+    : `  token?: string;`;
+
   let interfaceStr = "";
   if (paramsInterface) {
     interfaceStr = `
-export interface ${paramsInterface} {\n${interfaceItems}
+export interface ${paramsInterface} {\n${interfaceItems}${tokenLine}
 }`;
   }
 
@@ -73,7 +78,7 @@ const generateReactQueryHook = ({
     return `${interfaceStr}\n
 ${queryKeyFunctionString}\n
 export const use${capitalizedFunctionName}Query = (params: ${paramsInterface}) => {
-  return useQuery(${queryKeyString}, async () => ${apiFunctionName});
+  return useQuery(${queryKeyString}, async () => ${apiFunctionName}(params));
 };
 `;
   } else {
