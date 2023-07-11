@@ -1,6 +1,6 @@
 # Swagger API Documentation
 
-![image](https://github.com/whatsOver/swagger-type-generator/assets/54137044/3dc5354a-cea5-421e-bb0b-79855b271ac2)
+![image](https://github.com/whatsOver/swagger-type-generator/assets/54137044/9d7efe8f-16ce-4eb4-9a55-4d68b94bd41e)
 
 ## Features
 
@@ -11,6 +11,7 @@
 - [x] API code Generator with axios
 - [x] API code Generator with fetch
 - [x] Open with Context Menu
+- [x] Generate React Query Code
 
 ## Installation
 
