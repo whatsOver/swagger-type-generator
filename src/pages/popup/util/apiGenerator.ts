@@ -59,6 +59,9 @@ const generateAxiosAPICode = ({
     ? `${args.length > 0 ? `${args}, ` : ""}${method}Data`
     : args;
 
+  // path에 있는 {param}을 ${param}으로 변경
+  const dynamicPath = path.replace(/{/g, "${");
+
   const parameters = bodyArgs.length > 0 ? `${bodyArgs}, token` : "token";
 
   const axiosData = body ? `${method}Data` : "{}";
@@ -73,7 +76,7 @@ const generateAxiosAPICode = ({
 const ${method.toLowerCase()}API = async ({ ${parameters} }: ${interfaceName}) => {
   const { data } = await axios${responseInterface}({
     method: "${method}",
-    url: "${host}${path}",
+    url: "${host}${dynamicPath}",
     params: { ${args} },
     data: ${axiosData},
     headers: token ? { 'Authorization': \`Bearer \${token}\` } : {}
