@@ -69,7 +69,9 @@ describe("API 코드 생성", () => {
         .join(", ")}, token }: RequestInterface) => {`
     );
     expect(result).toContain(`method: "${sampleAPI.method}",`);
-    expect(result).toContain(`url: "${sampleAPI.host}${sampleAPI.path}",`);
+    expect(result).toContain(
+      `url: "${sampleAPI.host}${sampleAPI.path.replace("{", "${")}",`
+    );
     expect(result).toContain(`params: { ${getParams(sampleParams)} },`);
     expect(result).toContain(
       `data: ${JSON.stringify(
