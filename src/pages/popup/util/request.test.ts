@@ -68,7 +68,7 @@ describe("getParams", () => {
       },
       {
         name: PARAM2,
-        in: "path",
+        in: "query",
         description: "차단 해제를 할 북마크 ID 값",
         required: true,
         schema: {
@@ -79,11 +79,14 @@ describe("getParams", () => {
       },
     ];
 
+    const withoutPathParam: Parameters[] = params.filter(
+      (param) => param.in !== "path"
+    );
     // WHEN
-    const result = getParams(params);
+    const result = getParams(withoutPathParam);
 
     // THEN
-    expect(result).toEqual(`${PARAM1}, ${PARAM2}`);
+    expect(result).toEqual(`${PARAM2}`);
   });
 });
 

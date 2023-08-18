@@ -22,6 +22,16 @@ const getParams = (params: Parameters[]) =>
     (params) => params.join(", ")
   );
 
+const getQueryParamsArray = (params: Parameters[]) =>
+  pipe(
+    params,
+    filter((param) => param.in !== "body"),
+    filter((param) => param.in === "query"),
+    map((param) => param.name),
+    toArray,
+    (params) => params.join(", ")
+  );
+
 const replacePathParams = (path: string, formValues: FormValues) =>
   pipe(
     path.split("/"),
@@ -44,6 +54,7 @@ const getRequestBodyKey = (body: Schemas) =>
 
 export {
   getQueryParams,
+  getQueryParamsArray,
   getParams,
   replacePathParams,
   getBody,
