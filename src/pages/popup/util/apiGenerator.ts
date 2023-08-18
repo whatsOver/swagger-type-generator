@@ -1,6 +1,6 @@
 import { Method } from "axios";
 import { Parameters, Schemas } from "../api/docs";
-import { getParams } from "./request";
+import { getParams, getQueryParamsArray } from "./request";
 import { typeConverter } from "./typeConverter";
 import { toTsType } from "@src/common/util/typeGenerator";
 
@@ -77,7 +77,7 @@ const ${method.toLowerCase()}API = async ({ ${parameters} }: ${interfaceName}) =
   const { data } = await axios${responseInterface}({
     method: "${method}",
     url: "${host}${dynamicPath}",
-    params: { ${args} },
+    params: { ${getQueryParamsArray(params)} },
     data: ${axiosData},
     headers: token ? { 'Authorization': \`Bearer \${token}\` } : {}
   });

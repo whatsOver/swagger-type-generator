@@ -5,7 +5,7 @@ import {
   generateInterface,
   objectToQueryString,
 } from "./apiGenerator";
-import { getBody, getParams } from "./request";
+import { getBody, getParams, getQueryParamsArray } from "./request";
 
 describe("API 코드 생성", () => {
   const sampleParams: Parameters[] = [
@@ -72,7 +72,9 @@ describe("API 코드 생성", () => {
     expect(result).toContain(
       `url: "${sampleAPI.host}${sampleAPI.path.replace("{", "${")}",`
     );
-    expect(result).toContain(`params: { ${getParams(sampleParams)} },`);
+    expect(result).toContain(
+      `params: { ${getQueryParamsArray(sampleParams)} },`
+    );
     expect(result).toContain(
       `data: ${JSON.stringify(
         sampleAPI.body ? getBody(sampleAPI.body, sampleFormValues) : {}
