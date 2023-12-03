@@ -9,15 +9,14 @@ const generateQueryKey = (params: Parameters[]) => {
     .join(",");
 };
 
-const generateInterface = (
+const generateQueryInterface = (
   apiFunctionName: string,
-  params: Parameters[],
-  queryKey: string
+  params: Parameters[]
 ) => {
   const capitalizedFunctionName =
     apiFunctionName.charAt(0).toUpperCase() + apiFunctionName.slice(1);
 
-  const paramsInterface = queryKey ? `${capitalizedFunctionName}Request` : "";
+  const paramsInterface = `${capitalizedFunctionName}Request`;
 
   const interfaceItems = params
     ? params
@@ -58,19 +57,22 @@ const generateReactQueryHook = ({
   const capitalizedFunctionName =
     apiFunctionName.charAt(0).toUpperCase() + apiFunctionName.slice(1);
 
-  const queryKey = generateQueryKey(params);
-
-  const { paramsInterface, interfaceStr } = generateInterface(
+  const { paramsInterface, interfaceStr } = generateQueryInterface(
     capitalizedFunctionName,
-    params,
-    queryKey
+    params
   );
 
-  const queryKeysWithParams = queryKey
-    .split(",")
-    .map((key) => `params.${key}`)
-    .join(", ");
-  const queryKeyFunctionString = `const ${capitalizedFunctionName}Key = (params: ${paramsInterface}) => ['${method}', ${queryKeysWithParams}];`;
+  // queryKey 함수를 생성
+  const queryKey = generateQueryKey(params);
+  const queryKeysWithParams = queryKey.length
+    ? queryKey
+        .split(",")
+        .map((key) => `params.${key}`)
+        .join(", ")
+    : "";
+  const queryKeyFunctionString = `const ${capitalizedFunctionName}Key = (params: ${paramsInterface}) => ['${method}'${
+    queryKeysWithParams.length ? ", " + queryKeysWithParams : ""
+  }];`;
 
   const queryKeyString = `${capitalizedFunctionName}Key(params)`;
 
@@ -82,12 +84,12 @@ export const use${capitalizedFunctionName}Query = (params: ${paramsInterface}) =
 };
 `;
   } else {
-    return `${interfaceStr}
-export const use${capitalizedFunctionName}Mutation = () => {
+    return `${interfaceStr}\n
+export const use${capitalizedFunctionName}Mutation = (params: ${paramsInterface}) => {
   return useMutation(${apiFunctionName});
 };
 `;
   }
 };
 
-export { generateReactQueryHook };
+export { generateQueryKey, generateQueryInterface, generateReactQueryHook };
