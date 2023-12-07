@@ -5,6 +5,7 @@ import {
   getBody,
   getParams,
   getRequestBodyKey,
+  generateFormData,
 } from "./request";
 
 describe("getQueryParams", () => {
@@ -150,5 +151,40 @@ describe("getRequestBodyKey", () => {
 
     // THEN
     expect(result).toEqual("name, emoji");
+  });
+});
+
+describe("generateFormData", () => {
+  it("creates FormData with correct data", () => {
+    // GIVEN
+    const body: Schemas = {
+      required: ["emoji", "name"],
+      type: "object",
+      properties: {
+        files: {
+          title: "Files",
+          type: "array",
+          items: {
+            type: "string",
+            format: "binary",
+          },
+        },
+        name: {
+          type: "string",
+        },
+      },
+    };
+
+    const formValues = { files: ["file1", "file2"] };
+
+    // WHEN
+    const formData = generateFormData(body, formValues);
+
+    // THEN
+    const formDataEntries = Array.from(formData.entries());
+    expect(formDataEntries).toEqual([
+      ["files", "file1"],
+      ["files", "file2"],
+    ]);
   });
 });
