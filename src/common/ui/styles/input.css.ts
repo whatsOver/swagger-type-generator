@@ -19,5 +19,11 @@ export const inputStyle = {
     "::placeholder": {
       color: vars.color.lightGrey2,
     },
+    // file css
+    selectors: {
+      "&[type='file']": {
+        display: "none",
+      },
+    },
   }),
 };
