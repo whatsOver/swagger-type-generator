@@ -1,9 +1,6 @@
-import { filter, map, pipe, reduce, toArray } from "@fxts/core";
+import { filter, keys, map, pipe, reduce, toArray } from "@fxts/core";
 import { Parameters, Schemas } from "../api/docs";
-
-type FormValues = {
-  [key: string]: string;
-};
+import { FormValues } from "../hooks/useForm";
 
 const getQueryParams = (params: Parameters[], formValues: FormValues) =>
   pipe(
@@ -41,11 +38,32 @@ const replacePathParams = (path: string, formValues: FormValues) =>
 
 const getBody = (body: Schemas, formValues: FormValues) =>
   pipe(
-    Object.keys(body.properties),
+    keys(body.properties),
     filter((property) => formValues[property]),
     map((property) => ({ [property]: formValues[property] })),
     reduce(Object.assign)
   );
+
+const generateFormData = (body: Schemas, formValues: FormValues) => {
+  const form = new FormData();
+  const filteredProperty = pipe(
+    keys(body.properties),
+    filter((property) => formValues[property]),
+    toArray
+  );
+
+  filteredProperty.forEach((property) => {
+    if (Array.isArray(formValues[property])) {
+      (formValues[property] as string[]).forEach((value) => {
+        form.append(property, value);
+      });
+    } else {
+      form.append(property, formValues[property] as string);
+    }
+  });
+
+  return form;
+};
 
 const getRequestBodyKey = (body: Schemas) =>
   pipe(Object.keys(body.properties), toArray, (properties) =>
@@ -58,5 +76,6 @@ export {
   getParams,
   replacePathParams,
   getBody,
+  generateFormData,
   getRequestBodyKey,
 };
