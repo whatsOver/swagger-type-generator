@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, Dispatch, SetStateAction } from "react";
 import useCopy from "../useCopy";
 import { jsonToTs } from "@src/common/util/typeGenerator";
 import {
@@ -13,13 +13,13 @@ import { generateReactQueryHook } from "../../util/queryGenerator";
 
 interface HandleCode {
   response: unknown;
-  setMode: React.Dispatch<React.SetStateAction<string>>;
+  setMode: Dispatch<SetStateAction<string>>;
 }
 
 const useHandleCode = ({ response, setMode }: HandleCode) => {
   // FIRST RENDER
   // 1. location state에서 method, params, path, body, host 가져오기
-  const { method, params, path, body, host } = useLocation()
+  const { method, params, path, body, host, contentType } = useLocation()
     .state as RequestProps;
 
   // INTERACTION
@@ -46,7 +46,7 @@ const useHandleCode = ({ response, setMode }: HandleCode) => {
         (generateInterface(params, body, method) +
           "\n" +
           generateAxiosAPICode({
-            api: { method, path, host, params, body },
+            api: { method, path, host, params, body, contentType },
             rootInterfaceKey,
           })) +
         "\n\n" +
@@ -71,7 +71,7 @@ const useHandleCode = ({ response, setMode }: HandleCode) => {
         (generateInterface(params, body, method) +
           "\n" +
           generateFetchAPICode({
-            api: { method, path, host, params, body },
+            api: { method, path, host, params, body, contentType },
             rootInterfaceKey,
           })) +
         "\n\n" +

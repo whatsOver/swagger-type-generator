@@ -1,5 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import {
+  SchemasProperties,
+  SwaggerFormat,
+  SwaggerType,
+} from "@src/pages/popup/api/docs";
 import { EMPTY_RESPONSE } from "@src/pages/popup/constants/status";
 
 const isArrayType = (value: any): boolean =>
@@ -14,6 +19,51 @@ const checkArrayAndConvert = (value: any): any => {
   return value;
 };
 
+const changeSwaggerTypeToTsType = (
+  type: SwaggerType,
+  format?: SwaggerFormat
+): string => {
+  switch (type) {
+    case "integer":
+    case "number":
+      return "number";
+    case "string":
+      return "string";
+    case "boolean":
+      return "boolean";
+    case "array":
+      return changeSwaggerFormatToTsType(format) + "[]";
+    default:
+      return "unknown";
+  }
+};
+
+const changeSwaggerFormatToTsType = (format: SwaggerFormat): string => {
+  switch (format) {
+    case "int32":
+    case "int64":
+    case "float":
+    case "double":
+      return "number";
+    case "byte":
+    case "binary":
+      return "File";
+    case "date":
+    case "date-time":
+      return "string";
+    default:
+      return "unknown";
+  }
+};
+
+const getBodyProPertyType = (property: SchemasProperties) => {
+  if (property.type === "array") {
+    return changeSwaggerTypeToTsType(property.type, property.items.format);
+  } else {
+    return changeSwaggerTypeToTsType(property.type, property.format);
+  }
+};
+
 const toTsType = (value: any): string => {
   if (isArrayType(value)) {
     value = checkArrayAndConvert(value);
@@ -23,8 +73,8 @@ const toTsType = (value: any): string => {
   if (jsType === "number" || jsType === "boolean") return jsType;
   else if (jsType === "object" && value === null) return "unknown";
   else if (Array.isArray(value)) {
-    return value.length > 0 ? `${toTsType(value[0])}[]` : "any[]";
-  } else if (jsType === "object") return "any";
+    return value.length > 0 ? `${toTsType(value[0])}[]` : "unknown[]";
+  } else if (jsType === "object") return "unknown";
   else return "string";
 };
 
@@ -78,4 +128,4 @@ const jsonToTs = (
   return { interfaceArray: interfaces, rootInterfaceKey };
 };
 
-export { toTsType, jsonToTs };
+export { toTsType, getBodyProPertyType, jsonToTs };

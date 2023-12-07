@@ -1,5 +1,6 @@
 import { API } from "@src/pages/content/modules/getAPIList";
 import {
+  ContentType,
   DefaultComplexSchema,
   Schemas,
   SwaggerDocs,
@@ -18,23 +19,33 @@ const convertSelectedAPI = (
   const description = api.description;
   const parameters =
     data.paths[path][method.toLowerCase() as Method].parameters;
-
   let schemaName = "";
   const requestBody =
     data.paths[api.path][method.toLowerCase() as Method].requestBody;
   let body = null;
+  let contentType: ContentType = "application/json";
+
   if (requestBody) {
-    const schema = requestBody.content["application/json"].schema;
+    contentType = Object.keys(requestBody.content)[0] as ContentType;
+    const schema = requestBody.content[contentType].schema;
     if ("$ref" in schema) {
       schemaName = schema.$ref.split("/")[3];
       body = data.components.schemas[schemaName];
     }
-    if ("type" in schema && schema.type === "array") {
+    if (
+      "type" in schema &&
+      schema.type === "array" &&
+      "items" in schema &&
+      "$ref" in schema.items
+    ) {
       schemaName = schema.items.$ref.split("/")[3];
       body = data.components.schemas[schemaName];
     }
     if ("default" in schema) {
       body = transformDefaultComplexSchema(schema);
+    }
+    if ("properties" in schema) {
+      body = schema;
     }
   }
 
@@ -44,6 +55,7 @@ const convertSelectedAPI = (
     description,
     params: parameters,
     body,
+    contentType,
   };
 };
 

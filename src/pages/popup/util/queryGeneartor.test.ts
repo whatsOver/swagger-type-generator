@@ -1,3 +1,4 @@
+import { Parameters } from "../api/docs";
 import {
   GenerateReactQueryHookProps,
   generateQueryInterface,
@@ -19,7 +20,7 @@ describe("generateQueryKey", () => {
 
   it("params가 있는 경우", () => {
     // given
-    const params = [
+    const params: Parameters[] = [
       {
         name: "param1",
         in: "path",
@@ -73,7 +74,7 @@ export interface GetDataRequest {
   it("params가 있는 경우", () => {
     // given
     const apiFunctionName = "getData";
-    const params = [
+    const params: Parameters[] = [
       {
         name: "param1",
         in: "path",

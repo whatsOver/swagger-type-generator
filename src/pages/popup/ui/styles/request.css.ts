@@ -122,6 +122,11 @@ export const requestStyle = {
     textAlign: "left",
   }),
 
+  inputWrapper: style({
+    display: "flex",
+    flexDirection: "column",
+  }),
+
   inputBox: style({
     display: "flex",
     alignItems: "center",
@@ -130,12 +135,104 @@ export const requestStyle = {
     marginBottom: "10px",
   }),
 
+  inputLabel: style({
+    textAlign: "left",
+    overflow: "hidden",
+    wordBreak: "break-all",
+    lineClamp: 2,
+  }),
+
+  uploadButton: style({
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "5rem",
+    height: "2.5rem",
+    borderRadius: "10px",
+    backgroundColor: vars.color.blue,
+    color: vars.color.white,
+    cursor: "pointer",
+    selectors: {
+      "&:active": {
+        backgroundColor: vars.color.darkBlue,
+      },
+    },
+  }),
+
   label: style({
     width: "100px",
     textAlign: "left",
     overflow: "hidden",
     wordBreak: "break-all",
     lineClamp: 2,
+  }),
+
+  rightWrapper: style({
+    display: "flex",
+    columnGap: "10px",
+  }),
+
+  plusButton: style({
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "3rem",
+    height: "2.5rem",
+    borderRadius: "10px",
+    backgroundColor: vars.color.purple,
+    color: vars.color.white,
+    cursor: "pointer",
+    selectors: {
+      "&:active": {
+        backgroundColor: vars.color.darkPurple,
+      },
+    },
+  }),
+
+  arrayBoxWrapper: style({
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "left",
+    columnGap: "10px",
+    rowGap: "10px",
+    marginTop: "10px",
+    marginBottom: "10px",
+    padding: "1rem",
+    borderRadius: "10px",
+    backgroundColor: vars.color.darkBlue,
+    minHeight: "1.5rem",
+  }),
+
+  arrayGreenBox: style({
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "0 10px",
+    height: "1rem",
+    borderRadius: "5px",
+    backgroundColor: vars.color.green,
+    cursor: "pointer",
+    selectors: {
+      "&:active": {
+        backgroundColor: vars.color.darkGreen,
+      },
+    },
+  }),
+
+  arrayBlueBox: style({
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "0 10px",
+    height: "1rem",
+    borderRadius: "5px",
+    backgroundColor: vars.color.blue,
+    cursor: "pointer",
+    selectors: {
+      "&:active": {
+        backgroundColor: vars.color.darkBlue,
+      },
+    },
   }),
 
   fixedButtonWrapper: style({

@@ -1,4 +1,4 @@
-import { Parameters, Schemas } from "../api/docs";
+import { ContentType, Parameters, Schemas } from "../api/docs";
 import { requestStyle } from "./styles/request.css";
 import { Method } from "axios";
 import { useState, useCallback } from "react";
@@ -24,6 +24,7 @@ export interface RequestProps {
   params: Parameters[];
   description: string;
   host: string;
+  contentType: ContentType;
   body?: Schemas;
 }
 
@@ -47,9 +48,10 @@ const Request = () => {
   const initializeMode = useCallback(() => setMode("REQUEST"), []);
 
   // 2. Request 비지니스 로직
-  const { handleChange, handleSubmit, response } = useHandleRequest({
-    setMode,
-  });
+  const { response, formValues, handleChange, handleSubmit, handleArray } =
+    useHandleRequest({
+      setMode,
+    });
 
   // 3. Code 비지니스 로직
   const {
@@ -68,10 +70,20 @@ const Request = () => {
         <h2 className={requestStyle.mainDescription}>{description}</h2>
         <div className={requestStyle.requestBlock}>
           {!!params?.length && (
-            <Params params={params} handleChange={handleChange} />
+            <Params
+              params={params}
+              formValues={formValues}
+              handleChange={handleChange}
+              handleArray={handleArray}
+            />
           )}
           {!!body?.type.length && (
-            <Body body={body} handleChange={handleChange} />
+            <Body
+              body={body}
+              formValues={formValues}
+              handleChange={handleChange}
+              handleArray={handleArray}
+            />
           )}
           {!params?.length && !body?.type.length && (
             <div className={requestStyle.flexView}>
