@@ -1,8 +1,8 @@
 import { Method } from "axios";
-import { Parameters, Schemas } from "../api/docs";
+import { ContentType, Parameters, Schemas } from "../api/docs";
 import { getParams, getQueryParamsArray } from "./request";
 import { typeConverter } from "./typeConverter";
-import { toTsType } from "@src/common/util/typeGenerator";
+import { getBodyProPertyType } from "@src/common/util/typeGenerator";
 
 const generateInterface = (
   params: Parameters[],
@@ -18,7 +18,9 @@ const generateInterface = (
 
   const postData = body
     ? Object.keys(body.properties)
-        .map((key) => `    ${key}: ${toTsType(body.properties[key].example)};`)
+        .map(
+          (key) => `    ${key}: ${getBodyProPertyType(body.properties[key])};`
+        )
         .join("\n")
     : "";
 
@@ -36,13 +38,29 @@ const generateInterface = (
   return `interface ${interfaceName} {\n${interfaceItems}${postDataInterface}${tokenLine}}`;
 };
 
-interface GenerateAPICodeProps {
+const generateFormDataCode = (contentType: ContentType, method: string) => {
+  const formDataCode =
+    contentType === "multipart/form-data"
+      ? `const formData = new FormData();
+Object.entries(${method}Data).forEach(([key, value]) => {
+  if (Array.isArray(value)) {
+    value.forEach(item => formData.append(key, item));
+  } else {
+    formData.append(key, value);
+  }
+});`
+      : "";
+  return formDataCode;
+};
+
+export interface GenerateAPICodeProps {
   api: {
     method: string;
     host: string;
     path: string;
     params: Parameters[];
     body: Schemas | null;
+    contentType: ContentType;
   };
   rootInterfaceKey?: string;
 }
@@ -52,7 +70,7 @@ const generateAxiosAPICode = ({
   rootInterfaceKey,
 }: GenerateAPICodeProps): string => {
   const interfaceName = "RequestInterface";
-  const { method, host, path, params, body } = api;
+  const { method, host, path, params, body, contentType } = api;
 
   const args = params ? getParams(params) : "";
   const bodyArgs = body
@@ -64,22 +82,29 @@ const generateAxiosAPICode = ({
 
   const parameters = bodyArgs.length > 0 ? `${bodyArgs}, token` : "token";
 
-  const axiosData = body ? `${method}Data` : "{}";
-
   const responseInterface = rootInterfaceKey
     ? rootInterfaceKey === "Json"
       ? `<${rootInterfaceKey}>`
       : `<${rootInterfaceKey}[]>`
     : "";
 
+  const axiosData = body
+    ? contentType === "multipart/form-data"
+      ? "formData"
+      : `${method}Data`
+    : "{}";
+
+  const headers = `token ? { 'Authorization': \`Bearer \${token}\`, 'Content-Type': '${contentType}' } : { 'Content-Type': '${contentType}' }`;
+
   const apiFunction = `
 const ${method.toLowerCase()}API = async ({ ${parameters} }: ${interfaceName}) => {
+  ${generateFormDataCode(contentType, method)}
   const { data } = await axios${responseInterface}({
     method: "${method}",
     url: "${host}${dynamicPath}",
     params: { ${getQueryParamsArray(params)} },
     data: ${axiosData},
-    headers: token ? { 'Authorization': \`Bearer \${token}\` } : {}
+    headers: ${headers},
   });
   return data;
 };`;
@@ -101,7 +126,7 @@ const generateFetchAPICode = ({
   rootInterfaceKey,
 }: GenerateAPICodeProps): string => {
   const interfaceName = "RequestInterface";
-  const { method, host, path, params = [], body } = api;
+  const { method, host, path, params = [], body, contentType } = api;
 
   const queryParams = params
     ? params.filter((param) => param.in === "query").map((param) => param.name)
@@ -129,12 +154,17 @@ const generateFetchAPICode = ({
     ? `\`?${objectToQueryString(queryParams.join(", "))}\``
     : "";
 
-  const fetchBody = body ? `${method}Data` : "{}";
+  const fetchBody = body
+    ? contentType === "multipart/form-data"
+      ? "formData"
+      : `${method}Data`
+    : "{}";
 
   const apiFunction = `
 const ${method.toLowerCase()}API = async ({ ${parameters} }: ${interfaceName}): Promise${responseInterface} => {
+  ${generateFormDataCode(contentType, method)}
   ${queryParams.length ? `const query = ${fetchParams};` : ""}
-  const headers = token ? { 'Authorization': \`Bearer \${token}\`, 'Content-Type': 'application/json' } : { 'Content-Type': 'application/json' };
+  const headers = token ? { 'Authorization': \`Bearer \${token}\`, 'Content-Type': '${contentType}' } : { 'Content-Type': '${contentType}' };
   const response = await fetch(\`${host}${dynamicPath}\` + ${
     queryParams.length ? "query" : '""'
   }, {
