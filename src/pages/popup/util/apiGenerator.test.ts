@@ -1,5 +1,6 @@
 import { Parameters } from "../api/docs";
 import {
+  GenerateAPICodeProps,
   generateAxiosAPICode,
   generateFetchAPICode,
   generateInterface,
@@ -25,15 +26,16 @@ describe("API 코드 생성", () => {
     },
   ];
 
-  const sampleAPI = {
+  const sampleAPI: GenerateAPICodeProps["api"] = {
     method: "get",
     host: "https://api.example.com",
     path: "/path/{param1}",
     params: sampleParams,
     body: null,
+    contentType: "application/json",
   };
 
-  const sampleAPIWithBody = {
+  const sampleAPIWithBody: GenerateAPICodeProps["api"] = {
     ...sampleAPI,
     method: "post",
     body: {
@@ -51,17 +53,21 @@ describe("API 코드 생성", () => {
   };
 
   it("주어진 Param에 대해서 올바른 interface 타입을 생성한다", () => {
-    const expectedInterface = `interface RequestInterface {\n  param1: string;\n  param2: number;\n  token?: string;\n}`;
+    // GIVEN & WHEN
     const result = generateInterface(sampleParams);
 
+    // THEN
+    const expectedInterface = `interface RequestInterface {\n  param1: string;\n  param2: number;\n  token?: string;\n}`;
     expect(result).toBe(expectedInterface);
   });
 
   it("올바른 API 코드를 생성한다 axios 기반", () => {
+    // GIVEN & WHEN
     const result = generateAxiosAPICode({
       api: sampleAPI,
     });
 
+    // THEN
     // 결과값의 패턴이 맞는지 확인
     expect(result).toContain(
       `const ${sampleAPI.method.toLowerCase()}API = async ({ ${sampleParams
@@ -83,6 +89,7 @@ describe("API 코드 생성", () => {
   });
 
   it("axios 기반으로 올바른 API 코드를 생성한다 (body가 있는 경우)", () => {
+    // GIVEN & WHEN
     const result = generateAxiosAPICode({
       api: sampleAPIWithBody,
       rootInterfaceKey: "Json",
@@ -97,6 +104,7 @@ describe("API 코드 생성", () => {
 
     const parameters = bodyArgs.length > 0 ? `${bodyArgs}, token` : "token";
 
+    // THEN
     // 결과값의 패턴이 맞는지 확인
     expect(result).toContain(
       `const ${sampleAPIWithBody.method.toLowerCase()}API = async ({ ${parameters} }: RequestInterface) => {`
