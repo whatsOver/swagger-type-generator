@@ -2,6 +2,25 @@ import axios, { Method } from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { Path } from "@src/pages/content/modules/getAPIList";
 
+export type SwaggerType =
+  | "integer"
+  | "number"
+  | "string"
+  | "boolean"
+  | "array"
+  | "object";
+
+export type SwaggerFormat =
+  | "int32"
+  | "int64"
+  | "float"
+  | "double"
+  | "byte"
+  | "binary"
+  | "date"
+  | "date-time"
+  | "password";
+
 export interface Parameters {
   name: string;
   in: string;
@@ -10,22 +29,51 @@ export interface Parameters {
   required: boolean;
   schema: {
     default?: string | number;
-    type: string;
-    format?: string;
+    type: SwaggerType;
+    format?: SwaggerFormat;
+    items?: {
+      type: SwaggerType;
+      format?: SwaggerFormat;
+    };
   };
 }
 
+export type ContentType =
+  | "application/json"
+  | "multipart/form-data"
+  | "application/x-www-form-urlencoded"
+  | "*/*";
+
 interface RequestBody {
   content: {
-    "application/json": {
-      schema: RefSchema | RefArraySchema | DefaultComplexSchema;
+    [key in ContentType]?: {
+      schema: RefSchema | RefArraySchema | DefaultComplexSchema | Schema;
     };
   };
+  required?: boolean;
 }
 
 type RefSchema = {
   $ref: string;
 };
+
+interface Schema {
+  title: string;
+  type: string;
+  properties: {
+    [key: string]: {
+      title: string;
+      type: string;
+      items?: {
+        type: string;
+        format?: string;
+      };
+      example?: string | number;
+      default?: string | number;
+    };
+  };
+  required?: string[];
+}
 
 type RefArraySchema = {
   type: "array";
@@ -46,7 +94,19 @@ export interface Information {
   summary: string;
   operationId: string;
   parameters: Parameters[];
-  requestBody: RequestBody;
+  requestBody?: RequestBody;
+  responses: {
+    [key: string]: {
+      description: string;
+      content: {
+        "application/json": {
+          schema: RefSchema | RefArraySchema | DefaultComplexSchema | Schema;
+        };
+      };
+    };
+  };
+  description?: string;
+  security?: { [key: string]: string[] }[];
 }
 
 export interface Schemas {
@@ -54,13 +114,20 @@ export interface Schemas {
   description?: string;
   required?: string[];
   properties: {
-    [key: string]: {
-      type: string;
-      format?: string;
-      description?: string;
-      example?: string | number;
-      default?: string | number;
-    };
+    [key: string]: SchemasProperties;
+  };
+}
+
+export interface SchemasProperties {
+  type: SwaggerType;
+  format?: SwaggerFormat;
+  description?: string;
+  example?: string | number;
+  default?: string | number;
+  title?: string;
+  items?: {
+    type: SwaggerType;
+    format?: SwaggerFormat;
   };
 }
 
@@ -76,7 +143,7 @@ export interface SwaggerDocs {
   };
   paths: {
     [key: string]: {
-      [key in Method]: Information;
+      [key in Method]?: Information;
     };
   };
 }

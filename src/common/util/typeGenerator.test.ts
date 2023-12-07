@@ -21,8 +21,8 @@ describe("toTsType", () => {
     expect(toTsType([true, false])).toEqual("boolean[]");
   });
 
-  it('타입이 객체인 경우 "any"를 반환한다', () => {
-    expect(toTsType({ a: 1, b: 2 })).toEqual("any");
+  it('타입이 객체인 경우 "unknown"를 반환한다', () => {
+    expect(toTsType({ a: 1, b: 2 })).toEqual("unknown");
   });
 
   it('나머지 경우에는 "string"을 반환한다', () => {
