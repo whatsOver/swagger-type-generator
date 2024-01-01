@@ -63,7 +63,7 @@ const generateReactQueryHook = ({
   );
 
   // queryKey 함수를 생성
-  const queryKey = generateQueryKey(params);
+  const queryKey = params ? generateQueryKey(params) : "";
   const queryKeysWithParams = queryKey.length
     ? queryKey
         .split(",")
