@@ -1,4 +1,4 @@
-import { requestStyle } from "./styles/request.css";
+import { requestStyle } from "../pages/Request/request.css";
 import Button from "@src/common/ui/Button";
 import CodeBlock from "./CodeBlock";
 import { vars } from "@src/common/ui/styles/theme.css";
@@ -6,7 +6,7 @@ import { ForwardRefRenderFunction } from "react";
 import { forwardRef } from "react";
 import { IoChevronBackOutline as BackIcon } from "react-icons/io5";
 import { IoMdClose as CloseIcon } from "react-icons/io";
-import { Mode } from "./Request";
+import { Mode } from "../pages/Request/Request";
 
 interface ModalCodeBlockProps {
   description: string;

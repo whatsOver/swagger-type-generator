@@ -7,7 +7,7 @@ import {
   generateInterface,
 } from "../../util/apiGenerator";
 import { useLocation } from "react-router-dom";
-import { RequestProps } from "../../ui/Request";
+import { RequestProps } from "../../pages/Request/Request";
 import useSettingStore from "../../store/setting";
 import { generateReactQueryHook } from "../../util/queryGenerator";
 

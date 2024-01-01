@@ -5,7 +5,7 @@ import {
   Schemas,
   SwaggerDocs,
 } from "@src/pages/popup/api/docs";
-import { RequestProps } from "@src/pages/popup/ui/Request";
+import { RequestProps } from "@src/pages/popup/pages/Request/Request";
 import { Method } from "axios";
 
 const convertSelectedAPI = (

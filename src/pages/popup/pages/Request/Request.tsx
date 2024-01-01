@@ -1,22 +1,22 @@
-import { ContentType, Parameters, Schemas } from "../api/docs";
-import { requestStyle } from "./styles/request.css";
+import { ContentType, Parameters, Schemas } from "../../api/docs";
 import { Method } from "axios";
 import { useState, useCallback } from "react";
 import Button from "@src/common/ui/Button";
 import { useLocation } from "react-router-dom";
-import { popupStyle } from "../styles/popup.css";
 import Header from "@src/common/ui/Header";
 import Modal from "@src/common/ui/Modal";
-import Params from "./Params";
-import Body from "./Body";
-import ModalCodeBlock from "./ModalCodeBlock";
+import Params from "../../ui/Params";
+import Body from "../../ui/Body";
+import ModalCodeBlock from "../../ui/ModalCodeBlock";
 import { Flip, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import HashLoader from "react-spinners/HashLoader";
 import { VscBracketError as ErrorIcon } from "react-icons/vsc";
 import { vars } from "@src/common/ui/styles/theme.css";
-import useHandleRequest from "../hooks/Request/useHandleRequest";
-import useHandleCode from "../hooks/Request/useHandleCode";
+import useHandleRequest from "../../hooks/Request/useHandleRequest";
+import useHandleCode from "../../hooks/Request/useHandleCode";
+import { popupStyle } from "../Popup/popup.css";
+import { requestStyle } from "./request.css";
 
 export interface RequestProps {
   method: Method;
@@ -65,7 +65,7 @@ const Request = () => {
 
   return (
     <div className={popupStyle.app}>
-      <Header />
+      <Header showBackButton />
       <form className={requestStyle.body} onSubmit={handleSubmit}>
         <h2 className={requestStyle.mainDescription}>{description}</h2>
         <div className={requestStyle.requestBlock}>
