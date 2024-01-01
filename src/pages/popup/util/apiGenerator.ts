@@ -102,7 +102,7 @@ const ${method.toLowerCase()}API = async ({ ${parameters} }: ${interfaceName}) =
   const { data } = await axios${responseInterface}({
     method: "${method}",
     url: "${host}${dynamicPath}",
-    params: { ${getQueryParamsArray(params)} },
+    params: { ${params && getQueryParamsArray(params)} },
     data: ${axiosData},
     headers: ${headers},
   });
