@@ -81,3 +81,16 @@ export const orangeButtonStyles = style({
     },
   },
 });
+
+export const purpleButtonStyles = style({
+  width: "40px",
+  height: "30px",
+  fontSize: "11px",
+  fontWeight: "bold",
+  backgroundColor: vars.color.purple,
+  selectors: {
+    "&:active": {
+      backgroundColor: vars.color.darkPurple,
+    },
+  },
+});
