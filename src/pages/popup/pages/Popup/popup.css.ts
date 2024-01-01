@@ -18,6 +18,7 @@ export const popupStyle = {
     textAlign: "center",
     overflowX: "hidden",
     overflowY: "auto",
+    boxSizing: "border-box",
     selectors: {
       "&::-webkit-scrollbar": {
         width: "10px",
@@ -142,5 +143,19 @@ export const popupStyle = {
     whiteSpace: "nowrap",
     marginTop: "5px",
     marginLeft: "3px",
+  }),
+
+  menuButton: style({
+    width: "30px",
+    height: "30px",
+    borderRadius: "10px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    cursor: "pointer",
+    ":hover": {
+      opacity: 0.8,
+    },
+    transition: "opacity 0.3s ease",
   }),
 };

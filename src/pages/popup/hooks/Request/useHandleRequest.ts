@@ -1,6 +1,6 @@
 import { useEffect, FormEvent, useState } from "react";
 import useAuthStore from "../../store/auth";
-import type { Mode, RequestProps } from "../../ui/Request";
+import type { Mode, RequestProps } from "../../pages/Request/Request";
 import useForm from "../useForm";
 import { useLocation } from "react-router-dom";
 import axios, { RawAxiosRequestHeaders } from "axios";

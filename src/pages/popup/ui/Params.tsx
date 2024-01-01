@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useState } from "react";
-import { requestStyle } from "./styles/request.css";
+import { requestStyle } from "../pages/Request/request.css";
 import Input from "@src/common/ui/Input";
 import { Parameters } from "../api/docs";
 import { typeConverter } from "../util/typeConverter";

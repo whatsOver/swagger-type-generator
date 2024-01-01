@@ -1,5 +1,5 @@
 import { vars } from "@src/common/ui/styles/theme.css";
-import { popupStyle } from "../styles/popup.css";
+import { popupStyle } from "../pages/Popup/popup.css";
 import { API, APIList } from "@src/pages/content/modules/getAPIList";
 
 interface ApiListProps {
