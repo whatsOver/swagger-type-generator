@@ -1,16 +1,17 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
+import classNames from "classnames";
 import React, {
-  useState,
+  ButtonHTMLAttributes,
+  MouseEvent,
+  forwardRef,
+  useContext,
   useEffect,
+  useImperativeHandle,
   useMemo,
   useRef,
-  useContext,
-  forwardRef,
-  useImperativeHandle,
+  useState,
 } from "react";
 import { dropDownStyles } from "./styles/dropdown.css";
-import classNames from "classnames";
-import { ButtonHTMLAttributes } from "react/ts5.0";
 
 const DropdownContext = React.createContext<{
   isOpen: boolean;
@@ -96,7 +97,7 @@ const Modal = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const modalTrigger = document.querySelector("#trigger");
-    const handleClickOutside = (e: MouseEvent) => {
+    const handleClickOutside = (e: globalThis.MouseEvent) => {
       if (
         modalRef.current &&
         !modalRef.current.contains(e.target as Node) &&
@@ -142,20 +143,26 @@ const Modal = ({ children }: { children: React.ReactNode }) => {
 
 const Item = ({
   children,
+  name,
   onClick,
 }: {
   children: string;
-  onClick?: () => void;
+  name?: string;
+  onClick?: (name: string) => void;
 }) => {
   const { setIsOpen } = useContext(DropdownContext);
 
-  const handleClick = () => {
-    if (onClick) onClick();
+  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
+    if (onClick) onClick(e.currentTarget.name);
     setIsOpen(false);
   };
 
   return (
-    <button className={dropDownStyles.listButtonStyle} onClick={handleClick}>
+    <button
+      name={name}
+      className={dropDownStyles.listButtonStyle}
+      onClick={handleClick}
+    >
       {children}
     </button>
   );
