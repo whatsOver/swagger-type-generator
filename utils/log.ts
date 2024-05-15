@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 type ColorType = "success" | "info" | "error" | "warning" | keyof typeof COLORS;
 
 export default function colorLog(message: string, type?: ColorType) {
@@ -17,8 +18,6 @@ export default function colorLog(message: string, type?: ColorType) {
       color = COLORS.FgYellow;
       break;
   }
-
-  console.log(color, message);
 }
 
 const COLORS = {
