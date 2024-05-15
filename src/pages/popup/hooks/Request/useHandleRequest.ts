@@ -1,34 +1,65 @@
-import { useEffect, FormEvent, useState } from "react";
-import useAuthStore from "../../store/auth";
-import type { Mode, RequestProps } from "../../pages/Request/Request";
-import useForm from "../useForm";
-import { useLocation } from "react-router-dom";
+import { APIWithParamsAndBodyAndHost } from "@src/pages/content/modules/getAPIList";
 import axios, { RawAxiosRequestHeaders } from "axios";
-import { generateFormData, getBody, getQueryParams } from "../../util/request";
+import { FormEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { EMPTY_RESPONSE } from "../../constants/status";
 import { Schemas } from "../../api/docs";
+import { EMPTY_RESPONSE } from "../../constants/status";
+import type { Mode } from "../../pages/Request/Request";
+import useAuthStore from "../../store/auth";
+import { generateFormData, getBody, getQueryParams } from "../../util/request";
+import useForm, { FormValues, ReturnUseForm } from "../useForm";
 
 interface HandleRequest {
+  api: APIWithParamsAndBodyAndHost | null;
   setMode: React.Dispatch<React.SetStateAction<Mode>>;
+  initialFormValues?: FormValues;
+  onSuccess?: (response: unknown) => void;
 }
 
-const useHandleRequest = ({ setMode }: HandleRequest) => {
+export type ReturnUseHandleRequest = {
+  response: unknown;
+  formValues: FormValues;
+  handleArray: ReturnUseForm["handleArray"];
+  handleChange: (e: FormEvent<HTMLInputElement>) => void;
+  handleSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>;
+  resetFormValues: ReturnUseForm["resetFormValues"];
+  settingFormValues: ReturnUseForm["settingFormValues"];
+};
+
+export type OmitHandleFormValues = Omit<
+  ReturnUseHandleRequest,
+  "resetFormValues" | "settingFormValues"
+>;
+
+const useHandleRequest = ({
+  api,
+  setMode,
+  initialFormValues,
+  onSuccess,
+}: HandleRequest): ReturnUseHandleRequest => {
   // FIRST RENDER
-  const { method, params, path, body, host, contentType } = useLocation()
-    .state as RequestProps;
 
   const token = useAuthStore((state) => state.token);
 
   // INTERACTION
   // 1. 유저 > params, body 입력
-  const { formValues, handleChange, setFormValues, handleArray } = useForm();
+  const {
+    formValues,
+    handleArray,
+    handleChange,
+    setFormValues,
+    resetFormValues,
+    settingFormValues,
+  } = useForm(initialFormValues);
 
   // 1-1. 유저 > params, body 입력 > 초기값 설정
   useEffect(() => {
+    if (!api) return;
+    if (!initialFormValues) return;
+    if (Object.keys(initialFormValues).length) return;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const initialValues: Record<string, any> = {};
-    params?.forEach((param) => {
+    api.params?.forEach((param) => {
       if (param.example && param.required) {
         initialValues[param.name] = param.example;
       }
@@ -37,17 +68,17 @@ const useHandleRequest = ({ setMode }: HandleRequest) => {
       }
     });
 
-    body?.properties &&
-      Object.keys(body.properties).forEach((key) => {
-        if (body.properties[key].example) {
-          initialValues[key] = body.properties[key].example;
+    api.body?.properties &&
+      Object.keys(api.body.properties).forEach((key) => {
+        if (api.body.properties[key].example) {
+          initialValues[key] = api.body.properties[key].example;
         }
-        if (body.properties[key].default) {
-          initialValues[key] = body.properties[key].default;
+        if (api.body.properties[key].default) {
+          initialValues[key] = api.body.properties[key].default;
         }
       });
     setFormValues(initialValues);
-  }, [params, body, setFormValues]);
+  }, [api, initialFormValues, setFormValues]);
 
   // 2. 유저 > 요청 버튼 클릭
   const [response, setResponse] = useState(null);
@@ -57,17 +88,17 @@ const useHandleRequest = ({ setMode }: HandleRequest) => {
     e.preventDefault();
     setMode("LOADING");
 
-    const transformPath = params
-      ? params.reduce((acc, param) => {
+    const transformPath = api.params
+      ? api.params.reduce((acc, param) => {
           return param.in === "path"
             ? acc.replace(`{${param.name}}`, formValues[param.name] as string)
             : acc;
-        }, path)
-      : path;
+        }, api.path)
+      : api.path;
 
     const getBodyData = (body: Schemas) => {
       if (!body) return {};
-      if (contentType === "multipart/form-data") {
+      if (api.contentType === "multipart/form-data") {
         return generateFormData(body, formValues);
       }
       return getBody(body, formValues);
@@ -75,13 +106,13 @@ const useHandleRequest = ({ setMode }: HandleRequest) => {
 
     try {
       const headers: RawAxiosRequestHeaders = token.length
-        ? { Authorization: `Bearer ${token}`, "Content-Type": contentType }
-        : { "Content-Type": contentType };
+        ? { Authorization: `Bearer ${token}`, "Content-Type": api.contentType }
+        : { "Content-Type": api.contentType };
       const response = await axios({
-        method,
-        url: host + transformPath,
-        params: params ? getQueryParams(params, formValues) : {},
-        data: getBodyData(body),
+        method: api.method,
+        url: api.host + transformPath,
+        params: api.params ? getQueryParams(api.params, formValues) : {},
+        data: getBodyData(api.body),
         headers,
         paramsSerializer: (params) => {
           return Object.entries(params)
@@ -89,17 +120,18 @@ const useHandleRequest = ({ setMode }: HandleRequest) => {
             .join("&");
         },
       });
+      onSuccess && onSuccess(response.data);
       // 응답이 없는 경우 Default Response를 보여준다.
       if (!response.data) {
         toast.success(`${response.status} ${response.statusText}`);
         setResponse(EMPTY_RESPONSE);
-        setMode("REQUEST");
+        setMode("RESPONSE");
         return;
       }
 
       toast.success(`${response.status} ${response.statusText}`);
       setResponse(response.data);
-      setMode("REQUEST");
+      setMode("RESPONSE");
     } catch (error) {
       setMode("ERROR");
       toast.error(`${error.response?.status} ${error.response?.statusText}`);
@@ -110,9 +142,11 @@ const useHandleRequest = ({ setMode }: HandleRequest) => {
   return {
     response,
     formValues,
+    handleArray,
     handleChange,
     handleSubmit,
-    handleArray,
+    resetFormValues,
+    settingFormValues,
   };
 };
 

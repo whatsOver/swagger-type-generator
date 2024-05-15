@@ -2,9 +2,15 @@ import { vars } from "@src/common/ui/styles/theme.css";
 import { style } from "@vanilla-extract/css";
 
 export const requestStyle = {
+  requestWrapper: style({
+    width: "100%",
+    padding: "0 1rem",
+    boxSizing: "border-box",
+  }),
+
   body: style({
-    marginTop: "20px",
-    width: "90%",
+    width: "100%",
+    boxSizing: "border-box",
     height: "calc(100vh - 40px - 70px)",
     backgroundColor: vars.color.darkGrey,
     color: vars.color.white,
@@ -59,16 +65,16 @@ export const requestStyle = {
   }),
 
   modal: style({
-    marginTop: "40px",
+    display: "flex",
     backgroundColor: vars.color.darkGrey,
     color: vars.color.white,
-    width: "70vw",
-    height: "70vh",
     borderRadius: "10px",
     padding: "20px",
-    display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    flexShrink: 1,
+    minWidth: 0,
+    maxWidth: "80vw",
   }),
 
   descriptionWrapper: style({
@@ -88,7 +94,7 @@ export const requestStyle = {
   description: style({
     fontWeight: "bold",
     display: "flex",
-    alignItems: "left",
+    textAlign: "left",
     color: vars.color.green,
     flex: 1,
   }),
@@ -99,7 +105,7 @@ export const requestStyle = {
     alignItems: "left",
     flex: 1,
     fontSize: "1.1rem",
-    justifyContent: "left",
+    textAlign: "left",
   }),
 
   buttonWrapper: style({
@@ -236,10 +242,12 @@ export const requestStyle = {
   }),
 
   fixedButtonWrapper: style({
-    position: "absolute",
-    bottom: "40px",
-    width: "90%",
     display: "flex",
+    position: "fixed",
+    bottom: "40px",
+    width: "100%",
+    paddingRight: "2rem",
+    boxSizing: "border-box",
   }),
 
   response: style({
@@ -248,8 +256,9 @@ export const requestStyle = {
     alignItems: "left",
     color: vars.color.green,
     marginTop: "10px",
-    width: "100%",
     height: "100%",
+    width: "100%",
+    boxSizing: "border-box",
   }),
 
   responseBody: style({

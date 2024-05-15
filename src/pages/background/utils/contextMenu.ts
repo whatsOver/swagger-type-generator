@@ -15,7 +15,7 @@ const createContextMenu = () => {
         url: chrome.runtime.getURL("src/pages/popup/index.html"),
         type: "panel",
         tabId: tab.id,
-        width: 500,
+        width: 570,
         height: 628,
       });
     }

@@ -1,13 +1,17 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
+import ModalCodeBlock from "@src/pages/popup/ui/CodeBlockView";
+import classNames from "classnames";
 import {
-  useState,
+  Children,
+  cloneElement,
+  createContext,
+  isValidElement,
+  useCallback,
+  useContext,
   useEffect,
   useMemo,
   useRef,
-  createContext,
-  Children,
-  isValidElement,
-  useCallback,
+  useState,
 } from "react";
 import {
   modalFadeIn,
@@ -16,14 +20,6 @@ import {
   modalShowUp,
   modalStyle,
 } from "./styles/modal.css";
-import { useContext } from "react";
-import { cloneElement } from "react";
-import classNames from "classnames";
-import ModalCodeBlock from "@src/pages/popup/ui/ModalCodeBlock";
-import {
-  AuthModalContent,
-  AuthModalProps,
-} from "@src/pages/popup/ui/AuthModal";
 
 const ModalContext = createContext<{
   modalOpen: boolean;

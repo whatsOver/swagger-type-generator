@@ -7,7 +7,6 @@ export const settingModalStyle = {
     backgroundColor: vars.color.darkGrey,
     color: vars.color.white,
     width: "300px",
-    height: "200px",
     borderRadius: "10px",
     padding: "20px",
     display: "flex",

@@ -6,7 +6,7 @@ interface SettingStore {
 }
 
 const useSettingStore = create<SettingStore>((set) => ({
-  withReactQuery: true,
+  withReactQuery: false,
   toggleReactQuery: () =>
     set((state) => ({ withReactQuery: !state.withReactQuery })),
 }));
