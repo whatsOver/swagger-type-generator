@@ -1,6 +1,6 @@
-import axios, { Method } from "axios";
-import { useQuery } from "@tanstack/react-query";
 import { Path } from "@src/pages/content/modules/getAPIList";
+import { useQuery } from "@tanstack/react-query";
+import axios, { Method } from "axios";
 
 export type SwaggerType =
   | "integer"
@@ -8,7 +8,8 @@ export type SwaggerType =
   | "string"
   | "boolean"
   | "array"
-  | "object";
+  | "object"
+  | "binary";
 
 export type SwaggerFormat =
   | "int32"
@@ -190,16 +191,18 @@ const getSwaggerDocsFromPage = async (): Promise<SwaggerDocs> => {
   });
 };
 
+export const GET_SWAGGER_DOCS_KEY = (href: string) => ["getDocs", href];
+
 const useGETDocs = ({ host, href }: Path) => {
   if (!href) {
     return useQuery(
-      ["getDocs", href],
+      GET_SWAGGER_DOCS_KEY(href),
       async () => await getSwaggerDocsFromPage()
     );
   }
 
   return useQuery(
-    ["getDocs", href],
+    GET_SWAGGER_DOCS_KEY(href),
     async () => await getSwaggerDocs({ host, href }),
     {
       enabled: !!href,
