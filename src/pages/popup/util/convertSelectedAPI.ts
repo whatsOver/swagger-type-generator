@@ -1,24 +1,27 @@
-import { API } from "@src/pages/content/modules/getAPIList";
+import {
+  API,
+  APIWithParamsOrBody,
+} from "@src/pages/content/modules/getAPIList";
 import {
   ContentType,
   DefaultComplexSchema,
   Schemas,
   SwaggerDocs,
 } from "@src/pages/popup/api/docs";
-import { RequestProps } from "@src/pages/popup/pages/Request/Request";
 import { Method } from "axios";
 
 const convertSelectedAPI = (
   data: SwaggerDocs,
   api: API
-): Omit<RequestProps, "host"> => {
+): APIWithParamsOrBody => {
   if (!data) return null;
+  if (!api) return null;
 
   const method = api.method;
   const path = api.path;
   const description = api.description;
   const parameters =
-    data.paths[path][method.toLowerCase() as Method].parameters;
+    data.paths[path][method.toLowerCase() as Method]?.parameters;
   let schemaName = "";
   const requestBody =
     data.paths[api.path][method.toLowerCase() as Method].requestBody;

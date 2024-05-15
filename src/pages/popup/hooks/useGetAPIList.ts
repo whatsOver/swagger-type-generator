@@ -36,8 +36,8 @@ const useGetAPIList = ({ setAPIList, setPathInfo }: GetAPIListProps) => {
       { message: "GET_SWAGGER_LIST" },
       (response) => {
         if (chrome.runtime.lastError) {
-          // console.log(chrome.runtime.lastError);
-          // setTimeout(() => getAPIList(tabId, callback), 1000);
+          console.log(chrome.runtime.lastError);
+          setTimeout(() => getAPIList(tabId, callback), 1000);
         } else {
           callback(response.data);
         }

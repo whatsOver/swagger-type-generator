@@ -10,7 +10,12 @@ export const blankStyle = {
     alignItems: "center",
     justifyContent: "center",
   }),
-  desorption: style({
+  description: style({
+    display: "flex",
+    flexDirection: "column",
+    rowGap: "1rem",
+    justifyContent: "center",
+    alignItems: "center",
     fontWeight: "bold",
     fontSize: "13px",
     marginTop: "10px",

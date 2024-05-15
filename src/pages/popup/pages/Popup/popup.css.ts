@@ -39,7 +39,13 @@ export const popupStyle = {
 
   header: style({
     width: "100%",
-    height: "100%",
+  }),
+
+  searchWrapper: style({
+    width: "100%",
+    padding: "0 1rem",
+    boxSizing: "border-box",
+    marginBottom: "1rem",
   }),
 
   settingWrapper: style({
@@ -60,12 +66,12 @@ export const popupStyle = {
 
   tag: style({
     width: "100%",
-    marginLeft: "20%",
     display: "flex",
     color: vars.color.white,
     textAlign: "left",
     justifyContent: "flex-start",
-    transition: "color 0.2s ease",
+    marginBottom: "1rem",
+    paddingLeft: "2rem",
   }),
 
   apiList: style({
@@ -76,7 +82,7 @@ export const popupStyle = {
     justifyContent: "center",
     listStyle: "none",
     margin: 0,
-    padding: 0,
+    padding: "0 1rem",
     border: 0,
   }),
 
@@ -85,9 +91,12 @@ export const popupStyle = {
     flexDirection: "column",
     alignItems: "center",
     width: "100%",
+    boxSizing: "border-box",
     backgroundColor: vars.color.background,
     borderRadius: "10px",
     marginBottom: "10px",
+    padding: "0 1rem",
+    rowGap: "10px",
   }),
 
   button: style({

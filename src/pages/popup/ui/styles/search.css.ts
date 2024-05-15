@@ -1,15 +1,13 @@
 import { style } from "@vanilla-extract/css";
 
-export const searchStyle = {
+export const searchStyles = {
   search: style({
     position: "relative",
     display: "flex",
     alignItems: "center",
     justifySelf: "center",
-    width: "80%",
+    width: "100%",
     height: "40px",
-    marginLeft: "10%",
-
     marginTop: "20px",
   }),
   icon: style({
