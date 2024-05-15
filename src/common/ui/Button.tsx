@@ -1,17 +1,25 @@
-import React, { forwardRef, ButtonHTMLAttributes, ReactNode } from "react";
+import classNames from "classnames";
+import { ButtonHTMLAttributes, ReactNode, forwardRef } from "react";
 import {
   blueButtonStyles,
   buttonStyles,
   greenButtonStyles,
   orangeButtonStyles,
   purpleButtonStyles,
+  purpleLargeButtonStyles,
   redButtonStyles,
 } from "./styles/button.css";
-import classNames from "classnames";
 
 export type ButtonProps = {
   children: ReactNode;
-  color?: "blue" | "green" | "red" | "orange" | "purple" | "default";
+  color?:
+    | "blue"
+    | "green"
+    | "red"
+    | "orange"
+    | "purple"
+    | "purpleLarge"
+    | "default";
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -26,6 +34,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           [redButtonStyles]: color === "red",
           [orangeButtonStyles]: color === "orange",
           [purpleButtonStyles]: color === "purple",
+          [purpleLargeButtonStyles]: color === "purpleLarge",
         })}
         {...rest}
       >
