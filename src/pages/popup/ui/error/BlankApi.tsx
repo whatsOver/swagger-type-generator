@@ -1,12 +1,12 @@
-import { blankStyle } from "../styles/blank.css";
-import { BiError as ErrorIcon } from "react-icons/bi";
 import { vars } from "@src/common/ui/styles/theme.css";
+import { BiError as ErrorIcon } from "react-icons/bi";
+import { blankStyle } from "../styles/blank.css";
 
 const BlankApi = () => {
   return (
     <div className={blankStyle.content}>
       <ErrorIcon size={70} color={vars.color.yellow} />
-      <span className={blankStyle.desorption}>
+      <span className={blankStyle.description}>
         You are not on the correct Swagger page, or the Swagger version is not
         supported.
         <br />

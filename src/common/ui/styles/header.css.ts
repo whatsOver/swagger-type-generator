@@ -1,23 +1,37 @@
 import { style } from "@vanilla-extract/css";
+import { vars } from "./theme.css";
 
 export const headerStyle = {
   header: style({
     position: "sticky",
     display: "flex",
-    top: 10,
-    height: "50px",
+    top: "1px",
+    height: "70px",
+    padding: "1rem",
     width: "100%",
     alignItems: "center",
     justifyContent: "space-between",
+    boxSizing: "border-box",
     zIndex: 1,
+    backgroundColor: vars.color.background,
   }),
   left: style({
     display: "flex",
     alignItems: "center",
     justifyContent: "flex-start",
     columnGap: "10px",
-    width: "20%",
+    boxSizing: "border-box",
     cursor: "pointer",
-    marginLeft: "5%",
+  }),
+  right: style({
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    columnGap: "10px",
+  }),
+  headerTitle: style({
+    fontSize: "1.2rem",
+    fontWeight: "bold",
+    color: vars.color.white,
   }),
 };

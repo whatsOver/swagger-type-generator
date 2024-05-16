@@ -6,12 +6,13 @@ export const buttonStyles = style({
   alignItems: "center",
   justifyContent: "center",
   border: "0 solid transparent",
-  borderRadius: "10px",
+  borderRadius: "5px",
   whiteSpace: "nowrap",
   userSelect: "none",
   width: "100%",
   height: "40px",
   fontSize: "13px",
+  padding: "0 1rem",
   WebkitFontSmoothing: "antialiased",
   transition: "color 0.3s ease-in-out, background-color 0.3s ease-in-out",
   backgroundColor: vars.color.purple,
@@ -78,6 +79,32 @@ export const orangeButtonStyles = style({
   selectors: {
     "&:active": {
       backgroundColor: vars.color.darkOrange,
+    },
+  },
+});
+
+export const purpleButtonStyles = style({
+  width: "40px",
+  height: "30px",
+  fontSize: "11px",
+  fontWeight: "bold",
+  backgroundColor: vars.color.purple,
+  selectors: {
+    "&:active": {
+      backgroundColor: vars.color.darkPurple,
+    },
+  },
+});
+
+export const purpleLargeButtonStyles = style({
+  width: "80px",
+  height: "30px",
+  fontSize: "11px",
+  fontWeight: "bold",
+  backgroundColor: vars.color.purple,
+  selectors: {
+    "&:active": {
+      backgroundColor: vars.color.darkPurple,
     },
   },
 });

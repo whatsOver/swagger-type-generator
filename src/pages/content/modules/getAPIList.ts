@@ -1,3 +1,4 @@
+import { ContentType, Parameters, Schemas } from "@src/pages/popup/api/docs";
 import { Method } from "axios";
 
 declare global {
@@ -41,6 +42,16 @@ export interface API {
   method: Method;
   path: string;
   description: string;
+}
+
+export interface APIWithParamsOrBody extends API {
+  contentType: ContentType;
+  params?: Parameters[];
+  body?: Schemas;
+}
+
+export interface APIWithParamsAndBodyAndHost extends APIWithParamsOrBody {
+  host: string;
 }
 
 (async () => {

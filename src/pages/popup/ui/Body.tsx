@@ -1,10 +1,10 @@
-import React, { ChangeEvent, useState } from "react";
-import { requestStyle } from "./styles/request.css";
-import { vars } from "@src/common/ui/styles/theme.css";
-import { Schemas } from "../api/docs";
 import Input from "@src/common/ui/Input";
-import { typeConverter } from "../util/typeConverter";
+import { vars } from "@src/common/ui/styles/theme.css";
+import React, { ChangeEvent, useState } from "react";
+import { Schemas } from "../api/docs";
 import { FormValues } from "../hooks/useForm";
+import { requestStyle } from "../pages/Request/request.css";
+import { typeConverter } from "../util/typeConverter";
 
 interface BodyProps {
   body: Schemas;
@@ -41,9 +41,15 @@ const Body = ({
   };
 
   const isItemsTypeFile = (property: string) => {
-    return body.properties[property].items?.format === "binary"
-      ? "file"
-      : "text";
+    let returnType = "text";
+    Object.keys(body.properties).map((property) => {
+      if (body.properties[property]?.format === "binary") {
+        returnType = "file";
+      }
+    });
+    // if (body.properties[property].type === "binary") return "file";
+    if (body.properties[property].items?.format === "binary") return "file";
+    return returnType;
   };
 
   return (
@@ -112,7 +118,7 @@ const NormalBody = ({
           </label>
           {type === "file" && (
             <label htmlFor="file" className={requestStyle.inputLabel}>
-              Upload
+              <div className={requestStyle.uploadButton}>Upload</div>
             </label>
           )}
           <Input
@@ -132,6 +138,7 @@ const NormalBody = ({
                 ? body.properties[property].example
                 : body.properties[property].default ?? ""
             }
+            id="file"
             autoFocus={idx === 0}
             onFocus={(e) => e.target.select()}
           />
@@ -162,7 +169,6 @@ const ArrayBody = ({
   removeArrayItem,
   handleChange,
 }: ArrayBodyProps) => {
-  console.log(type);
   return (
     <>
       <div className={requestStyle.inputWrapper} key={property}>

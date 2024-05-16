@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useNavigate } from "react-router-dom";
 import { useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 
 const useRouter = () => {
   const navigate = useNavigate();
@@ -25,4 +25,57 @@ const useRouter = () => {
 
 export default useRouter;
 
-export type RoutePath = "/request" | "/";
+const 메인_페이지 = `/`;
+const 요청_페이지 = `/request`;
+const 시퀀스_페이지 = `/sequence`;
+const 시나리오_페이지 = (id: string) => `/sequence/${id}`;
+
+export type 시나리오_관리_퍼널_Key =
+  | "시나리오_페이지"
+  | "순서_편집_페이지"
+  | "삭제_페이지";
+
+const 시나리오_관리_퍼널 = (): Record<시나리오_관리_퍼널_Key, string> => {
+  return {
+    시나리오_페이지: 시퀀스_페이지,
+    순서_편집_페이지: 시퀀스_페이지 + "/edit",
+    삭제_페이지: 시퀀스_페이지 + "/delete",
+  };
+};
+
+export type API_관리_퍼널_Key =
+  | "시나리오_페이지"
+  | "API_추가_페이지"
+  | "순서_편집_페이지"
+  | "삭제_페이지";
+
+const API_관리_퍼널 = (id: string): Record<API_관리_퍼널_Key, string> => {
+  return {
+    시나리오_페이지: 시나리오_페이지(id),
+    API_추가_페이지: 시나리오_페이지(id) + "/add",
+    순서_편집_페이지: 시나리오_페이지(id) + "/edit",
+    삭제_페이지: 시나리오_페이지(id) + "/delete",
+  };
+};
+
+const 다수_API_테스트_페이지 = (id: string) => (apiId: string) =>
+  `/sequence/${id}/test/${apiId}`;
+
+export type RoutePath =
+  | typeof 메인_페이지
+  | typeof 요청_페이지
+  | typeof 시퀀스_페이지
+  | ReturnType<typeof 시나리오_페이지>
+  | ReturnType<typeof 시나리오_관리_퍼널>[시나리오_관리_퍼널_Key]
+  | ReturnType<typeof API_관리_퍼널>[API_관리_퍼널_Key]
+  | ReturnType<ReturnType<typeof 다수_API_테스트_페이지>>;
+
+export const navigationPath = {
+  메인_페이지,
+  요청_페이지,
+  시퀀스_페이지,
+  시나리오_페이지,
+  시나리오_관리_퍼널,
+  API_관리_퍼널,
+  다수_API_테스트_페이지,
+};

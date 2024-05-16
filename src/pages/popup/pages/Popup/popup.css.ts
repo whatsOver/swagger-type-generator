@@ -18,6 +18,7 @@ export const popupStyle = {
     textAlign: "center",
     overflowX: "hidden",
     overflowY: "auto",
+    boxSizing: "border-box",
     selectors: {
       "&::-webkit-scrollbar": {
         width: "10px",
@@ -38,7 +39,13 @@ export const popupStyle = {
 
   header: style({
     width: "100%",
-    height: "100%",
+  }),
+
+  searchWrapper: style({
+    width: "100%",
+    padding: "0 1rem",
+    boxSizing: "border-box",
+    marginBottom: "1rem",
   }),
 
   settingWrapper: style({
@@ -59,12 +66,12 @@ export const popupStyle = {
 
   tag: style({
     width: "100%",
-    marginLeft: "20%",
     display: "flex",
     color: vars.color.white,
     textAlign: "left",
     justifyContent: "flex-start",
-    transition: "color 0.2s ease",
+    marginBottom: "1rem",
+    paddingLeft: "2rem",
   }),
 
   apiList: style({
@@ -75,7 +82,7 @@ export const popupStyle = {
     justifyContent: "center",
     listStyle: "none",
     margin: 0,
-    padding: 0,
+    padding: "0 1rem",
     border: 0,
   }),
 
@@ -84,9 +91,12 @@ export const popupStyle = {
     flexDirection: "column",
     alignItems: "center",
     width: "100%",
+    boxSizing: "border-box",
     backgroundColor: vars.color.background,
     borderRadius: "10px",
     marginBottom: "10px",
+    padding: "0 1rem",
+    rowGap: "10px",
   }),
 
   button: style({
@@ -142,5 +152,19 @@ export const popupStyle = {
     whiteSpace: "nowrap",
     marginTop: "5px",
     marginLeft: "3px",
+  }),
+
+  menuButton: style({
+    width: "30px",
+    height: "30px",
+    borderRadius: "10px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    cursor: "pointer",
+    ":hover": {
+      opacity: 0.8,
+    },
+    transition: "opacity 0.3s ease",
   }),
 };

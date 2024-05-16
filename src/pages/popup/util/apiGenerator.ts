@@ -1,8 +1,8 @@
+import { getBodyProPertyType } from "@src/common/util/typeGenerator";
 import { Method } from "axios";
 import { ContentType, Parameters, Schemas } from "../api/docs";
 import { getParams, getQueryParamsArray } from "./request";
 import { typeConverter } from "./typeConverter";
-import { getBodyProPertyType } from "@src/common/util/typeGenerator";
 
 const generateInterface = (
   params: Parameters[],
@@ -96,15 +96,21 @@ const generateAxiosAPICode = ({
 
   const headers = `token ? { 'Authorization': \`Bearer \${token}\`, 'Content-Type': '${contentType}' } : { 'Content-Type': '${contentType}' }`;
 
+  const url = `\`${host}${dynamicPath}\``;
+  const paramsCode =
+    params && params.length
+      ? `params: { ${getQueryParamsArray(params)} },\n    `
+      : "";
+
+  const dataCode = body ? `data: ${axiosData},\n    ` : "";
+
   const apiFunction = `
 const ${method.toLowerCase()}API = async ({ ${parameters} }: ${interfaceName}) => {
   ${generateFormDataCode(contentType, method)}
   const { data } = await axios${responseInterface}({
     method: "${method}",
-    url: "${host}${dynamicPath}",
-    params: { ${getQueryParamsArray(params)} },
-    data: ${axiosData},
-    headers: ${headers},
+    url: ${url},
+    ${paramsCode}${dataCode}headers: ${headers},
   });
   return data;
 };`;
@@ -171,7 +177,7 @@ const ${method.toLowerCase()}API = async ({ ${parameters} }: ${interfaceName}): 
     method: "${method}",
     ${
       method.toLowerCase() !== "get" && body
-        ? `body: JSON.stringify(${fetchBody}), headers: headers`
+        ? `body: JSON.stringify(${fetchBody}),\n    headers: headers`
         : `headers: headers`
     }
   });
@@ -187,8 +193,18 @@ const ${method.toLowerCase()}API = async ({ ${parameters} }: ${interfaceName}): 
 };
 
 export {
-  generateInterface,
   generateAxiosAPICode,
   generateFetchAPICode,
+  generateInterface,
   objectToQueryString,
 };
+
+export interface Json {
+  userId: string;
+  username: string;
+  email: string;
+  avatar: string;
+  password: string;
+  birthDate: string;
+  registeredAt: string;
+}

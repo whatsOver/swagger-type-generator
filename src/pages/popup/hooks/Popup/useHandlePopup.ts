@@ -1,9 +1,9 @@
 import { API } from "@src/pages/content/modules/getAPIList";
-import useGetAPIList from "../useGetAPIList";
 import { useGETDocs } from "../../api/docs";
-import { convertSelectedAPI } from "../../util/convertSelectedAPI";
-import useRouter from "../useRouter";
 import useSwaggerDocStore from "../../store/swaggerDoc";
+import { convertSelectedAPI } from "../../util/convertSelectedAPI";
+import useGetAPIList from "../useGetAPIList";
+import useRouter from "../useRouter";
 
 const useHandlePopup = () => {
   const { push } = useRouter();

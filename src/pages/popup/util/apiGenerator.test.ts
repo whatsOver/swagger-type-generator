@@ -76,15 +76,18 @@ describe("API 코드 생성", () => {
     );
     expect(result).toContain(`method: "${sampleAPI.method}",`);
     expect(result).toContain(
-      `url: "${sampleAPI.host}${sampleAPI.path.replace("{", "${")}",`
+      `url: \`${sampleAPI.host}${sampleAPI.path.replace("{", "${")}\``
     );
+
     expect(result).toContain(
       `params: { ${getQueryParamsArray(sampleParams)} },`
     );
     expect(result).toContain(
-      `data: ${JSON.stringify(
-        sampleAPI.body ? getBody(sampleAPI.body, sampleFormValues) : {}
-      )},`
+      sampleAPI.body
+        ? `data: ${JSON.stringify(
+            sampleAPI.body ? getBody(sampleAPI.body, sampleFormValues) : ""
+          )},`
+        : ""
     );
   });
 

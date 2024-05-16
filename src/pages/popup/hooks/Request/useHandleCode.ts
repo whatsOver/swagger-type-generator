@@ -1,26 +1,42 @@
-import { useState, useRef, Dispatch, SetStateAction } from "react";
-import useCopy from "../useCopy";
 import { jsonToTs } from "@src/common/util/typeGenerator";
+import { APIWithParamsAndBodyAndHost } from "@src/pages/content/modules/getAPIList";
+import {
+  Dispatch,
+  MutableRefObject,
+  SetStateAction,
+  useRef,
+  useState,
+} from "react";
+import useSettingStore from "../../store/setting";
 import {
   generateAxiosAPICode,
   generateFetchAPICode,
   generateInterface,
 } from "../../util/apiGenerator";
-import { useLocation } from "react-router-dom";
-import { RequestProps } from "../../ui/Request";
-import useSettingStore from "../../store/setting";
 import { generateReactQueryHook } from "../../util/queryGenerator";
+import useCopy from "../useCopy";
 
 interface HandleCode {
+  api: APIWithParamsAndBodyAndHost | null;
   response: unknown;
   setMode: Dispatch<SetStateAction<string>>;
 }
 
-const useHandleCode = ({ response, setMode }: HandleCode) => {
+export interface HandleCodeReturn {
+  code: string;
+  codeRef: MutableRefObject<null | HTMLDivElement>;
+  onClickTS: () => void;
+  onClickAxios: () => void;
+  onClickFetch: () => void;
+  copyToClipboard: () => void;
+}
+
+const useHandleCode = ({
+  api,
+  response,
+  setMode,
+}: HandleCode): HandleCodeReturn => {
   // FIRST RENDER
-  // 1. location state에서 method, params, path, body, host 가져오기
-  const { method, params, path, body, host, contentType } = useLocation()
-    .state as RequestProps;
 
   // INTERACTION
   // 1. 사용자에게 보여줄 코드
@@ -43,17 +59,24 @@ const useHandleCode = ({ response, setMode }: HandleCode) => {
       (prev) =>
         prev +
         "\n\n" +
-        (generateInterface(params, body, method) +
+        (generateInterface(api.params, api.body, api.method) +
           "\n" +
           generateAxiosAPICode({
-            api: { method, path, host, params, body, contentType },
+            api: {
+              method: api.method,
+              path: api.path,
+              host: api.host,
+              params: api.params,
+              body: api.body,
+              contentType: api.contentType,
+            },
             rootInterfaceKey,
           })) +
         "\n\n" +
         (withReactQuery
           ? generateReactQueryHook({
-              api: { method, params },
-              apiFunctionName: `${method.toLowerCase()}API`,
+              api: { method: api.method, params: api.params },
+              apiFunctionName: `${api.method.toLowerCase()}API`,
             })
           : "")
     );
@@ -68,17 +91,24 @@ const useHandleCode = ({ response, setMode }: HandleCode) => {
       (prev) =>
         prev +
         "\n\n" +
-        (generateInterface(params, body, method) +
+        (generateInterface(api.params, api.body, api.method) +
           "\n" +
           generateFetchAPICode({
-            api: { method, path, host, params, body, contentType },
+            api: {
+              method: api.method,
+              path: api.path,
+              host: api.host,
+              params: api.params,
+              body: api.body,
+              contentType: api.contentType,
+            },
             rootInterfaceKey,
           })) +
         "\n\n" +
         (withReactQuery
           ? generateReactQueryHook({
-              api: { method, params },
-              apiFunctionName: `${method.toLowerCase()}API`,
+              api: { method: api.method, params: api.params },
+              apiFunctionName: `${api.method.toLowerCase()}API`,
             })
           : "")
     );
