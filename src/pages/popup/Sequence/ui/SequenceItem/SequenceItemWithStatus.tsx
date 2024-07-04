@@ -1,4 +1,4 @@
-import ListItem from "@src/common/ui/ListItem";
+import ListItem from "@/shared/ui/ListItem";
 import StatusIcon from "../StatusIcon/StatusIcon";
 import SequenceItem from "./SequenceItem";
 

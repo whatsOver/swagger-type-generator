@@ -1,5 +1,5 @@
-import useRouter from "@src/pages/popup/hooks/useRouter";
-import { SequenceFunnelProps } from "@src/pages/popup/pages/SequenceFunnel/SequenceFunnel";
+import useRouter from "@/pages/popup/hooks/useRouter";
+import { SequenceFunnelProps } from "@/pages/popup/pages/SequenceFunnel/SequenceFunnel";
 import { useState } from "react";
 import { addSequence } from "../../store/sequence";
 

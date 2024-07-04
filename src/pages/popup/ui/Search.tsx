@@ -1,5 +1,5 @@
-import Input, { InputProps } from "@src/common/ui/Input";
-import { vars } from "@src/common/ui/styles/theme.css";
+import Input, { InputProps } from "@/shared/ui/Input";
+import { vars } from "@/shared/ui/styles/theme.css";
 import { BiSearch } from "react-icons/bi";
 import { searchStyles } from "./styles/search.css";
 

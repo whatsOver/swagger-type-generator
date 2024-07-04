@@ -1,8 +1,8 @@
-import Button from "@src/common/ui/Button";
-import Header from "@src/common/ui/Header";
-import ModeItem from "@src/common/ui/ModeItem/ModeItem";
-import { popupStyle } from "@src/pages/popup/pages/Popup/popup.css";
-import { SequenceFunnelProps } from "@src/pages/popup/pages/SequenceFunnel/SequenceFunnel";
+import { popupStyle } from "@/pages/popup/pages/Popup/popup.css";
+import { SequenceFunnelProps } from "@/pages/popup/pages/SequenceFunnel/SequenceFunnel";
+import Button from "@/shared/ui/Button";
+import Header from "@/shared/ui/Header";
+import ModeItem from "@/shared/ui/ModeItem/ModeItem";
 import { updateSequences } from "../../store/sequence";
 import SequenceItem from "../../ui/SequenceItem/SequenceItem";
 

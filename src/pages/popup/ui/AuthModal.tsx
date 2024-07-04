@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import Input from "@src/common/ui/Input";
-import Modal from "@src/common/ui/Modal";
+import Button from "@/shared/ui/Button";
+import Input from "@/shared/ui/Input";
+import Modal from "@/shared/ui/Modal";
+import { vars } from "@/shared/ui/styles/theme.css";
 import { ChangeEvent } from "react";
 import { FcLock as LockIcon } from "react-icons/fc";
 import { authModalStyle } from "./styles/auth.css";
-import Button from "@src/common/ui/Button";
-import { vars } from "@src/common/ui/styles/theme.css";
 
 export interface AuthModalProps {
   authorized: string;

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import ModalCodeBlock from "@src/pages/popup/ui/CodeBlockView";
+
+import CodeBlock from "@/pages/popup/ui/CodeBlock";
 import classNames from "classnames";
 import {
   Children,
@@ -138,10 +139,7 @@ const Content = ({ children, onClose }: ContentProps) => {
         }}
       >
         {Children.map(children, (child) => {
-          if (
-            isValidElement<ContentProps>(child) &&
-            child.type === ModalCodeBlock
-          ) {
+          if (isValidElement<ContentProps>(child) && child.type === CodeBlock) {
             return cloneElement(child, { onClose: handleCloseModal });
           }
           if (isValidElement<ModalChildProps>(child)) {

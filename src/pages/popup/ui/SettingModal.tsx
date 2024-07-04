@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import Modal from "@src/common/ui/Modal";
+import Button from "@/shared/ui/Button";
+import Modal from "@/shared/ui/Modal";
+import { vars } from "@/shared/ui/styles/theme.css";
 import LogoImg from "@assets/img/react-query-logo.png";
 import { IoIosSettings as SettingIcon } from "react-icons/io";
-import Button from "@src/common/ui/Button";
-import { vars } from "@src/common/ui/styles/theme.css";
 import { settingModalStyle } from "./styles/setting.css";
 
 export interface SettingModalProps {

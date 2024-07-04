@@ -1,3 +1,1 @@
-const EMPTY_RESPONSE = "The Response is Empty";
-
-export { EMPTY_RESPONSE };
+export const EMPTY_RESPONSE = "The Response is Empty";

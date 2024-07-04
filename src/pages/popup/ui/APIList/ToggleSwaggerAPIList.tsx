@@ -1,7 +1,7 @@
-import CheckBox from "@src/common/ui/CheckBox";
-import { vars } from "@src/common/ui/styles/theme.css";
-import { API, APIList } from "@src/pages/content/modules/getAPIList";
-import APIItem from "@src/pages/popup/ui/APIItem/APIItem";
+import { vars } from "@/shared/ui/styles/theme.css";
+import CheckBox from "@/shared/ui/CheckBox";
+import { API, APIList } from "@/pages/content/modules/getAPIList";
+import APIItem from "@/pages/popup/ui/APIItem/APIItem";
 import { APIWithOrder } from "../../Sequence/store/sequence";
 import { popupStyle } from "../../pages/Popup/popup.css";
 

@@ -1,6 +1,6 @@
-import Button from "@src/common/ui/Button";
-import Header from "@src/common/ui/Header";
-import { popupStyle } from "@src/pages/popup/pages/Popup/popup.css";
+import Button from "@/shared/ui/Button";
+import Header from "@/shared/ui/Header";
+import { popupStyle } from "@/pages/popup/pages/Popup/popup.css";
 import useHandlePopup from "../../../hooks/Popup/useHandlePopup";
 import useSearch from "../../../hooks/useSearch";
 import { ScenarioFunnelProps } from "../../../pages/ScenarioFunnel/ScenarioFunnel";

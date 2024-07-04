@@ -1,5 +1,6 @@
-import Button from "@src/common/ui/Button";
-import { vars } from "@src/common/ui/styles/theme.css";
+import { vars } from "@/shared/ui/styles/theme.css";
+
+import Button from "@/shared/ui/Button";
 import { ForwardRefRenderFunction, forwardRef } from "react";
 import { IoMdClose as CloseIcon } from "react-icons/io";
 import { IoChevronBackOutline as BackIcon } from "react-icons/io5";

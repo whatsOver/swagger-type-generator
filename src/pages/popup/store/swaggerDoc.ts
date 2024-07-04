@@ -1,4 +1,4 @@
-import { APIList, Path } from "@src/pages/content/modules/getAPIList";
+import { APIList, Path } from "@/pages/content/modules/getAPIList";
 import { create } from "zustand";
 
 interface SwaggerDocStore {

@@ -92,4 +92,4 @@ export const use${capitalizedFunctionName}Mutation = (params: ${paramsInterface}
   }
 };
 
-export { generateQueryKey, generateQueryInterface, generateReactQueryHook };
+export { generateQueryInterface, generateQueryKey, generateReactQueryHook };

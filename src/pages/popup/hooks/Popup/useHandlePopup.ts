@@ -1,7 +1,7 @@
-import { API } from "@src/pages/content/modules/getAPIList";
-import { useGETDocs } from "../../api/docs";
+import { API } from "@/pages/content/modules/getAPIList";
+import { useGETDocs } from "../../shared/api/docs";
+import { convertSelectedAPI } from "../../shared/util/convertSelectedAPI";
 import useSwaggerDocStore from "../../store/swaggerDoc";
-import { convertSelectedAPI } from "../../util/convertSelectedAPI";
 import useGetAPIList from "../useGetAPIList";
 import useRouter from "../useRouter";
 

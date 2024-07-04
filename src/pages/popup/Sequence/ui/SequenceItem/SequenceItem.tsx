@@ -1,6 +1,7 @@
-import { vars } from "@src/common/ui/styles/theme.css";
+import { vars } from "@/shared/ui/styles/theme.css";
 import classNames from "classnames";
-import { SequenceItem } from "../../store/sequence";
+
+import type { SequenceItem } from "../../store/sequence";
 import { sequenceItemStyles } from "./sequenceItem.css";
 
 export interface SequenceItemProps extends SequenceItem {

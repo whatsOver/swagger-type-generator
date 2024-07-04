@@ -1,9 +1,9 @@
+import Input from "@/shared/ui/Input";
 import React, { ChangeEvent, useState } from "react";
-import { requestStyle } from "../pages/Request/request.css";
-import Input from "@src/common/ui/Input";
-import { Parameters } from "../api/docs";
-import { typeConverter } from "../util/typeConverter";
 import { FormValues } from "../hooks/useForm";
+import { requestStyle } from "../pages/Request/request.css";
+import { Parameters } from "../shared/api/docs";
+import { typeConverter } from "../shared/util/typeConverter";
 
 interface ParamsProps {
   params: Parameters[];

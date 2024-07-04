@@ -1,10 +1,11 @@
-import { getBodyProPertyType } from "@src/common/util/typeGenerator";
 import { Method } from "axios";
+
+import { getBodyProPertyType } from "@/shared/util/typeGenerator";
 import { ContentType, Parameters, Schemas } from "../api/docs";
 import { getParams, getQueryParamsArray } from "./request";
 import { typeConverter } from "./typeConverter";
 
-const generateInterface = (
+export const generateInterface = (
   params: Parameters[],
   body?: Schemas,
   method?: Method
@@ -38,7 +39,10 @@ const generateInterface = (
   return `interface ${interfaceName} {\n${interfaceItems}${postDataInterface}${tokenLine}}`;
 };
 
-const generateFormDataCode = (contentType: ContentType, method: string) => {
+export const generateFormDataCode = (
+  contentType: ContentType,
+  method: string
+) => {
   const formDataCode =
     contentType === "multipart/form-data"
       ? `const formData = new FormData();
@@ -65,7 +69,7 @@ export interface GenerateAPICodeProps {
   rootInterfaceKey?: string;
 }
 
-const generateAxiosAPICode = ({
+export const generateAxiosAPICode = ({
   api,
   rootInterfaceKey,
 }: GenerateAPICodeProps): string => {
@@ -118,7 +122,7 @@ const ${method.toLowerCase()}API = async ({ ${parameters} }: ${interfaceName}) =
   return apiFunction;
 };
 
-const objectToQueryString = (params: string): string => {
+export const objectToQueryString = (params: string): string => {
   if (!params) return "";
 
   return params
@@ -127,7 +131,7 @@ const objectToQueryString = (params: string): string => {
     .join("&");
 };
 
-const generateFetchAPICode = ({
+export const generateFetchAPICode = ({
   api,
   rootInterfaceKey,
 }: GenerateAPICodeProps): string => {
@@ -190,13 +194,6 @@ const ${method.toLowerCase()}API = async ({ ${parameters} }: ${interfaceName}): 
 };`;
 
   return apiFunction;
-};
-
-export {
-  generateAxiosAPICode,
-  generateFetchAPICode,
-  generateInterface,
-  objectToQueryString,
 };
 
 export interface Json {

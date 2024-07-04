@@ -1,7 +1,7 @@
-import { vars } from "@src/common/ui/styles/theme.css";
-import { API, APIList } from "@src/pages/content/modules/getAPIList";
-import APIItem from "@src/pages/popup/ui/APIItem/APIItem";
+import { API, APIList } from "@/pages/content/modules/getAPIList";
+import { vars } from "@/shared/ui/styles/theme.css";
 import { popupStyle } from "../../pages/Popup/popup.css";
+import APIItem from "../APIItem/APIItem";
 
 interface ApiListProps {
   apiList: APIList;

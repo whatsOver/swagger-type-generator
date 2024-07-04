@@ -1,6 +1,6 @@
 import { filter, keys, map, pipe, reduce, toArray } from "@fxts/core";
+import { FormValues } from "../../hooks/useForm";
 import { Parameters, Schemas } from "../api/docs";
-import { FormValues } from "../hooks/useForm";
 
 const getQueryParams = (params: Parameters[], formValues: FormValues) =>
   pipe(
@@ -71,11 +71,11 @@ const getRequestBodyKey = (body: Schemas) =>
   );
 
 export {
+  generateFormData,
+  getBody,
+  getParams,
   getQueryParams,
   getQueryParamsArray,
-  getParams,
-  replacePathParams,
-  getBody,
-  generateFormData,
   getRequestBodyKey,
+  replacePathParams,
 };

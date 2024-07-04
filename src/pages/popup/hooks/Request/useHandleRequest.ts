@@ -1,12 +1,16 @@
-import { APIWithParamsAndBodyAndHost } from "@src/pages/content/modules/getAPIList";
+import { APIWithParamsAndBodyAndHost } from "@/pages/content/modules/getAPIList";
 import axios, { RawAxiosRequestHeaders } from "axios";
 import { FormEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { Schemas } from "../../api/docs";
 import { EMPTY_RESPONSE } from "../../constants/status";
 import type { Mode } from "../../pages/Request/Request";
+import { Schemas } from "../../shared/api/docs";
+import {
+  generateFormData,
+  getBody,
+  getQueryParams,
+} from "../../shared/util/request";
 import useAuthStore from "../../store/auth";
-import { generateFormData, getBody, getQueryParams } from "../../util/request";
 import useForm, { FormValues, ReturnUseForm } from "../useForm";
 
 interface HandleRequest {

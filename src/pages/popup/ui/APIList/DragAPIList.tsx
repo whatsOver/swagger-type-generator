@@ -1,4 +1,4 @@
-import DragAndDrop from "@src/common/ui/DragAndDrop";
+import DragAndDrop from "@/shared/ui/DragAndDrop";
 import { Dispatch } from "react";
 import { IoMdMenu as MenuIcon } from "react-icons/io";
 import { APIWithOrder } from "../../Sequence/store/sequence";
