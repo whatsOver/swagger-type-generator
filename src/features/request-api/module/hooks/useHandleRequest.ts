@@ -1,17 +1,17 @@
-import { APIWithParamsAndBodyAndHost } from "@/pages/content/modules/getAPIList";
+import { APIWithParamsAndBodyAndHost } from "@/pages/content/modules/getApiList2";
 import axios, { RawAxiosRequestHeaders } from "axios";
 import { FormEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { EMPTY_RESPONSE } from "../../constants/status";
-import type { Mode } from "../../pages/Request/Request";
-import { Schemas } from "../../shared/api/docs";
+import useAuthStore from "../../../../entities/auth/model/auth-store";
+import { EMPTY_RESPONSE } from "../../../../pages/popup/constants/status";
+import type { Mode } from "../../../../pages/popup/pages/Request/Request";
+import { Schemas } from "../../../../pages/popup/shared/api/docs";
 import {
   generateFormData,
   getBody,
   getQueryParams,
-} from "../../shared/util/request";
-import useAuthStore from "../../store/auth";
-import useForm, { FormValues, ReturnUseForm } from "../useForm";
+} from "../../../../pages/popup/shared/util/request";
+import useForm, { FormValues, ReturnUseForm } from "./useForm";
 
 interface HandleRequest {
   api: APIWithParamsAndBodyAndHost | null;

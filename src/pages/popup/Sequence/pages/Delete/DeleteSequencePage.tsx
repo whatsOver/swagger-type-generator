@@ -4,7 +4,7 @@ import Button from "@/shared/ui/Button";
 import Header from "@/shared/ui/Header";
 import ModeItem from "@/shared/ui/ModeItem/ModeItem";
 import { useState } from "react";
-import { deleteSequences } from "../../store/sequence";
+import { deleteSequences } from "../../../../../entities/sequence/model/sequence-store";
 import SequenceItem from "../../ui/SequenceItem/SequenceItem";
 
 type DeleteSequencePageProps = SequenceFunnelProps;

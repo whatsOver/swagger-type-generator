@@ -1,10 +1,10 @@
+import { popupStyle } from "@/pages/popup/pages/Popup/popup.css";
 import Button from "@/shared/ui/Button";
 import Header from "@/shared/ui/Header";
-import { popupStyle } from "@/pages/popup/pages/Popup/popup.css";
-import useHandlePopup from "../../../hooks/Popup/useHandlePopup";
-import useSearch from "../../../hooks/useSearch";
+import useSearch from "../../../../../features/search/module/hooks/useSearch";
+import ToggleApiList from "../../../../../widgets/api-list/ui/toggle-list/ToggleSwaggerApiList";
+import useHandlePopup from "../../../pages/Popup/hooks/useHandlePopup";
 import { ScenarioFunnelProps } from "../../../pages/ScenarioFunnel/ScenarioFunnel";
-import ToggleAPIList from "../../../ui/APIList/ToggleSwaggerAPIList";
 import Search from "../../../ui/Search";
 import BlankApi from "../../../ui/error/BlankApi";
 import Loading from "../../../ui/loading/Loading";
@@ -21,10 +21,10 @@ const APISearchPage = ({
   setAPIs,
 }: APISearchPageProps) => {
   console.log("APISearchPage", swaggerTitle);
-  const { loading, apiList, filteredAPIList, setFilteredAPIList } =
+  const { loading, ApiList, filteredApiList, setFilteredApiList } =
     useHandlePopup();
 
-  const { search, onChange } = useSearch({ apiList, setFilteredAPIList });
+  const { search, onChange } = useSearch({ ApiList, setFilteredApiList });
 
   const { onClickAPI, onClickSave } = useHandleSaveAPI({
     apis,
@@ -49,14 +49,14 @@ const APISearchPage = ({
         <Search value={search} onChange={onChange} />
       </div>
       {!!loading && <Loading />}
-      {!loading && !!filteredAPIList.tags?.length && (
-        <ToggleAPIList
-          apiList={filteredAPIList}
-          filterAPIList={apis}
+      {!loading && !!filteredApiList.tags?.length && (
+        <ToggleApiList
+          ApiList={filteredApiList}
+          filterApiList={apis}
           onClickAPI={onClickAPI}
         />
       )}
-      {!loading && !filteredAPIList.tags?.length && <BlankApi />}
+      {!loading && !filteredApiList.tags?.length && <BlankApi />}
     </div>
   );
 };

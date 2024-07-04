@@ -1,6 +1,6 @@
 import Input from "@/shared/ui/Input";
 import React, { ChangeEvent, useState } from "react";
-import { FormValues } from "../hooks/useForm";
+import { FormValues } from "../../../features/request-api/module/hooks/useForm";
 import { requestStyle } from "../pages/Request/request.css";
 import { Parameters } from "../shared/api/docs";
 import { typeConverter } from "../shared/util/typeConverter";

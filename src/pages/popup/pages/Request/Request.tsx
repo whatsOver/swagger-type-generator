@@ -1,4 +1,4 @@
-import { APIWithParamsAndBodyAndHost } from "@/pages/content/modules/getAPIList";
+import { APIWithParamsAndBodyAndHost } from "@/pages/content/modules/getApiList2";
 import Button from "@/shared/ui/Button";
 import Header from "@/shared/ui/Header";
 import Modal from "@/shared/ui/Modal";
@@ -8,13 +8,13 @@ import { VscBracketError as ErrorIcon } from "react-icons/vsc";
 import { useLocation } from "react-router-dom";
 import { Flip, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import useHandleRequest from "../../../../features/request-api/module/hooks/useHandleRequest";
 import useHandleCode from "../../hooks/Request/useHandleCode";
-import useHandleRequest from "../../hooks/Request/useHandleRequest";
 import Body from "../../ui/Body";
 import ModalCodeBlock from "../../ui/CodeBlockView";
 import Params from "../../ui/Params";
 import Loading from "../../ui/loading/Loading";
-import { popupStyle } from "../Popup/popup.css";
+import { popupStyle } from "../Popup/ui/popup.css";
 import { requestStyle } from "./request.css";
 
 export type Mode = "RESPONSE" | "TS" | "ERROR" | "AXIOS" | "FETCH" | "LOADING";

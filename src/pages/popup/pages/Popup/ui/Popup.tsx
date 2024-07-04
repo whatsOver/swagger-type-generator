@@ -1,24 +1,24 @@
+import useDrawer from "@/shared/hooks/useDrawer";
 import { vars } from "@/shared/ui/styles/theme.css";
-import useDrawer from "@src/shared/hooks/useDrawer";
 import { FiMenu as MenuIcon } from "react-icons/fi";
-import useHandleAuth from "../../hooks/Popup/useHandleAuth";
+import useHandleAuth from "../../../../features/auth/hooks/useHandleAuth";
+import useSearch from "../../../../features/search/hooks/useSearch";
 import useHandlePopup from "../../hooks/Popup/useHandlePopup";
 import useHandleSetting from "../../hooks/Popup/useHandleSetting";
-import useSearch from "../../hooks/useSearch";
-import ApiList from "../../ui/APIList/ApiList";
-import AuthModal from "../../ui/AuthModal";
-import Search from "../../ui/Search";
-import SettingDrawer from "../../ui/SettingDrawer";
-import SettingModal from "../../ui/SettingModal";
-import BlankApi from "../../ui/error/BlankApi";
-import Loading from "../../ui/loading/Loading";
+
+import AuthModal from "@/features/auth/ui/auth-modal/AuthModal";
+import BlankApi from "@/pages/popup/ui/error/BlankApi";
+import Loading from "@/pages/popup/ui/loading/Loading";
+import Search from "@/pages/popup/ui/Search";
+import SettingDrawer from "@/pages/popup/ui/SettingDrawer";
+import SettingModal from "@/pages/popup/ui/SettingModal";
 import { popupStyle } from "./popup.css";
 
 const Popup = () => {
-  const { loading, apiList, filteredAPIList, onClickAPI, setFilteredAPIList } =
+  const { loading, ApiList, filteredApiList, onClickAPI, setFilteredApiList } =
     useHandlePopup();
 
-  const { search, onChange } = useSearch({ apiList, setFilteredAPIList });
+  const { search, onChange } = useSearch({ ApiList, setFilteredApiList });
   const { authorized, onChangeAuth, onSaveAuth } = useHandleAuth();
   const { withReactQuery, toggleReactQuery, onSaveSetting } =
     useHandleSetting();
@@ -50,10 +50,10 @@ const Popup = () => {
         <Search value={search} onChange={onChange} />
       </div>
       {!!loading && <Loading />}
-      {!loading && !!filteredAPIList.tags?.length && (
-        <ApiList apiList={filteredAPIList} onClickAPI={onClickAPI} />
+      {!loading && !!filteredApiList.tags?.length && (
+        <ApiList ApiList={filteredApiList} onClickAPI={onClickAPI} />
       )}
-      {!loading && !filteredAPIList.tags?.length && <BlankApi />}
+      {!loading && !filteredApiList.tags?.length && <BlankApi />}
       <SettingDrawer isOpen={open} onClose={closeDrawer} />
     </div>
   );

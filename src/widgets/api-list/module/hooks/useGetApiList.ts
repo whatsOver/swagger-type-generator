@@ -1,17 +1,17 @@
 import {
-  APIList,
+  ApiList,
   GET_API_LIST_RESULT,
   Path,
-} from "@/pages/content/modules/getAPIList";
+} from "@/pages/content/modules/getApiList2";
 import { useEffect, useState } from "react";
-import useInitialStore from "../store/swaggerDoc";
+import { useSwaggerDocStore } from "src/entities/document/model/document-store";
 
-interface GetAPIListProps {
-  setAPIList: (apiList: APIList) => void;
+interface GetApiListProps {
+  setApiList: (ApiList: ApiList) => void;
   setPathInfo: (pathInfo: Path) => void;
 }
 
-const useGetAPIList = ({ setAPIList, setPathInfo }: GetAPIListProps) => {
+const useGetApiList = ({ setApiList, setPathInfo }: GetApiListProps) => {
   const [loading, setLoading] = useState(true);
   const checkIfReceiverIsReady = (
     tabId: number,
@@ -27,7 +27,7 @@ const useGetAPIList = ({ setAPIList, setPathInfo }: GetAPIListProps) => {
     });
   };
 
-  const getAPIList = (
+  const getApiList = (
     tabId: number,
     callback: (data: GET_API_LIST_RESULT) => void
   ) => {
@@ -37,7 +37,7 @@ const useGetAPIList = ({ setAPIList, setPathInfo }: GetAPIListProps) => {
       (response) => {
         if (chrome.runtime.lastError) {
           console.log(chrome.runtime.lastError);
-          setTimeout(() => getAPIList(tabId, callback), 1000);
+          setTimeout(() => getApiList(tabId, callback), 1000);
         } else {
           callback(response.data);
         }
@@ -45,7 +45,7 @@ const useGetAPIList = ({ setAPIList, setPathInfo }: GetAPIListProps) => {
     );
   };
 
-  const { state, setState } = useInitialStore();
+  const { state, setState } = useSwaggerDocStore();
 
   useEffect(() => {
     if (state === "loaded") {
@@ -56,8 +56,8 @@ const useGetAPIList = ({ setAPIList, setPathInfo }: GetAPIListProps) => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       checkIfReceiverIsReady(tabs[0].id, (isReady) => {
         if (isReady) {
-          getAPIList(tabs[0].id, (data) => {
-            setAPIList(data.prList);
+          getApiList(tabs[0].id, (data) => {
+            setApiList(data.prList);
             setPathInfo(data.path);
             setState("loaded");
           });
@@ -75,8 +75,8 @@ const useGetAPIList = ({ setAPIList, setPathInfo }: GetAPIListProps) => {
       tabs.forEach((tab) =>
         checkIfReceiverIsReady(tab.id, (isReady) => {
           if (isReady) {
-            getAPIList(tab.id, (data) => {
-              setAPIList(data.prList);
+            getApiList(tab.id, (data) => {
+              setApiList(data.prList);
               setPathInfo(data.path);
               setState("loaded");
             });
@@ -92,4 +92,4 @@ const useGetAPIList = ({ setAPIList, setPathInfo }: GetAPIListProps) => {
   return { loading };
 };
 
-export default useGetAPIList;
+export default useGetApiList;

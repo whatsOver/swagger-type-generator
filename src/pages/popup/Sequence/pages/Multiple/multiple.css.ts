@@ -18,7 +18,7 @@ export const multipleStyles = {
     marginBottom: "5rem",
   }),
 
-  apiListWrapper: style({
+  ApiListWrapper: style({
     display: "flex",
     flex: 1,
     height: "fit-content",

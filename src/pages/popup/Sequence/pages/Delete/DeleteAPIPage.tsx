@@ -1,11 +1,11 @@
-import Button from "@/shared/ui/Button";
-import Header from "@/shared/ui/Header";
-import ModeItem from "@/shared/ui/ModeItem/ModeItem";
 import { popupStyle } from "@/pages/popup/pages/Popup/popup.css";
 import { ScenarioFunnelProps } from "@/pages/popup/pages/ScenarioFunnel/ScenarioFunnel";
 import APIItem from "@/pages/popup/ui/APIItem/APIItem";
+import Button from "@/shared/ui/Button";
+import Header from "@/shared/ui/Header";
+import ModeItem from "@/shared/ui/ModeItem/ModeItem";
 import { useState } from "react";
-import { deleteAPIs } from "../../store/sequence";
+import { deleteAPIs } from "../../../../../entities/sequence/model/sequence-store";
 
 type DeleteAPIPageProps = ScenarioFunnelProps;
 

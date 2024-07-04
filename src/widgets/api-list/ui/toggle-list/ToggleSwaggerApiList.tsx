@@ -1,39 +1,39 @@
-import { vars } from "@/shared/ui/styles/theme.css";
-import CheckBox from "@/shared/ui/CheckBox";
-import { API, APIList } from "@/pages/content/modules/getAPIList";
+import { API, ApiList } from "@/pages/content/modules/getApiList2";
 import APIItem from "@/pages/popup/ui/APIItem/APIItem";
-import { APIWithOrder } from "../../Sequence/store/sequence";
-import { popupStyle } from "../../pages/Popup/popup.css";
+import CheckBox from "@/shared/ui/CheckBox";
+import { vars } from "@/shared/ui/styles/theme.css";
+import { APIWithOrder } from "../../../../entities/sequence/model/sequence-store";
+import { ApiListStyle } from "../apiList.css";
 
 interface ApiListProps {
-  apiList: APIList;
-  filterAPIList: APIWithOrder[];
+  ApiList: ApiList;
+  filterApiList: APIWithOrder[];
   onClickAPI: (key: string, api: API) => void;
 }
 
-const ToggleSwaggerAPIList = ({
-  apiList,
-  filterAPIList,
+const ToggleSwaggerApiList = ({
+  ApiList,
+  filterApiList,
   onClickAPI,
 }: ApiListProps) => {
   return (
-    <ul className={popupStyle.apiList}>
-      {apiList.tags?.map((tag) => (
+    <ul className={ApiListStyle.ApiList}>
+      {ApiList.tags?.map((tag) => (
         <>
           <h2
             style={{
-              color: apiList.endpoints[tag]?.length
+              color: ApiList.endpoints[tag]?.length
                 ? vars.color.white
                 : vars.color.grey,
             }}
-            className={popupStyle.tag}
+            className={ApiListStyle.tag}
           >
             {tag}
           </h2>
-          <li className={popupStyle.tagBox} key={tag}>
-            {apiList.endpoints[tag]
+          <li className={ApiListStyle.tagBox} key={tag}>
+            {ApiList.endpoints[tag]
               ?.filter((api) =>
-                filterAPIList.every(
+                filterApiList.every(
                   (item) => item.key !== `${api.method} + ${api.path}`
                 )
               )
@@ -55,4 +55,4 @@ const ToggleSwaggerAPIList = ({
   );
 };
 
-export default ToggleSwaggerAPIList;
+export default ToggleSwaggerApiList;

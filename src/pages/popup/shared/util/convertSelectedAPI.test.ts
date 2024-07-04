@@ -1,4 +1,4 @@
-import { API } from "@/pages/content/modules/getAPIList";
+import { API } from "@/pages/content/modules/getApiList2";
 import { SwaggerDocs } from "../api/docs";
 import { convertSelectedAPI } from "./convertSelectedAPI";
 

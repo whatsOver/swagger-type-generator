@@ -1,4 +1,4 @@
-import { API } from "@/pages/content/modules/getAPIList";
+import { API } from "@/pages/content/modules/getApiList2";
 import { vars } from "@/shared/ui/styles/theme.css";
 import { apiItemStyles } from "./apiItem.css";
 

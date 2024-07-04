@@ -1,4 +1,4 @@
-import { APIWithParamsOrBody } from "@/pages/content/modules/getAPIList";
+import { APIWithParamsOrBody } from "@/pages/content/modules/getApiList";
 import { HandleCodeReturn } from "@/pages/popup/hooks/Request/useHandleCode";
 import Body from "@/pages/popup/ui/Body";
 import ModalCodeBlock from "@/pages/popup/ui/CodeBlockView";
@@ -6,8 +6,8 @@ import Params from "@/pages/popup/ui/Params";
 import { vars } from "@/shared/ui/styles/theme.css";
 import { MdOutlineKeyboardArrowDown as ArrowDownIcon } from "react-icons/md";
 import { VscBracketError as ErrorIcon } from "react-icons/vsc";
-import { OmitHandleFormValues } from "../../../hooks/Request/useHandleRequest";
-import { APIWithOrder } from "../../store/sequence";
+import { APIWithOrder } from "../../../../../entities/sequence/model/sequence-store";
+import { OmitHandleFormValues } from "../../../../../features/request-api/module/hooks/useHandleRequest";
 import { Mode } from "./MultipleTestPage";
 import { multipleStyles } from "./multiple.css";
 
@@ -19,20 +19,20 @@ const CompoundMultipleTest = ({ children }: CompoundMultipleTestProps) => {
   return <div className={multipleStyles.multipleWrapper}>{children}</div>;
 };
 
-interface SequenceAPIListProps {
-  apiList: APIWithOrder[];
+interface SequenceApiListProps {
+  ApiList: APIWithOrder[];
   currentAPIKey: string;
   onChangeAPI: (key: string) => void;
 }
 
-const SequenceAPIList = ({
-  apiList,
+const SequenceApiList = ({
+  ApiList,
   currentAPIKey,
   onChangeAPI,
-}: SequenceAPIListProps) => {
+}: SequenceApiListProps) => {
   return (
-    <ul className={multipleStyles.apiListWrapper}>
-      {apiList.map((api, idx) => (
+    <ul className={multipleStyles.ApiListWrapper}>
+      {ApiList.map((api, idx) => (
         <>
           <li
             style={{
@@ -51,7 +51,7 @@ const SequenceAPIList = ({
               {api.api.description}
             </div>
           </li>
-          {idx !== apiList.length - 1 && (
+          {idx !== ApiList.length - 1 && (
             <ArrowDownIcon size={24} color={vars.color.white} />
           )}
         </>
@@ -192,7 +192,7 @@ const CodeBlock = ({
   );
 };
 
-CompoundMultipleTest.SequenceAPIList = SequenceAPIList;
+CompoundMultipleTest.SequenceApiList = SequenceApiList;
 CompoundMultipleTest.Request = Request;
 CompoundMultipleTest.CodeBlock = CodeBlock;
 

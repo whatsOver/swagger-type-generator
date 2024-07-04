@@ -1,7 +1,7 @@
-import useRouter from "@/pages/popup/hooks/useRouter";
 import { SequenceFunnelProps } from "@/pages/popup/pages/SequenceFunnel/SequenceFunnel";
+import useRouter from "@/shared/hooks/useRouter";
 import { useState } from "react";
-import { addSequence } from "../../store/sequence";
+import { addSequence } from "../../../../../entities/sequence/model/sequence-store";
 
 type Mode = "VIEW" | "ADD";
 
@@ -28,7 +28,7 @@ const useHandleSequencePage = ({ swaggerTitle }: HandleSequencePageProps) => {
   };
 
   const onPressEnter = (title: string) => {
-    addSequence(swaggerTitle, { title, iconType: "LOADING", apiList: [] });
+    addSequence(swaggerTitle, { title, iconType: "LOADING", ApiList: [] });
     setMode("VIEW");
     setAddTitle("");
   };

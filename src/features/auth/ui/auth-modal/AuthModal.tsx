@@ -5,7 +5,7 @@ import Modal from "@/shared/ui/Modal";
 import { vars } from "@/shared/ui/styles/theme.css";
 import { ChangeEvent } from "react";
 import { FcLock as LockIcon } from "react-icons/fc";
-import { authModalStyle } from "./styles/auth.css";
+import { authModalStyle } from "./auth.css";
 
 export interface AuthModalProps {
   authorized: string;
@@ -54,13 +54,7 @@ export const AuthModalContent = ({
         <Input value={authorized} onChange={onChange} />
       </section>
       <div className={authModalStyle.buttonWrapper}>
-        <Button
-          onClick={() => {
-            // onSaveAuth();
-            onClose && onClose();
-          }}
-          style={{ backgroundColor: vars.color.green }}
-        >
+        <Button onClick={onClose} style={{ backgroundColor: vars.color.green }}>
           SAVE
         </Button>
       </div>

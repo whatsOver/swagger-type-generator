@@ -1,6 +1,6 @@
-import { vars } from "@/shared/ui/styles/theme.css";
 import { BiError as ErrorIcon } from "react-icons/bi";
-import { blankStyle } from "../styles/blank.css";
+import { vars } from "../styles/theme.css";
+import { blankStyle } from "./blank.css";
 
 interface BlankItemProps {
   children: React.ReactNode;

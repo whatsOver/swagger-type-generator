@@ -1,4 +1,4 @@
-import { APIWithParamsAndBodyAndHost } from "@/pages/content/modules/getAPIList";
+import { APIWithParamsAndBodyAndHost } from "@/pages/content/modules/getApiList";
 import useHandlePopup from "@/pages/popup/hooks/Popup/useHandlePopup";
 import useHandleCode from "@/pages/popup/hooks/Request/useHandleCode";
 import { popupStyle } from "@/pages/popup/pages/Popup/popup.css";
@@ -11,13 +11,13 @@ import FullPageLoading from "@/shared/ui/Loading/FullPageLoading";
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { Flip, ToastContainer } from "react-toastify";
-import useHandleRequest from "../../../hooks/Request/useHandleRequest";
 import {
   APIWithOrder,
   sequenceStorage,
   updateFormValues,
   updateResponse,
-} from "../../store/sequence";
+} from "../../../../../entities/sequence/model/sequence-store";
+import useHandleRequest from "../../../../../features/request-api/module/hooks/useHandleRequest";
 import CompoundMultipleTest from "./CompoundMultipleTest";
 import { multipleStyles } from "./multiple.css";
 
@@ -58,7 +58,7 @@ const MultipleTestPage = () => {
 
       if (findSequence) {
         setSequenceTitle(findSequence.title);
-        setAPIs(findSequence.apiList);
+        setAPIs(findSequence.ApiList);
       }
     });
   }, [swaggerTitle]);
@@ -167,8 +167,8 @@ const MultipleTestPage = () => {
         }
       />
       <CompoundMultipleTest>
-        <CompoundMultipleTest.SequenceAPIList
-          apiList={apis}
+        <CompoundMultipleTest.SequenceApiList
+          ApiList={apis}
           currentAPIKey={currentAPIKey}
           onChangeAPI={onChangeAPI}
         />

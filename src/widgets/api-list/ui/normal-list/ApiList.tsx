@@ -1,30 +1,30 @@
-import { API, APIList } from "@/pages/content/modules/getAPIList";
+import { API, ApiList } from "@/pages/content/modules/getApiList2";
 import { vars } from "@/shared/ui/styles/theme.css";
-import { popupStyle } from "../../pages/Popup/popup.css";
-import APIItem from "../APIItem/APIItem";
+import APIItem from "../../../../pages/popup/ui/APIItem/APIItem";
+import { ApiListStyle } from "../apiList.css";
 
 interface ApiListProps {
-  apiList: APIList;
+  ApiList: ApiList;
   onClickAPI: (api: API) => void;
 }
 
-const ApiList = ({ apiList, onClickAPI }: ApiListProps) => {
+const ApiList = ({ ApiList, onClickAPI }: ApiListProps) => {
   return (
-    <ul className={popupStyle.apiList}>
-      {apiList.tags?.map((tag) => (
+    <ul className={ApiListStyle.ApiList}>
+      {ApiList.tags?.map((tag) => (
         <>
           <h2
             style={{
-              color: apiList.endpoints[tag]?.length
+              color: ApiList.endpoints[tag]?.length
                 ? vars.color.white
                 : vars.color.grey,
             }}
-            className={popupStyle.tag}
+            className={ApiListStyle.tag}
           >
             {tag}
           </h2>
-          <li className={popupStyle.tagBox} key={tag}>
-            {apiList.endpoints[tag]?.map((api) => (
+          <li className={ApiListStyle.tagBox} key={tag}>
+            {ApiList.endpoints[tag]?.map((api) => (
               <APIItem
                 key={api.path}
                 api={api}

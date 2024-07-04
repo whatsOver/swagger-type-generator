@@ -1,4 +1,4 @@
-import { APIWithParamsAndBodyAndHost } from "@/pages/content/modules/getAPIList";
+import { APIWithParamsAndBodyAndHost } from "@/pages/content/modules/getApiList2";
 import { jsonToTs } from "@/shared/util/typeGenerator";
 import {
   Dispatch,
@@ -7,14 +7,14 @@ import {
   useRef,
   useState,
 } from "react";
+import useSettingStore from "../../../../entities/setting/model/setting-store";
+import useCopy from "../../../../shared/hooks/useCopy";
 import {
   generateAxiosAPICode,
   generateFetchAPICode,
   generateInterface,
 } from "../../shared/util/apiGenerator";
 import { generateReactQueryHook } from "../../shared/util/queryGenerator";
-import useSettingStore from "../../store/setting";
-import useCopy from "../useCopy";
 
 interface HandleCode {
   api: APIWithParamsAndBodyAndHost | null;
