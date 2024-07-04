@@ -1,9 +1,9 @@
-import { vars } from "@src/common/ui/styles/theme.css";
-import { APIWithParamsOrBody } from "@src/pages/content/modules/getAPIList";
-import { HandleCodeReturn } from "@src/pages/popup/hooks/Request/useHandleCode";
-import Body from "@src/pages/popup/ui/Body";
-import ModalCodeBlock from "@src/pages/popup/ui/CodeBlockView";
-import Params from "@src/pages/popup/ui/Params";
+import { APIWithParamsOrBody } from "@/pages/content/modules/getAPIList";
+import { HandleCodeReturn } from "@/pages/popup/hooks/Request/useHandleCode";
+import Body from "@/pages/popup/ui/Body";
+import ModalCodeBlock from "@/pages/popup/ui/CodeBlockView";
+import Params from "@/pages/popup/ui/Params";
+import { vars } from "@/shared/ui/styles/theme.css";
 import { MdOutlineKeyboardArrowDown as ArrowDownIcon } from "react-icons/md";
 import { VscBracketError as ErrorIcon } from "react-icons/vsc";
 import { OmitHandleFormValues } from "../../../hooks/Request/useHandleRequest";

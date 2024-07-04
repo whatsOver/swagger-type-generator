@@ -1,11 +1,11 @@
 import { Parameters, Schemas } from "../api/docs";
 import {
-  getQueryParams,
-  replacePathParams,
+  generateFormData,
   getBody,
   getParams,
+  getQueryParams,
   getRequestBodyKey,
-  generateFormData,
+  replacePathParams,
 } from "./request";
 
 describe("getQueryParams", () => {

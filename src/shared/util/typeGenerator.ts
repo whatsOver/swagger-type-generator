@@ -1,16 +1,14 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
+import { EMPTY_RESPONSE } from "@/pages/popup/constants/status";
 import {
   SchemasProperties,
   SwaggerFormat,
   SwaggerType,
-} from "@src/pages/popup/api/docs";
-import { EMPTY_RESPONSE } from "@src/pages/popup/constants/status";
+} from "@/pages/popup/shared/api/docs";
 
-const isArrayType = (value: any): boolean =>
+export const isArrayType = (value: any): boolean =>
   typeof value === "string" && value.startsWith("[") && value.endsWith("]");
 
-const checkArrayAndConvert = (value: any): any => {
+export const checkArrayAndConvert = (value: any): any => {
   try {
     value = JSON.parse(value);
   } catch (error) {
@@ -19,7 +17,7 @@ const checkArrayAndConvert = (value: any): any => {
   return value;
 };
 
-const changeSwaggerTypeToTsType = (
+export const changeSwaggerTypeToTsType = (
   type: SwaggerType,
   format?: SwaggerFormat
 ): string => {
@@ -38,7 +36,7 @@ const changeSwaggerTypeToTsType = (
   }
 };
 
-const changeSwaggerFormatToTsType = (format: SwaggerFormat): string => {
+export const changeSwaggerFormatToTsType = (format: SwaggerFormat): string => {
   switch (format) {
     case "int32":
     case "int64":
@@ -56,7 +54,7 @@ const changeSwaggerFormatToTsType = (format: SwaggerFormat): string => {
   }
 };
 
-const getBodyProPertyType = (property: SchemasProperties) => {
+export const getBodyProPertyType = (property: SchemasProperties) => {
   if (property.type === "array") {
     return changeSwaggerTypeToTsType(property.type, property.items.format);
   } else {
@@ -64,7 +62,7 @@ const getBodyProPertyType = (property: SchemasProperties) => {
   }
 };
 
-const toTsType = (value: any): string => {
+export const toTsType = (value: any): string => {
   if (isArrayType(value)) {
     value = checkArrayAndConvert(value);
   }
@@ -78,7 +76,7 @@ const toTsType = (value: any): string => {
   else return "string";
 };
 
-const jsonToTs = (
+export const jsonToTs = (
   key: string,
   json: object | any,
   parentIsArray = false
@@ -127,5 +125,3 @@ const jsonToTs = (
 
   return { interfaceArray: interfaces, rootInterfaceKey };
 };
-
-export { toTsType, getBodyProPertyType, jsonToTs };

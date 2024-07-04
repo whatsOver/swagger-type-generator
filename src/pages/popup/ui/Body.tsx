@@ -1,10 +1,10 @@
-import Input from "@src/common/ui/Input";
-import { vars } from "@src/common/ui/styles/theme.css";
+import Input from "@/shared/ui/Input";
+import { vars } from "@/shared/ui/styles/theme.css";
 import React, { ChangeEvent, useState } from "react";
-import { Schemas } from "../api/docs";
 import { FormValues } from "../hooks/useForm";
 import { requestStyle } from "../pages/Request/request.css";
-import { typeConverter } from "../util/typeConverter";
+import { Schemas } from "../shared/api/docs";
+import { typeConverter } from "../shared/util/typeConverter";
 
 interface BodyProps {
   body: Schemas;

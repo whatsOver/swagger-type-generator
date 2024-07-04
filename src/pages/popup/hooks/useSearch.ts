@@ -1,9 +1,5 @@
-import { APIList } from "@src/pages/content/modules/getAPIList";
-import React from "react";
-import { useState } from "react";
-import { Dispatch } from "react";
-import { SetStateAction } from "react";
-import { useEffect } from "react";
+import { APIList } from "@/pages/content/modules/getAPIList";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface SearchProps {
   apiList: APIList;

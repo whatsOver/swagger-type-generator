@@ -1,5 +1,5 @@
-import { vars } from "@src/common/ui/styles/theme.css";
-import { API } from "@src/pages/content/modules/getAPIList";
+import { API } from "@/pages/content/modules/getAPIList";
+import { vars } from "@/shared/ui/styles/theme.css";
 import { apiItemStyles } from "./apiItem.css";
 
 interface APIItemProps {

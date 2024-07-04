@@ -1,14 +1,11 @@
-import {
-  API,
-  APIWithParamsOrBody,
-} from "@src/pages/content/modules/getAPIList";
+import { API, APIWithParamsOrBody } from "@/pages/content/modules/getAPIList";
+import { Method } from "axios";
 import {
   ContentType,
   DefaultComplexSchema,
   Schemas,
   SwaggerDocs,
-} from "@src/pages/popup/api/docs";
-import { Method } from "axios";
+} from "../api/docs";
 
 const convertSelectedAPI = (
   data: SwaggerDocs,

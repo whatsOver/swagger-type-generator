@@ -1,4 +1,8 @@
-import { ContentType, Parameters, Schemas } from "@src/pages/popup/api/docs";
+import {
+  ContentType,
+  Parameters,
+  Schemas,
+} from "@/pages/popup/shared/api/docs";
 import { Method } from "axios";
 
 declare global {

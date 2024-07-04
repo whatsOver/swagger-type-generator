@@ -1,4 +1,4 @@
-import Drawer from "@src/common/ui/Drawer";
+import Drawer from "@/shared/ui/Drawer";
 import { useNavigate } from "react-router-dom";
 import { settingDrawerStyles } from "./styles/settingDrawer.css";
 

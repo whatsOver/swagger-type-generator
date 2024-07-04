@@ -1,5 +1,5 @@
-import ListItem from "@src/common/ui/ListItem";
-import APIItem from "@src/pages/popup/ui/APIItem/APIItem";
+import APIItem from "@/pages/popup/ui/APIItem/APIItem";
+import ListItem from "@/shared/ui/ListItem";
 import { APIWithOrder } from "../../store/sequence";
 import StatusIcon from "../StatusIcon/StatusIcon";
 

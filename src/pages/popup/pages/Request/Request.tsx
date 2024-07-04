@@ -1,8 +1,8 @@
-import Button from "@src/common/ui/Button";
-import Header from "@src/common/ui/Header";
-import Modal from "@src/common/ui/Modal";
-import { vars } from "@src/common/ui/styles/theme.css";
-import { APIWithParamsAndBodyAndHost } from "@src/pages/content/modules/getAPIList";
+import { APIWithParamsAndBodyAndHost } from "@/pages/content/modules/getAPIList";
+import Button from "@/shared/ui/Button";
+import Header from "@/shared/ui/Header";
+import Modal from "@/shared/ui/Modal";
+import { vars } from "@/shared/ui/styles/theme.css";
 import { useCallback, useState } from "react";
 import { VscBracketError as ErrorIcon } from "react-icons/vsc";
 import { useLocation } from "react-router-dom";
@@ -13,9 +13,9 @@ import useHandleRequest from "../../hooks/Request/useHandleRequest";
 import Body from "../../ui/Body";
 import ModalCodeBlock from "../../ui/CodeBlockView";
 import Params from "../../ui/Params";
+import Loading from "../../ui/loading/Loading";
 import { popupStyle } from "../Popup/popup.css";
 import { requestStyle } from "./request.css";
-import Loading from "../../ui/loading/Loading";
 
 export type Mode = "RESPONSE" | "TS" | "ERROR" | "AXIOS" | "FETCH" | "LOADING";
 

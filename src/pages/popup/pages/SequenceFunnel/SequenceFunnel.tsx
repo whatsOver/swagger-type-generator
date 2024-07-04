@@ -1,5 +1,5 @@
-import { extractNonEmptyArrayKeys } from "@src/common/hooks/funnel/models";
-import { useFunnel } from "@src/common/hooks/funnel/useFunnel";
+import { extractNonEmptyArrayKeys } from "@/shared/hooks/funnel/models";
+import { useFunnel } from "@/shared/hooks/funnel/useFunnel";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import DeleteSequencePage from "../../Sequence/pages/Delete/DeleteSequencePage";
 import ReorderSequencePage from "../../Sequence/pages/Reorder/ReorderSequencePage";

@@ -1,5 +1,5 @@
-import { jsonToTs } from "@src/common/util/typeGenerator";
-import { APIWithParamsAndBodyAndHost } from "@src/pages/content/modules/getAPIList";
+import { APIWithParamsAndBodyAndHost } from "@/pages/content/modules/getAPIList";
+import { jsonToTs } from "@/shared/util/typeGenerator";
 import {
   Dispatch,
   MutableRefObject,
@@ -7,13 +7,13 @@ import {
   useRef,
   useState,
 } from "react";
-import useSettingStore from "../../store/setting";
 import {
   generateAxiosAPICode,
   generateFetchAPICode,
   generateInterface,
-} from "../../util/apiGenerator";
-import { generateReactQueryHook } from "../../util/queryGenerator";
+} from "../../shared/util/apiGenerator";
+import { generateReactQueryHook } from "../../shared/util/queryGenerator";
+import useSettingStore from "../../store/setting";
 import useCopy from "../useCopy";
 
 interface HandleCode {

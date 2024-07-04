@@ -1,4 +1,4 @@
-import { API } from "@src/pages/content/modules/getAPIList";
+import { API } from "@/pages/content/modules/getAPIList";
 import { useEffect, useState } from "react";
 import { ScenarioFunnelProps } from "../../pages/ScenarioFunnel/ScenarioFunnel";
 import { APIWithKey, updateAPI } from "../store/sequence";

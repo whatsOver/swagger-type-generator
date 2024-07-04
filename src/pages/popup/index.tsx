@@ -1,10 +1,10 @@
-import "@pages/popup/index.css";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createRoot } from "react-dom/client";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import refreshOnUpdate from "virtual:reload-on-update-in-view";
-import "../../common/ui/styles/reset.css.ts";
+import "../../shared/ui/styles/reset.css.js";
 import MultipleTestPage from "./Sequence/pages/Multiple/MultipleTestPage.js";
+import { QueryProvider } from "./app/index.js";
+import "./index.css";
 import Popup from "./pages/Popup/Popup.js";
 import Request from "./pages/Request/Request";
 import ScenarioFunnel from "./pages/ScenarioFunnel/ScenarioFunnel.js";
@@ -19,16 +19,9 @@ function init() {
     throw new Error("Can not find #app-container");
   }
   const root = createRoot(appContainer);
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        refetchOnWindowFocus: false,
-      },
-    },
-  });
 
   root.render(
-    <QueryClientProvider client={queryClient}>
+    <QueryProvider>
       <MemoryRouter>
         <ScrollToTop />
         <Routes>
@@ -42,7 +35,7 @@ function init() {
           />
         </Routes>
       </MemoryRouter>
-    </QueryClientProvider>
+    </QueryProvider>
   );
 }
 

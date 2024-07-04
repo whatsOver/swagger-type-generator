@@ -1,5 +1,5 @@
-import useDrawer from "@src/common/hooks/useDrawer";
-import { vars } from "@src/common/ui/styles/theme.css";
+import { vars } from "@/shared/ui/styles/theme.css";
+import useDrawer from "@src/shared/hooks/useDrawer";
 import { FiMenu as MenuIcon } from "react-icons/fi";
 import useHandleAuth from "../../hooks/Popup/useHandleAuth";
 import useHandlePopup from "../../hooks/Popup/useHandlePopup";

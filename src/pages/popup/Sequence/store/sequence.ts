@@ -1,5 +1,5 @@
-import { storage } from "@src/common/module/storageFactory";
-import { API } from "@src/pages/content/modules/getAPIList";
+import { API } from "@/pages/content/modules/getAPIList";
+import { storage } from "@/shared/module/storageFactory";
 import { FormValues } from "../../hooks/useForm";
 
 export type IconType = "SUCCESS" | "FAIL" | "LOADING";
