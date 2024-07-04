@@ -85,8 +85,12 @@ export default {
     "^@src(.*)$": "<rootDir>/src$1",
     "^@assets(.*)$": "<rootDir>/src/assets$1",
     "^@pages(.*)$": "<rootDir>/src/pages$1",
+    "^@/app(.*)$": "<rootDir>/src/app$1",
+    "^@/pages(.*)$": "<rootDir>/src/pages$1",
+    "^@/shared(.*)$": "<rootDir>/src/shared$1",
+    "^@/widgets(.*)$": "<rootDir>/src/widgets$1",
+    "^@/features(.*)$": "<rootDir>/src/features$1",
   },
-
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
   // modulePathIgnorePatterns: [],
 
