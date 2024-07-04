@@ -1,13 +1,16 @@
+import { extractNonEmptyArrayKeys } from "@/shared/hooks/funnel/models";
+import { useFunnel } from "@/shared/hooks/funnel/useFunnel";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
+import {
+  APIWithOrder,
+  sequenceStorage,
+} from "../../../../entities/sequence/model/sequence-store";
+import { navigationPath } from "../../../../shared/hooks/useRouter";
 import APISearchPage from "../../Sequence/pages/APISearch/APISearchPage";
 import DeletePage from "../../Sequence/pages/Delete/DeleteAPIPage";
 import OrderPage from "../../Sequence/pages/Reorder/ReorderAPIPage";
 import Scenario from "../../Sequence/pages/Scenario/Scenario";
-import { APIWithOrder, sequenceStorage } from "../../Sequence/store/sequence";
-import { navigationPath } from "../../hooks/useRouter";
-import { useFunnel } from "@/shared/hooks/funnel/useFunnel";
-import { extractNonEmptyArrayKeys } from "@/shared/hooks/funnel/models";
 
 export interface ScenarioFunnelProps {
   apis: APIWithOrder[];
@@ -47,7 +50,7 @@ const ScenarioFunnel = () => {
         (item) => item.id === Number(sequenceId)
       );
       setScenarioTitle(findSequence.title);
-      if (findSequence) setAPIs(findSequence.apiList);
+      if (findSequence) setAPIs(findSequence.ApiList);
     });
   }, [swaggerTitle]);
 

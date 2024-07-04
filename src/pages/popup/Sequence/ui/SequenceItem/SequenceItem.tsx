@@ -1,7 +1,7 @@
 import { vars } from "@/shared/ui/styles/theme.css";
 import classNames from "classnames";
 
-import type { SequenceItem } from "../../store/sequence";
+import type { SequenceItem } from "../../../../../entities/sequence/model/sequence-store";
 import { sequenceItemStyles } from "./sequenceItem.css";
 
 export interface SequenceItemProps extends SequenceItem {
@@ -11,11 +11,11 @@ export interface SequenceItemProps extends SequenceItem {
 interface ItemProps {
   id: SequenceItem["id"];
   title: SequenceItem["title"];
-  apiList: SequenceItem["apiList"];
+  ApiList: SequenceItem["ApiList"];
   onClick?: (id: number) => void;
 }
 
-const SequenceItem = ({ id, title, apiList, onClick }: ItemProps) => {
+const SequenceItem = ({ id, title, ApiList, onClick }: ItemProps) => {
   return (
     <div
       onClick={() => onClick && onClick(id)}
@@ -23,13 +23,13 @@ const SequenceItem = ({ id, title, apiList, onClick }: ItemProps) => {
     >
       <div className={sequenceItemStyles.title}>{title}</div>
       <div className={sequenceItemStyles.sequenceList}>
-        {!apiList?.length && (
+        {!ApiList?.length && (
           <div className={sequenceItemStyles.blankItem}>
             <span>Empty</span>
           </div>
         )}
 
-        {apiList?.map((api) => (
+        {ApiList?.map((api) => (
           <div
             style={{
               backgroundColor: vars.methodColors[api.api.method],

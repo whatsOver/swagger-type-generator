@@ -1,28 +1,28 @@
 import DragAndDrop from "@/shared/ui/DragAndDrop";
 import { Dispatch } from "react";
 import { IoMdMenu as MenuIcon } from "react-icons/io";
-import { APIWithOrder } from "../../Sequence/store/sequence";
-import APIItem from "../APIItem/APIItem";
+import { APIWithOrder } from "../../../../entities/sequence/model/sequence-store";
+import APIItem from "../../../../pages/popup/ui/APIItem/APIItem";
 import { dragAPIStyles } from "./dragApi.css";
 
 interface ApiListProps {
-  apiList: APIWithOrder[];
-  setAPIList: Dispatch<React.SetStateAction<APIWithOrder[]>>;
+  ApiList: APIWithOrder[];
+  setApiList: Dispatch<React.SetStateAction<APIWithOrder[]>>;
 }
 
-const DragAPIList = ({ apiList, setAPIList }: ApiListProps) => {
+const DragApiList = ({ ApiList, setApiList }: ApiListProps) => {
   return (
     <DragAndDrop
-      itemList={apiList}
+      itemList={ApiList}
       renderDragItem={(item) => (
         <div className={dragAPIStyles.wrapper}>
           <APIItem key={item.key} api={item.api} />
           <MenuIcon size={24} color="white" />
         </div>
       )}
-      setItemList={setAPIList}
+      setItemList={setApiList}
     />
   );
 };
 
-export default DragAPIList;
+export default DragApiList;

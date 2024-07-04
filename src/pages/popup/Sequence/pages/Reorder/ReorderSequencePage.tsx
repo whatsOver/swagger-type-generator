@@ -3,7 +3,7 @@ import { SequenceFunnelProps } from "@/pages/popup/pages/SequenceFunnel/Sequence
 import Button from "@/shared/ui/Button";
 import Header from "@/shared/ui/Header";
 import ModeItem from "@/shared/ui/ModeItem/ModeItem";
-import { updateSequences } from "../../store/sequence";
+import { updateSequences } from "../../../../../entities/sequence/model/sequence-store";
 import SequenceItem from "../../ui/SequenceItem/SequenceItem";
 
 type ReorderAPIPageProps = SequenceFunnelProps;

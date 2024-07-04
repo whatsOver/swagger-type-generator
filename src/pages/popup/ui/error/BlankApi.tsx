@@ -1,6 +1,6 @@
 import { vars } from "@/shared/ui/styles/theme.css";
 import { BiError as ErrorIcon } from "react-icons/bi";
-import { blankStyle } from "../styles/blank.css";
+import { blankStyle } from "../../../../shared/ui/blank-item/blank.css";
 
 const BlankApi = () => {
   return (

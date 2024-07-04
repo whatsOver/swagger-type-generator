@@ -1,6 +1,6 @@
-import { API } from "@/pages/content/modules/getAPIList";
+import { API } from "@/pages/content/modules/getApiList2";
 import { storage } from "@/shared/module/storageFactory";
-import { FormValues } from "../../hooks/useForm";
+import { FormValues } from "../../../features/request-api/module/hooks/useForm";
 
 export type IconType = "SUCCESS" | "FAIL" | "LOADING";
 
@@ -20,7 +20,7 @@ export interface SequenceItem {
   id: number;
   title: string;
   iconType: IconType;
-  apiList: APIWithOrder[];
+  ApiList: APIWithOrder[];
 }
 
 interface SequenceState {
@@ -83,9 +83,9 @@ export const addAPI = (
     if (!prev[swaggerTitle]) return prev;
     const sequence = prev[swaggerTitle].find((s) => s.id === sequenceId);
     if (!sequence) return prev;
-    sequence.apiList.push({
+    sequence.ApiList.push({
       ...api,
-      order: sequence.apiList.length,
+      order: sequence.ApiList.length,
       formValues: {},
       response: null,
     });
@@ -108,7 +108,7 @@ export const updateAPI = (
     return {
       ...prev,
       [swaggerTitle]: prev[swaggerTitle].map((s) =>
-        s.id === sequenceId ? { ...s, apiList: apis } : s
+        s.id === sequenceId ? { ...s, ApiList: apis } : s
       ),
     };
   });
@@ -123,7 +123,7 @@ export const deleteAPIs = (
     if (!prev[swaggerTitle]) return prev;
     const sequence = prev[swaggerTitle].find((s) => s.id === sequenceId);
     if (!sequence) return prev;
-    sequence.apiList = sequence.apiList.filter(
+    sequence.ApiList = sequence.ApiList.filter(
       (api) => !keys.includes(api.key)
     );
     return {
@@ -145,7 +145,7 @@ export const updateFormValues = (
     if (!prev[swaggerTitle]) return prev;
     const sequence = prev[swaggerTitle].find((s) => s.id === sequenceId);
     if (!sequence) return prev;
-    sequence.apiList = sequence.apiList.map((api) =>
+    sequence.ApiList = sequence.ApiList.map((api) =>
       api.key === key ? { ...api, formValues } : api
     );
     return {
@@ -167,7 +167,7 @@ export const updateResponse = (
     if (!prev[swaggerTitle]) return prev;
     const sequence = prev[swaggerTitle].find((s) => s.id === sequenceId);
     if (!sequence) return prev;
-    sequence.apiList = sequence.apiList.map((api) =>
+    sequence.ApiList = sequence.ApiList.map((api) =>
       api.key === key ? { ...api, response } : api
     );
     return {

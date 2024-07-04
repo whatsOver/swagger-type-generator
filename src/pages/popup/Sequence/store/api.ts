@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { APIWithOrder } from "./sequence";
+import { APIWithOrder } from "../../../../entities/sequence/model/sequence-store";
 
 interface apiStore {
   apis: APIWithOrder[];

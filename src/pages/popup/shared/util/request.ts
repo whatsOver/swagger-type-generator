@@ -1,5 +1,5 @@
 import { filter, keys, map, pipe, reduce, toArray } from "@fxts/core";
-import { FormValues } from "../../hooks/useForm";
+import { FormValues } from "../../../../features/request-api/module/hooks/useForm";
 import { Parameters, Schemas } from "../api/docs";
 
 const getQueryParams = (params: Parameters[], formValues: FormValues) =>

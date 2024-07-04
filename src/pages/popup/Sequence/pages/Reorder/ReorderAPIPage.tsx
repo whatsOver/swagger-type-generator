@@ -4,7 +4,7 @@ import APIItem from "@/pages/popup/ui/APIItem/APIItem";
 import Button from "@/shared/ui/Button";
 import Header from "@/shared/ui/Header";
 import ModeItem from "@/shared/ui/ModeItem/ModeItem";
-import { updateAPI } from "../../store/sequence";
+import { updateAPI } from "../../../../../entities/sequence/model/sequence-store";
 
 type ReorderAPIPageProps = ScenarioFunnelProps;
 

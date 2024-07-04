@@ -1,16 +1,16 @@
 import { extractNonEmptyArrayKeys } from "@/shared/hooks/funnel/models";
 import { useFunnel } from "@/shared/hooks/funnel/useFunnel";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import DeleteSequencePage from "../../Sequence/pages/Delete/DeleteSequencePage";
-import ReorderSequencePage from "../../Sequence/pages/Reorder/ReorderSequencePage";
-import SequencePage from "../../Sequence/pages/Sequence/SequencePage";
 import {
   SequenceItem,
   createSequence,
   sequenceStorage,
-} from "../../Sequence/store/sequence";
-import useHandlePopup from "../../hooks/Popup/useHandlePopup";
-import { navigationPath } from "../../hooks/useRouter";
+} from "../../../../entities/sequence/model/sequence-store";
+import { navigationPath } from "../../../../shared/hooks/useRouter";
+import DeleteSequencePage from "../../Sequence/pages/Delete/DeleteSequencePage";
+import ReorderSequencePage from "../../Sequence/pages/Reorder/ReorderSequencePage";
+import SequencePage from "../../Sequence/pages/Sequence/SequencePage";
+import useHandlePopup from "../Popup/hooks/useHandlePopup";
 
 export interface SequenceFunnelProps {
   swaggerTitle: string;

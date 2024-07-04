@@ -16,7 +16,7 @@ declare global {
 export type POST_API_LIST = {
   type: "GET_API_LIST_RESULT";
   data: {
-    prList: APIList;
+    prList: ApiList;
     path: Path;
     script: string;
   };
@@ -24,11 +24,11 @@ export type POST_API_LIST = {
 
 export type GET_API_LIST_RESULT = {
   type: "GET_API_LIST_RESULT";
-  prList: APIList;
+  prList: ApiList;
   path: Path;
 };
 
-export interface APIList {
+export interface ApiList {
   tags: string[];
   endpoints: Endpoints;
 }
@@ -59,7 +59,7 @@ export interface APIWithParamsAndBodyAndHost extends APIWithParamsOrBody {
 }
 
 (async () => {
-  const extractTagsAndEndpoints = async (): Promise<APIList> => {
+  const extractTagsAndEndpoints = async (): Promise<ApiList> => {
     const tagSections = document.querySelectorAll(".opblock-tag-section");
     const tags: string[] = [];
     const endpoints: Endpoints = {};

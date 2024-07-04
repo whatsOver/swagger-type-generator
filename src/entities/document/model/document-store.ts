@@ -1,38 +1,36 @@
-import { APIList, Path } from "@/pages/content/modules/getAPIList";
+import type { ApiList, Path } from "@/pages/content/modules/getApiList2";
 import { create } from "zustand";
 
 interface SwaggerDocStore {
   state: "initial" | "loaded";
   setState: (state: "initial" | "loaded") => void;
 
-  apiList: APIList;
-  setAPIList: (apiList: APIList) => void;
+  ApiList: ApiList;
+  setApiList: (ApiList: ApiList) => void;
 
-  filteredAPIList: APIList;
-  setFilteredAPIList: (apiList: APIList) => void;
+  filteredApiList: ApiList;
+  setFilteredApiList: (ApiList: ApiList) => void;
 
   pathInfo: Path;
   setPathInfo: (pathInfo: Path) => void;
 }
 
-const useSwaggerDocStore = create<SwaggerDocStore>((set) => ({
+export const useSwaggerDocStore = create<SwaggerDocStore>((set) => ({
   state: "initial",
   setState: (state: "initial" | "loaded") => set({ state }),
-  filteredAPIList: {
+  filteredApiList: {
     endpoints: {},
     tags: [],
   },
-  setFilteredAPIList: (filteredAPIList: APIList) => set({ filteredAPIList }),
-  apiList: {
+  setFilteredApiList: (filteredApiList: ApiList) => set({ filteredApiList }),
+  ApiList: {
     endpoints: {},
     tags: [],
   },
-  setAPIList: (apiList: APIList) => set({ apiList }),
+  setApiList: (ApiList: ApiList) => set({ ApiList }),
   pathInfo: {
     host: "",
     href: "",
   },
   setPathInfo: (pathInfo: Path) => set({ pathInfo }),
 }));
-
-export default useSwaggerDocStore;

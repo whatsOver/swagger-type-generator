@@ -7,7 +7,7 @@ export interface SequenceItemProps extends SequenceItem {
 }
 
 const SequenceItemWithStatus = ({
-  apiList,
+  ApiList,
   iconType,
   id,
   title,
@@ -19,7 +19,7 @@ const SequenceItemWithStatus = ({
         left={<StatusIcon iconType={iconType} />}
         middle={
           <SequenceItem
-            apiList={apiList}
+            ApiList={ApiList}
             id={id}
             title={title}
             onClick={onClick}

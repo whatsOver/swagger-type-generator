@@ -5,7 +5,7 @@ import "../../shared/ui/styles/reset.css.js";
 import MultipleTestPage from "./Sequence/pages/Multiple/MultipleTestPage.js";
 import { QueryProvider } from "./app/index.js";
 import "./index.css";
-import Popup from "./pages/Popup/Popup.js";
+import Popup from "./pages/Popup/ui/Popup.js";
 import Request from "./pages/Request/Request";
 import ScenarioFunnel from "./pages/ScenarioFunnel/ScenarioFunnel.js";
 import SequenceFunnel from "./pages/SequenceFunnel/SequenceFunnel.js";

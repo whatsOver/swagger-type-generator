@@ -1,16 +1,16 @@
-import { APIList } from "@/pages/content/modules/getAPIList";
+import { ApiList } from "@/pages/content/modules/getApiList2";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface SearchProps {
-  apiList: APIList;
-  setFilteredAPIList: Dispatch<SetStateAction<APIList>>;
+  ApiList: ApiList;
+  setFilteredApiList: Dispatch<SetStateAction<ApiList>>;
 }
 
-const useSearch = ({ apiList, setFilteredAPIList }: SearchProps) => {
+const useSearch = ({ ApiList, setFilteredApiList }: SearchProps) => {
   const [search, setSearch] = useState("");
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
-    setFilteredAPIList((prev) => ({
+    setFilteredApiList((prev) => ({
       ...prev,
       endpoints: Object.keys(prev.endpoints).reduce((acc, cur) => {
         const filteredAPIs = prev.endpoints[cur].filter(
@@ -27,10 +27,10 @@ const useSearch = ({ apiList, setFilteredAPIList }: SearchProps) => {
   };
 
   useEffect(() => {
-    setFilteredAPIList({
-      ...apiList,
-      endpoints: Object.keys(apiList.endpoints).reduce((acc, cur) => {
-        const filteredAPIs = apiList.endpoints[cur].filter(
+    setFilteredApiList({
+      ...ApiList,
+      endpoints: Object.keys(ApiList.endpoints).reduce((acc, cur) => {
+        const filteredAPIs = ApiList.endpoints[cur].filter(
           (api) =>
             api.path.toLowerCase().includes(search.toLowerCase()) ||
             api.description.toLowerCase().includes(search.toLowerCase())
@@ -41,7 +41,7 @@ const useSearch = ({ apiList, setFilteredAPIList }: SearchProps) => {
         return acc;
       }, {}),
     });
-  }, [apiList, search]);
+  }, [ApiList, search]);
 
   return { search, onChange };
 };
