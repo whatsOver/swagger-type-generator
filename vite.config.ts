@@ -57,7 +57,7 @@ export default defineConfig({
         background: resolve(pagesDir, "background", "index.ts"),
         contentStyle: resolve(pagesDir, "content", "style.scss"),
         popup: resolve(pagesDir, "popup", "index.html"),
-        getAPIList: resolve(pagesDir, "content/modules", "getAPIList.ts"),
+        getApiList: resolve(pagesDir, "content/modules", "getApiList.ts"),
       },
       watch: {
         include: ["src/**", "vite.config.ts"],
@@ -65,8 +65,8 @@ export default defineConfig({
       },
       output: {
         entryFileNames: (assetInfo: PreRenderedChunk) => {
-          if (assetInfo.name === "getAPIList") {
-            return "getAPIList.js";
+          if (assetInfo.name === "getApiList") {
+            return "getApiList.js";
           }
           return `src/pages/${assetInfo.name}/index.js`;
         },
