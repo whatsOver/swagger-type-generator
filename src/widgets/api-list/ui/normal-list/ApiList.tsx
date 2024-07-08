@@ -4,18 +4,18 @@ import APIItem from "../../../../pages/popup/ui/APIItem/APIItem";
 import { ApiListStyle } from "../apiList.css";
 
 interface ApiListProps {
-  ApiList: ApiList;
+  apiList: ApiList;
   onClickAPI: (api: API) => void;
 }
 
-const ApiList = ({ ApiList, onClickAPI }: ApiListProps) => {
+const ApiList = ({ apiList, onClickAPI }: ApiListProps) => {
   return (
     <ul className={ApiListStyle.ApiList}>
-      {ApiList.tags?.map((tag) => (
+      {apiList.tags?.map((tag) => (
         <>
           <h2
             style={{
-              color: ApiList.endpoints[tag]?.length
+              color: apiList.endpoints[tag]?.length
                 ? vars.color.white
                 : vars.color.grey,
             }}
@@ -24,7 +24,7 @@ const ApiList = ({ ApiList, onClickAPI }: ApiListProps) => {
             {tag}
           </h2>
           <li className={ApiListStyle.tagBox} key={tag}>
-            {ApiList.endpoints[tag]?.map((api) => (
+            {apiList.endpoints[tag]?.map((api) => (
               <APIItem
                 key={api.path}
                 api={api}

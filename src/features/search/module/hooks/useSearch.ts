@@ -2,11 +2,11 @@ import { ApiList } from "@/pages/content/modules/getApiList2";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface SearchProps {
-  ApiList: ApiList;
+  apiList: ApiList;
   setFilteredApiList: Dispatch<SetStateAction<ApiList>>;
 }
 
-const useSearch = ({ ApiList, setFilteredApiList }: SearchProps) => {
+const useSearch = ({ apiList, setFilteredApiList }: SearchProps) => {
   const [search, setSearch] = useState("");
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -28,9 +28,9 @@ const useSearch = ({ ApiList, setFilteredApiList }: SearchProps) => {
 
   useEffect(() => {
     setFilteredApiList({
-      ...ApiList,
-      endpoints: Object.keys(ApiList.endpoints).reduce((acc, cur) => {
-        const filteredAPIs = ApiList.endpoints[cur].filter(
+      ...apiList,
+      endpoints: Object.keys(apiList.endpoints).reduce((acc, cur) => {
+        const filteredAPIs = apiList.endpoints[cur].filter(
           (api) =>
             api.path.toLowerCase().includes(search.toLowerCase()) ||
             api.description.toLowerCase().includes(search.toLowerCase())
@@ -41,7 +41,7 @@ const useSearch = ({ ApiList, setFilteredApiList }: SearchProps) => {
         return acc;
       }, {}),
     });
-  }, [ApiList, search]);
+  }, [apiList, search]);
 
   return { search, onChange };
 };

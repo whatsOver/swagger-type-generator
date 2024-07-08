@@ -1,4 +1,4 @@
-import { popupStyle } from "@/pages/popup/pages/Popup/popup.css";
+import { popupStyle } from "@/pages/popup/pages/Popup/ui/popup.css";
 import Button from "@/shared/ui/Button";
 import Header from "@/shared/ui/Header";
 import useSearch from "../../../../../features/search/module/hooks/useSearch";
@@ -21,10 +21,10 @@ const APISearchPage = ({
   setAPIs,
 }: APISearchPageProps) => {
   console.log("APISearchPage", swaggerTitle);
-  const { loading, ApiList, filteredApiList, setFilteredApiList } =
+  const { loading, apiList, filteredApiList, setFilteredApiList } =
     useHandlePopup();
 
-  const { search, onChange } = useSearch({ ApiList, setFilteredApiList });
+  const { search, onChange } = useSearch({ apiList, setFilteredApiList });
 
   const { onClickAPI, onClickSave } = useHandleSaveAPI({
     apis,

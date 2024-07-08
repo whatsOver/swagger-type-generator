@@ -11,7 +11,7 @@ const useHandlePopup = () => {
 
   // FIRST RENDER
   const {
-    ApiList,
+    apiList,
     filteredApiList,
     pathInfo,
     setApiList,
@@ -37,7 +37,7 @@ const useHandlePopup = () => {
 
   return {
     loading,
-    ApiList,
+    apiList,
     filteredApiList,
     apiDocsData,
     pathInfo,
