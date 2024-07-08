@@ -1,4 +1,4 @@
-import type { ApiList, Path } from "@/pages/content/modules/getApiList2";
+import type { ApiList, Path } from "@/pages/content/modules/getApiList";
 import { create } from "zustand";
 
 interface SwaggerDocStore {

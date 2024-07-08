@@ -1,4 +1,4 @@
-import { API, ApiList } from "@/pages/content/modules/getApiList2";
+import { API, ApiList } from "@/pages/content/modules/getApiList";
 import APIItem from "@/pages/popup/ui/APIItem/APIItem";
 import CheckBox from "@/shared/ui/CheckBox";
 import { vars } from "@/shared/ui/styles/theme.css";

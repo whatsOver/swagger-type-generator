@@ -1,4 +1,4 @@
-import { ApiList } from "@/pages/content/modules/getApiList2";
+import { ApiList } from "@/pages/content/modules/getApiList";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface SearchProps {

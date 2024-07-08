@@ -1,4 +1,4 @@
-import { API, APIWithParamsOrBody } from "@/pages/content/modules/getApiList2";
+import { API, APIWithParamsOrBody } from "@/pages/content/modules/getApiList";
 import { Method } from "axios";
 import {
   ContentType,

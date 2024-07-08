@@ -1,4 +1,4 @@
-import { API } from "@/pages/content/modules/getApiList2";
+import { API } from "@/pages/content/modules/getApiList";
 import { useEffect, useState } from "react";
 import {
   APIWithKey,

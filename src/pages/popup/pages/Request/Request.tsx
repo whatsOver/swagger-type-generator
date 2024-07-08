@@ -1,4 +1,4 @@
-import { APIWithParamsAndBodyAndHost } from "@/pages/content/modules/getApiList2";
+import { APIWithParamsAndBodyAndHost } from "@/pages/content/modules/getApiList";
 import Button from "@/shared/ui/Button";
 import Header from "@/shared/ui/Header";
 import Modal from "@/shared/ui/Modal";
