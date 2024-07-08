@@ -1,4 +1,4 @@
-import { popupStyle } from "@/pages/popup/pages/Popup/popup.css";
+import { popupStyle } from "@/pages/popup/pages/Popup/ui/popup.css";
 import { SequenceFunnelProps } from "@/pages/popup/pages/SequenceFunnel/SequenceFunnel";
 import Button from "@/shared/ui/Button";
 import Header from "@/shared/ui/Header";

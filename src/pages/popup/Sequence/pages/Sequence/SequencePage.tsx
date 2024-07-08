@@ -1,10 +1,10 @@
-import { popupStyle } from "@/pages/popup/pages/Popup/popup.css";
+import { popupStyle } from "@/pages/popup/pages/Popup/ui/popup.css";
 import { SequenceFunnelProps } from "@/pages/popup/pages/SequenceFunnel/SequenceFunnel";
-import BlankItem from "@/pages/popup/ui/error/BlankItem";
 import useDrawer from "@/shared/hooks/useDrawer";
 import Button from "@/shared/ui/Button";
 import Dropdown from "@/shared/ui/Dropdown";
 import Header from "@/shared/ui/Header";
+import BlankItem from "@/shared/ui/blank-item/BlankItem";
 import { vars } from "@/shared/ui/styles/theme.css";
 import { FiMenu as MenuIcon } from "react-icons/fi";
 import { 시나리오_관리_퍼널_Key } from "../../../../../shared/hooks/useRouter";
