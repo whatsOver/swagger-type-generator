@@ -1,9 +1,9 @@
-import { popupStyle } from "@/pages/popup/pages/Popup/ui/popup.css";
+import { apiListStyle } from "@/pages/popup/pages/ApiList/ui/apiList.css";
 import { ScenarioFunnelProps } from "@/pages/popup/pages/ScenarioFunnel/ScenarioFunnel";
-import APIItem from "@/pages/popup/ui/APIItem/APIItem";
 import Button from "@/shared/ui/Button";
 import Header from "@/shared/ui/Header";
 import ModeItem from "@/shared/ui/ModeItem/ModeItem";
+import APIItem from "@/widgets/api-list/ui/api-item/ApiItem";
 import { updateAPI } from "../../../../../entities/sequence/model/sequence-store";
 
 type ReorderAPIPageProps = ScenarioFunnelProps;
@@ -21,7 +21,7 @@ const ReorderAPIPage = ({
   };
 
   return (
-    <div id="main" className={popupStyle.app}>
+    <div id="main" className={apiListStyle.app}>
       <Header
         showBackButton
         headerTitle="Change Order"

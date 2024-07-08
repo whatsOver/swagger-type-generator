@@ -1,4 +1,4 @@
-import { Parameters } from "../api/docs";
+import { Parameters } from "../../../pages/popup/shared/api/docs";
 import {
   GenerateReactQueryHookProps,
   generateQueryInterface,

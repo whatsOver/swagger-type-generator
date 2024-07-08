@@ -7,7 +7,7 @@ import {
   SwaggerDocs,
 } from "../api/docs";
 
-const convertSelectedAPI = (
+export const convertSelectedAPI = (
   data: SwaggerDocs,
   api: API
 ): APIWithParamsOrBody => {
@@ -58,8 +58,6 @@ const convertSelectedAPI = (
     contentType,
   };
 };
-
-export { convertSelectedAPI };
 
 function transformDefaultComplexSchema(schema: DefaultComplexSchema): Schemas {
   const required = Object.keys(schema.default);

@@ -1,23 +1,23 @@
 import { useSwaggerDocStore } from "@/entities/document/model/document-store";
-import { APIWithParamsAndBodyAndHost } from "@/pages/content/modules/getApiList";
-import useHandleCode from "@/pages/popup/hooks/Request/useHandleCode";
-import useHandlePopup from "@/pages/popup/pages/Popup/hooks/useHandlePopup";
-import { popupStyle } from "@/pages/popup/pages/Popup/ui/popup.css";
-import { convertSelectedAPI } from "@/pages/popup/shared/util/convertSelectedAPI";
-import Button from "@/shared/ui/Button";
-import BottomFixedButton from "@/shared/ui/Button/BottomFixedButton";
-import Header from "@/shared/ui/Header";
-import FullPageLoading from "@/shared/ui/Loading/FullPageLoading";
-import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
-import { Flip, ToastContainer } from "react-toastify";
 import {
   APIWithOrder,
   sequenceStorage,
   updateFormValues,
   updateResponse,
-} from "../../../../../entities/sequence/model/sequence-store";
-import useHandleRequest from "../../../../../features/request-api/module/hooks/useHandleRequest";
+} from "@/entities/sequence/model/sequence-store";
+import { useHandleRequest } from "@/features/request-api/module/hooks/useHandleRequest";
+import { APIWithParamsAndBodyAndHost } from "@/pages/content/modules/getApiList";
+import useHandleCode from "@/pages/popup/hooks/Request/useHandleCode";
+import { apiListStyle } from "@/pages/popup/pages/ApiList/ui/apiList.css";
+import { convertSelectedAPI } from "@/pages/popup/shared/util/convertSelectedAPI";
+import Button from "@/shared/ui/Button";
+import BottomFixedButton from "@/shared/ui/Button/BottomFixedButton";
+import Header from "@/shared/ui/Header";
+import FullPageLoading from "@/shared/ui/Loading/FullPageLoading";
+import { useHandleApiList } from "@/widgets/api-list/module/hooks/useHandleApiList";
+import { useEffect, useState } from "react";
+import { useLocation, useParams } from "react-router-dom";
+import { Flip, ToastContainer } from "react-toastify";
 import CompoundMultipleTest from "./CompoundMultipleTest";
 import { multipleStyles } from "./multiple.css";
 
@@ -36,7 +36,7 @@ const MultipleTestPage = () => {
   const { swaggerTitle } = useLocation().state as { swaggerTitle: string };
 
   // Swagger 문서 정보 가져오기
-  const { apiDocsData: apiDocs } = useHandlePopup();
+  const { apiDocsData: apiDocs } = useHandleApiList();
 
   const { pathInfo } = useSwaggerDocStore();
 
@@ -149,7 +149,7 @@ const MultipleTestPage = () => {
   };
 
   return (
-    <div className={popupStyle.app}>
+    <div className={apiListStyle.app}>
       <Header
         showBackButton
         headerTitle={sequenceTitle}

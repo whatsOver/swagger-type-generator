@@ -1,13 +1,13 @@
-import { popupStyle } from "@/pages/popup/pages/Popup/ui/popup.css";
+import { apiListStyle } from "@/pages/popup/pages/ApiList/ui/apiList.css";
 import Button from "@/shared/ui/Button";
 import Header from "@/shared/ui/Header";
 import useSearch from "../../../../../features/search/module/hooks/useSearch";
+import Loading from "../../../../../shared/ui/Loading/Loading";
+import { useHandleApiList } from "../../../../../widgets/api-list/module/hooks/useHandleApiList";
+import BlankApi from "../../../../../widgets/api-list/ui/blank/BlankApi";
 import ToggleApiList from "../../../../../widgets/api-list/ui/toggle-list/ToggleSwaggerApiList";
-import useHandlePopup from "../../../pages/Popup/hooks/useHandlePopup";
 import { ScenarioFunnelProps } from "../../../pages/ScenarioFunnel/ScenarioFunnel";
 import Search from "../../../ui/Search";
-import BlankApi from "../../../ui/error/BlankApi";
-import Loading from "../../../ui/loading/Loading";
 import useHandleSaveAPI from "../../module/useHandleSaveAPI";
 import { apiSearchStyles } from "./apiSearch.css";
 
@@ -22,7 +22,7 @@ const APISearchPage = ({
 }: APISearchPageProps) => {
   console.log("APISearchPage", swaggerTitle);
   const { loading, apiList, filteredApiList, setFilteredApiList } =
-    useHandlePopup();
+    useHandleApiList();
 
   const { search, onChange } = useSearch({ apiList, setFilteredApiList });
 
@@ -35,7 +35,7 @@ const APISearchPage = ({
   });
 
   return (
-    <div id="main" className={popupStyle.app}>
+    <div id="main" className={apiListStyle.app}>
       <Header
         showBackButton
         headerTitle="Add New APIs"

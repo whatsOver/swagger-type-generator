@@ -1,5 +1,5 @@
-import APIItem from "@/pages/popup/ui/APIItem/APIItem";
 import ListItem from "@/shared/ui/ListItem";
+import APIItem from "@/widgets/api-list/ui/api-item/ApiItem";
 import { APIWithOrder } from "../../../../../entities/sequence/model/sequence-store";
 import StatusIcon from "../StatusIcon/StatusIcon";
 

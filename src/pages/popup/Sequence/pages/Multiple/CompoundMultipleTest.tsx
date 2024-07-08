@@ -1,13 +1,13 @@
+import { APIWithOrder } from "@/entities/sequence/model/sequence-store";
+import { OmitHandleFormValues } from "@/features/request-api/module/hooks/useHandleRequest";
 import { APIWithParamsOrBody } from "@/pages/content/modules/getApiList";
 import { HandleCodeReturn } from "@/pages/popup/hooks/Request/useHandleCode";
-import Body from "@/pages/popup/ui/Body";
 import ModalCodeBlock from "@/pages/popup/ui/CodeBlockView";
-import Params from "@/pages/popup/ui/Params";
 import { vars } from "@/shared/ui/styles/theme.css";
+import { RequestBody } from "@/widgets/request-body/ui/api-body/RequestBody";
+import { RequestParam } from "@/widgets/request-param/ui/api-param/RequestParam";
 import { MdOutlineKeyboardArrowDown as ArrowDownIcon } from "react-icons/md";
 import { VscBracketError as ErrorIcon } from "react-icons/vsc";
-import { APIWithOrder } from "../../../../../entities/sequence/model/sequence-store";
-import { OmitHandleFormValues } from "../../../../../features/request-api/module/hooks/useHandleRequest";
 import { Mode } from "./MultipleTestPage";
 import { multipleStyles } from "./multiple.css";
 
@@ -78,7 +78,7 @@ const Request = ({
       <h2 className={multipleStyles.mainDescription}>{api?.description}</h2>
       <div className={multipleStyles.requestBlock}>
         {!!api.params?.length && (
-          <Params
+          <RequestParam
             params={api.params}
             formValues={formValues}
             handleChange={handleChange}
@@ -86,7 +86,7 @@ const Request = ({
           />
         )}
         {!!api.body?.type.length && (
-          <Body
+          <RequestBody
             body={api.body}
             formValues={formValues}
             handleChange={handleChange}

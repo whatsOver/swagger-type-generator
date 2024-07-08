@@ -1,4 +1,4 @@
-import { popupStyle } from "@/pages/popup/pages/Popup/ui/popup.css";
+import { apiListStyle } from "@/pages/popup/pages/ApiList/ui/apiList.css";
 import { SequenceFunnelProps } from "@/pages/popup/pages/SequenceFunnel/SequenceFunnel";
 import useDrawer from "@/shared/hooks/useDrawer";
 import Button from "@/shared/ui/Button";
@@ -29,7 +29,7 @@ const SequencePage = ({
     useHandleSequencePage({ swaggerTitle });
 
   return (
-    <div id="main" className={popupStyle.app}>
+    <div id="main" className={apiListStyle.app}>
       <Header
         headerTitle=""
         leftButton={

@@ -8,13 +8,13 @@ import {
   useRef,
   useState,
 } from "react";
-import useCopy from "../../../../shared/hooks/useCopy";
 import {
   generateAxiosAPICode,
   generateFetchAPICode,
   generateInterface,
-} from "../../shared/util/apiGenerator";
-import { generateReactQueryHook } from "../../shared/util/queryGenerator";
+} from "../../../../features/api-generate/module/apiGenerator";
+import { generateReactQueryHook } from "../../../../features/react-query-generate/module/queryGenerator";
+import useCopy from "../../../../shared/hooks/useCopy";
 
 interface HandleCode {
   api: APIWithParamsAndBodyAndHost | null;
