@@ -1,4 +1,4 @@
-import useSettingStore from "../../../../entities/setting/model/setting-store";
+import { useSettingStore } from "@/entities/setting/model/setting-store";
 
 const useHandleSetting = () => {
   const { withReactQuery, toggleReactQuery } = useSettingStore();
