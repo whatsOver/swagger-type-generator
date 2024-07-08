@@ -1,9 +1,9 @@
 import { APIWithOrder } from "@/entities/sequence/model/sequence-store";
 import { OmitHandleFormValues } from "@/features/request-api/module/hooks/useHandleRequest";
 import { APIWithParamsOrBody } from "@/pages/content/modules/getApiList";
-import { HandleCodeReturn } from "@/pages/popup/hooks/Request/useHandleCode";
-import ModalCodeBlock from "@/pages/popup/ui/CodeBlockView";
 import { vars } from "@/shared/ui/styles/theme.css";
+import { HandleCodeReturn } from "@/widgets/code-block/module/hooks/useHandleCode";
+import ModalCodeBlock from "@/widgets/code-block/ui/code-block-modal/CodeBlockView";
 import { RequestBody } from "@/widgets/request-body/ui/api-body/RequestBody";
 import { RequestParam } from "@/widgets/request-param/ui/api-param/RequestParam";
 import { MdOutlineKeyboardArrowDown as ArrowDownIcon } from "react-icons/md";

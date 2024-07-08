@@ -1,9 +1,9 @@
-import { Parameters } from "../../../pages/popup/shared/api/docs";
+import { Parameters } from "@/entities/swagger/types";
 import {
   getBody,
   getParams,
   getQueryParamsArray,
-} from "../../../pages/popup/shared/util/request";
+} from "@/features/request-api/module/utils/request";
 import {
   GenerateAPICodeProps,
   generateAxiosAPICode,

@@ -3,11 +3,11 @@ import Button from "@/shared/ui/Button";
 import Header from "@/shared/ui/Header";
 import useSearch from "../../../../../features/search/module/hooks/useSearch";
 import Loading from "../../../../../shared/ui/Loading/Loading";
+import Search from "../../../../../shared/ui/search/Search";
 import { useHandleApiList } from "../../../../../widgets/api-list/module/hooks/useHandleApiList";
 import BlankApi from "../../../../../widgets/api-list/ui/blank/BlankApi";
 import ToggleApiList from "../../../../../widgets/api-list/ui/toggle-list/ToggleSwaggerApiList";
 import { ScenarioFunnelProps } from "../../../pages/ScenarioFunnel/ScenarioFunnel";
-import Search from "../../../ui/Search";
 import useHandleSaveAPI from "../../module/useHandleSaveAPI";
 import { apiSearchStyles } from "./apiSearch.css";
 

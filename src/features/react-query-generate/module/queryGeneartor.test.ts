@@ -1,4 +1,4 @@
-import { Parameters } from "../../../pages/popup/shared/api/docs";
+import { Parameters } from "@/entities/swagger/types";
 import {
   GenerateReactQueryHookProps,
   generateQueryInterface,

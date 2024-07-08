@@ -5,7 +5,7 @@ interface Props {
   codeRef: React.RefObject<HTMLElement>;
 }
 
-const useCopy = ({ codeRef }: Props) => {
+export const useCopy = ({ codeRef }: Props) => {
   const copyToClipboard = () => {
     if (codeRef.current) {
       const textToCopy = codeRef.current.textContent;
@@ -20,5 +20,3 @@ const useCopy = ({ codeRef }: Props) => {
 
   return { copyToClipboard };
 };
-
-export default useCopy;

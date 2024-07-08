@@ -1,6 +1,6 @@
+import { Parameters, Schemas } from "@/entities/swagger/types";
 import { filter, keys, map, pipe, reduce, toArray } from "@fxts/core";
-import { FormValues } from "../../../../features/request-api/module/hooks/useForm";
-import { Parameters, Schemas } from "../api/docs";
+import { FormValues } from "../hooks/useForm";
 
 const getQueryParams = (params: Parameters[], formValues: FormValues) =>
   pipe(

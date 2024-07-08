@@ -1,7 +1,7 @@
 import Input, { InputProps } from "@/shared/ui/Input";
 import { vars } from "@/shared/ui/styles/theme.css";
 import { BiSearch } from "react-icons/bi";
-import { searchStyles } from "./styles/search.css";
+import { searchStyles } from "./search.css";
 
 const Search = ({ value, onChange }: InputProps) => {
   return (

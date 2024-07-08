@@ -1,16 +1,12 @@
+import { EMPTY_RESPONSE } from "@/entities/api/config/status";
+import useAuthStore from "@/entities/auth/model/auth-store";
 import { Schemas } from "@/entities/swagger/types";
 import { APIWithParamsAndBodyAndHost } from "@/pages/content/modules/getApiList";
+import { Mode } from "@/pages/popup/pages/Request/Request";
 import axios, { RawAxiosRequestHeaders } from "axios";
 import { FormEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import useAuthStore from "../../../../entities/auth/model/auth-store";
-import { EMPTY_RESPONSE } from "../../../../pages/popup/constants/status";
-import type { Mode } from "../../../../pages/popup/pages/Request/Request";
-import {
-  generateFormData,
-  getBody,
-  getQueryParams,
-} from "../../../../pages/popup/shared/util/request";
+import { generateFormData, getBody, getQueryParams } from "../utils/request";
 import useForm, { FormValues, ReturnUseForm } from "./useForm";
 
 interface HandleRequest {

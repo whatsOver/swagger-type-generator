@@ -5,16 +5,16 @@ import {
   updateFormValues,
   updateResponse,
 } from "@/entities/sequence/model/sequence-store";
+import { transformApiFromSwagger } from "@/features/api-generate/module/utils/apiTransform";
 import { useHandleRequest } from "@/features/request-api/module/hooks/useHandleRequest";
 import { APIWithParamsAndBodyAndHost } from "@/pages/content/modules/getApiList";
-import useHandleCode from "@/pages/popup/hooks/Request/useHandleCode";
 import { apiListStyle } from "@/pages/popup/pages/ApiList/ui/apiList.css";
-import { convertSelectedAPI } from "@/pages/popup/shared/util/convertSelectedAPI";
 import Button from "@/shared/ui/Button";
 import BottomFixedButton from "@/shared/ui/Button/BottomFixedButton";
 import Header from "@/shared/ui/Header";
 import FullPageLoading from "@/shared/ui/Loading/FullPageLoading";
 import { useHandleApiList } from "@/widgets/api-list/module/hooks/useHandleApiList";
+import useHandleCode from "@/widgets/code-block/module/hooks/useHandleCode";
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { Flip, ToastContainer } from "react-toastify";
@@ -89,7 +89,7 @@ const MultipleTestPage = () => {
     if (findAPI) {
       setCurrentAPI(findAPI);
       setCurrentSwaggerAPI({
-        ...convertSelectedAPI(apiDocs, findAPI.api),
+        ...transformApiFromSwagger(apiDocs, findAPI.api),
         host: pathInfo.host,
       });
     }

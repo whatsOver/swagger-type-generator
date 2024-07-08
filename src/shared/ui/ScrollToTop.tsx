@@ -3,7 +3,11 @@ import { useLocation } from "react-router-dom";
 
 const scrollPositions = new Map<string, number>();
 
-const ScrollToTop = () => {
+interface ScrollToTopProps {
+  children: React.ReactNode;
+}
+
+export const ScrollToTop = ({ children }: ScrollToTopProps) => {
   const { key } = useLocation();
 
   useLayoutEffect(() => {
@@ -27,7 +31,5 @@ const ScrollToTop = () => {
     });
   }, [key]);
 
-  return null;
+  return <>{children}</>;
 };
-
-export default ScrollToTop;
