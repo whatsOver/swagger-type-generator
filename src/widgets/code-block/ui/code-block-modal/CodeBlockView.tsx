@@ -1,12 +1,12 @@
-import { vars } from "@/shared/ui/styles/theme.css";
-
-import Button from "@/shared/ui/Button";
 import { ForwardRefRenderFunction, forwardRef } from "react";
+
+import { Mode } from "@/pages/popup/pages/Request/Request";
+import Button from "@/shared/ui/Button";
+import { vars } from "@/shared/ui/styles/theme.css";
 import { IoMdClose as CloseIcon } from "react-icons/io";
 import { IoChevronBackOutline as BackIcon } from "react-icons/io5";
-import { Mode } from "../pages/Request/Request";
-import { requestStyles } from "../pages/Request/request.css";
-import CodeBlock from "./CodeBlock";
+import CodeBlock from "../code-block/CodeBlock";
+import { codeBlockModalStyles } from "./codeBlockModal.css";
 
 interface CodeBlockProps {
   description: string;
@@ -44,11 +44,11 @@ const CodeBlockView: ForwardRefRenderFunction<
   return (
     <div
       style={{ width: isModal ? "80vw" : "auto" }}
-      className={requestStyles.modal}
+      className={codeBlockModalStyles.modal}
     >
-      <div className={requestStyles.response}>
-        <div className={requestStyles.descriptionWrapper}>
-          <div className={requestStyles.leftWrapper}>
+      <div className={codeBlockModalStyles.response}>
+        <div className={codeBlockModalStyles.descriptionWrapper}>
+          <div className={codeBlockModalStyles.leftWrapper}>
             {!!isModal && (
               <>
                 <button
@@ -56,7 +56,7 @@ const CodeBlockView: ForwardRefRenderFunction<
                     mode === "RESPONSE" && onClose && onClose();
                     mode !== "RESPONSE" && onClickBack && onClickBack();
                   }}
-                  className={requestStyles.iconButton}
+                  className={codeBlockModalStyles.iconButton}
                   type="button"
                 >
                   {mode === "RESPONSE" && (
@@ -68,7 +68,7 @@ const CodeBlockView: ForwardRefRenderFunction<
                 </button>
 
                 <h3
-                  className={requestStyles.requestDescription}
+                  className={codeBlockModalStyles.requestDescription}
                   style={{
                     color: vars.color[descriptionColor],
                   }}
@@ -83,7 +83,7 @@ const CodeBlockView: ForwardRefRenderFunction<
                   onClick={() => {
                     onClickBack && onClickBack();
                   }}
-                  className={requestStyles.iconButton}
+                  className={codeBlockModalStyles.iconButton}
                   type="button"
                 >
                   <BackIcon size={24} color={vars.color.white} />
@@ -92,7 +92,7 @@ const CodeBlockView: ForwardRefRenderFunction<
             )}
             {!isModal && (
               <h3
-                className={requestStyles.requestDescription}
+                className={codeBlockModalStyles.requestDescription}
                 style={{
                   color: vars.color[descriptionColor],
                 }}
@@ -101,7 +101,7 @@ const CodeBlockView: ForwardRefRenderFunction<
               </h3>
             )}
           </div>
-          <div className={requestStyles.buttonWrapper}>
+          <div className={codeBlockModalStyles.buttonWrapper}>
             {onClickCopy && (
               <Button color="green" onClick={onClickCopy}>
                 COPY

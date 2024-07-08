@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import highlight from "highlight.js";
 import "highlight.js/styles/github-dark.css";
-import { codeBlockStyle } from "./styles/codeBlock.css";
+import { codeBlockStyle } from "./codeBlock.css";
 import classNames from "classnames";
 import { forwardRef } from "react";
 import { ForwardRefRenderFunction } from "react";

@@ -4,7 +4,7 @@ import Modal from "@/shared/ui/Modal";
 import { vars } from "@/shared/ui/styles/theme.css";
 import LogoImg from "@assets/img/react-query-logo.png";
 import { IoIosSettings as SettingIcon } from "react-icons/io";
-import { settingModalStyle } from "./styles/setting.css";
+import { settingModalStyle } from "./settingModal.css";
 
 export interface SettingModalProps {
   withReactQuery: boolean;

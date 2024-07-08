@@ -12,8 +12,8 @@ import { useLocation } from "react-router-dom";
 import { Flip, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loading from "../../../../shared/ui/Loading/Loading";
-import useHandleCode from "../../hooks/Request/useHandleCode";
-import ModalCodeBlock from "../../ui/CodeBlockView";
+import useHandleCode from "../../../../widgets/code-block/module/hooks/useHandleCode";
+import ModalCodeBlock from "../../../../widgets/code-block/ui/code-block-modal/CodeBlockView";
 import { apiListStyle } from "../ApiList/ui/apiList.css";
 import { requestStyles } from "./request.css";
 

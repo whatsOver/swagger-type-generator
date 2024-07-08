@@ -1,16 +1,12 @@
 import { Method } from "axios";
 
+import { ContentType, Parameters, Schemas } from "@/entities/swagger/types";
 import { getBodyProPertyType } from "@/shared/util/typeGenerator";
-import {
-  ContentType,
-  Parameters,
-  Schemas,
-} from "../../../pages/popup/shared/api/docs";
+import { typeConverter } from "./typeConverter";
 import {
   getParams,
   getQueryParamsArray,
-} from "../../../pages/popup/shared/util/request";
-import { typeConverter } from "../../../pages/popup/shared/util/typeConverter";
+} from "../../../request-api/module/utils/request";
 
 export const generateInterface = (
   params: Parameters[],

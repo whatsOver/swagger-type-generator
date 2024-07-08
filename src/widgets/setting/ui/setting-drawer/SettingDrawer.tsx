@@ -1,6 +1,6 @@
 import Drawer from "@/shared/ui/Drawer";
 import { useNavigate } from "react-router-dom";
-import { settingDrawerStyles } from "./styles/settingDrawer.css";
+import { settingDrawerStyles } from "./settingDrawer.css";
 
 interface SettingDrawerProps {
   isOpen: boolean;

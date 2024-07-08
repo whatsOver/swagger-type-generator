@@ -1,6 +1,6 @@
+import { Parameters } from "@/entities/swagger/types";
+import { typeConverter } from "@/shared/util/typeConverter";
 import { Method } from "axios";
-import { Parameters } from "../../../pages/popup/shared/api/docs";
-import { typeConverter } from "../../../pages/popup/shared/util/typeConverter";
 
 const generateQueryKey = (params: Parameters[]) => {
   return params

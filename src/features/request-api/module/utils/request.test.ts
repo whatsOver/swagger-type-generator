@@ -1,4 +1,4 @@
-import { Parameters, Schemas } from "../api/docs";
+import { Parameters, Schemas } from "@/entities/swagger/types";
 import {
   generateFormData,
   getBody,

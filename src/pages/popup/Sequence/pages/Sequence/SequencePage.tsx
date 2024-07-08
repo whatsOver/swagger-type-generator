@@ -8,7 +8,7 @@ import BlankItem from "@/shared/ui/blank-item/BlankItem";
 import { vars } from "@/shared/ui/styles/theme.css";
 import { FiMenu as MenuIcon } from "react-icons/fi";
 import { 시나리오_관리_퍼널_Key } from "../../../../../shared/hooks/useRouter";
-import SettingDrawer from "../../../ui/SettingDrawer";
+import SettingDrawer from "../../../../../widgets/setting/ui/setting-drawer/SettingDrawer";
 import useHandleSequencePage from "../../module/sequence/useHandleSequencePage";
 import SequenceAddItem from "../../ui/SequenceAddItem/SequenceAddItem";
 import SequenceItem from "../../ui/SequenceItem/SequenceItemWithStatus";

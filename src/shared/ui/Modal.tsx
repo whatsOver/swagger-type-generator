@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 
-import CodeBlock from "@/pages/popup/ui/CodeBlock";
+import CodeBlock from "@/widgets/code-block/ui/code-block/CodeBlock";
 import classNames from "classnames";
 import {
   Children,

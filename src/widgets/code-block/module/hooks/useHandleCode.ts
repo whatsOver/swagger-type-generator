@@ -1,6 +1,3 @@
-import { useSettingStore } from "@/entities/setting/model/setting-store";
-import { APIWithParamsAndBodyAndHost } from "@/pages/content/modules/getApiList";
-import { jsonToTs } from "@/shared/util/typeGenerator";
 import {
   Dispatch,
   MutableRefObject,
@@ -8,13 +5,17 @@ import {
   useRef,
   useState,
 } from "react";
+
+import { useSettingStore } from "@/entities/setting/model/setting-store";
 import {
   generateAxiosAPICode,
   generateFetchAPICode,
   generateInterface,
-} from "../../../../features/api-generate/module/apiGenerator";
-import { generateReactQueryHook } from "../../../../features/react-query-generate/module/queryGenerator";
-import useCopy from "../../../../shared/hooks/useCopy";
+} from "@/features/api-generate/module/utils/apiGenerator";
+import { generateReactQueryHook } from "@/features/react-query-generate/module/queryGenerator";
+import { APIWithParamsAndBodyAndHost } from "@/pages/content/modules/getApiList";
+import { useCopy } from "@/shared/hooks/useCopy";
+import { jsonToTs } from "@/shared/util/typeGenerator";
 
 interface HandleCode {
   api: APIWithParamsAndBodyAndHost | null;

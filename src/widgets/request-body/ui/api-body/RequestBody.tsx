@@ -1,7 +1,7 @@
 import { Schemas } from "@/entities/swagger/types";
+import { FormValues } from "@/features/request-api/module/hooks/useForm";
 import { vars } from "@/shared/ui/styles/theme.css";
 import React, { ChangeEvent, useState } from "react";
-import { FormValues } from "../../../../features/request-api/module/hooks/useForm";
 import { RequestArrayBody } from "../array-body/RequestArrayBody";
 import { RequestNormalBody } from "../normal-body/RequestNormalBody";
 import { requestBodyStyles } from "./requestBody.css";

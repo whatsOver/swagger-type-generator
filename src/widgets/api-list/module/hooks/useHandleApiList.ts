@@ -1,9 +1,8 @@
-import { API } from "@/pages/content/modules/getApiList";
-
 import { useSwaggerDocStore } from "@/entities/document/model/document-store";
 import { useGETDocs } from "@/entities/swagger/api/get-document";
-import { convertSelectedAPI } from "../../../../pages/popup/shared/util/convertSelectedAPI";
-import useRouter from "../../../../shared/hooks/useRouter";
+import { transformApiFromSwagger } from "@/features/api-generate/module/utils/apiTransform";
+import { API } from "@/pages/content/modules/getApiList";
+import useRouter from "@/shared/hooks/useRouter";
 import useGetApiList from "./useGetApiList";
 
 export const useHandleApiList = () => {
@@ -30,7 +29,7 @@ export const useHandleApiList = () => {
   // 1. 사용자 > API 클릭 > API 상세 페이지로 이동
   const onClickAPI = (api: API) => {
     push("/request", {
-      ...convertSelectedAPI(apiDocsData, api),
+      ...transformApiFromSwagger(apiDocsData, api),
       host: pathInfo.host,
     });
   };

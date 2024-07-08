@@ -1,6 +1,6 @@
+import { SwaggerDocs } from "@/entities/swagger/types";
 import { API } from "@/pages/content/modules/getApiList";
-import { SwaggerDocs } from "../api/docs";
-import { convertSelectedAPI } from "./convertSelectedAPI";
+import { transformApiFromSwagger } from "./apiTransform";
 
 describe("convertSelectedAPI", () => {
   let data: SwaggerDocs;
@@ -102,7 +102,7 @@ describe("convertSelectedAPI", () => {
       path: "/api",
       description: "",
     };
-    const result = convertSelectedAPI(data, api);
+    const result = transformApiFromSwagger(data, api);
 
     // THEN
     expect(result).toEqual({
@@ -122,7 +122,7 @@ describe("convertSelectedAPI", () => {
       path: "/api/media",
       description: "",
     };
-    const result = convertSelectedAPI(data, api);
+    const result = transformApiFromSwagger(data, api);
 
     // THEN
     expect(result).toEqual({
