@@ -1,8 +1,4 @@
-import {
-  ContentType,
-  Parameters,
-  Schemas,
-} from "@/pages/popup/shared/api/docs";
+import { ContentType, Parameters, Schemas } from "@/entities/swagger/types";
 import { Method } from "axios";
 
 declare global {

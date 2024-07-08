@@ -1,6 +1,6 @@
 import { style } from "@vanilla-extract/css";
 
-export const dragAPIStyles = {
+export const dragApiStyles = {
   wrapper: style({
     display: "flex",
     alignItems: "center",

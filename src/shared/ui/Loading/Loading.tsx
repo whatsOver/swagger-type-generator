@@ -1,5 +1,5 @@
 import HashLoader from "react-spinners/HashLoader";
-import { blankStyle } from "../../../../shared/ui/blank-item/blank.css";
+import { blankStyle } from "../blank-item/blank.css";
 
 const Loading = () => {
   return (

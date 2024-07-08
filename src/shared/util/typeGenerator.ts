@@ -1,9 +1,9 @@
-import { EMPTY_RESPONSE } from "@/pages/popup/constants/status";
 import {
   SchemasProperties,
   SwaggerFormat,
   SwaggerType,
-} from "@/pages/popup/shared/api/docs";
+} from "@/entities/swagger/types";
+import { EMPTY_RESPONSE } from "@/pages/popup/constants/status";
 
 export const isArrayType = (value: any): boolean =>
   typeof value === "string" && value.startsWith("[") && value.endsWith("]");

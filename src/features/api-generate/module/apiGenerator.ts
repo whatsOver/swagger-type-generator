@@ -1,9 +1,16 @@
 import { Method } from "axios";
 
 import { getBodyProPertyType } from "@/shared/util/typeGenerator";
-import { ContentType, Parameters, Schemas } from "../api/docs";
-import { getParams, getQueryParamsArray } from "./request";
-import { typeConverter } from "./typeConverter";
+import {
+  ContentType,
+  Parameters,
+  Schemas,
+} from "../../../pages/popup/shared/api/docs";
+import {
+  getParams,
+  getQueryParamsArray,
+} from "../../../pages/popup/shared/util/request";
+import { typeConverter } from "../../../pages/popup/shared/util/typeConverter";
 
 export const generateInterface = (
   params: Parameters[],

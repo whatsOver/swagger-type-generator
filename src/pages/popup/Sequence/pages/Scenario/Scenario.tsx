@@ -1,4 +1,4 @@
-import { popupStyle } from "@/pages/popup/pages/Popup/ui/popup.css";
+import { apiListStyle } from "@/pages/popup/pages/ApiList/ui/apiList.css";
 import { ScenarioFunnelProps } from "@/pages/popup/pages/ScenarioFunnel/ScenarioFunnel";
 import Button from "@/shared/ui/Button";
 import Dropdown from "@/shared/ui/Dropdown";
@@ -47,7 +47,7 @@ const Scenario = ({
   };
 
   return (
-    <div id="main" className={popupStyle.app}>
+    <div id="main" className={apiListStyle.app}>
       <Header
         headerTitle={title}
         backTo={navigationPath.시나리오_관리_퍼널().시나리오_페이지}

@@ -1,3 +1,4 @@
+import { Schemas } from "@/entities/swagger/types";
 import { APIWithParamsAndBodyAndHost } from "@/pages/content/modules/getApiList";
 import axios, { RawAxiosRequestHeaders } from "axios";
 import { FormEvent, useEffect, useState } from "react";
@@ -5,7 +6,6 @@ import { toast } from "react-toastify";
 import useAuthStore from "../../../../entities/auth/model/auth-store";
 import { EMPTY_RESPONSE } from "../../../../pages/popup/constants/status";
 import type { Mode } from "../../../../pages/popup/pages/Request/Request";
-import { Schemas } from "../../../../pages/popup/shared/api/docs";
 import {
   generateFormData,
   getBody,
@@ -35,7 +35,7 @@ export type OmitHandleFormValues = Omit<
   "resetFormValues" | "settingFormValues"
 >;
 
-const useHandleRequest = ({
+export const useHandleRequest = ({
   api,
   setMode,
   initialFormValues,
@@ -153,5 +153,3 @@ const useHandleRequest = ({
     settingFormValues,
   };
 };
-
-export default useHandleRequest;

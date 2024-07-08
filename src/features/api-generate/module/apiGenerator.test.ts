@@ -1,4 +1,9 @@
-import { Parameters } from "../api/docs";
+import { Parameters } from "../../../pages/popup/shared/api/docs";
+import {
+  getBody,
+  getParams,
+  getQueryParamsArray,
+} from "../../../pages/popup/shared/util/request";
 import {
   GenerateAPICodeProps,
   generateAxiosAPICode,
@@ -6,7 +11,6 @@ import {
   generateInterface,
   objectToQueryString,
 } from "./apiGenerator";
-import { getBody, getParams, getQueryParamsArray } from "./request";
 
 describe("API 코드 생성", () => {
   const sampleParams: Parameters[] = [

@@ -1,12 +1,12 @@
 import { API } from "@/pages/content/modules/getApiList";
 
 import { useSwaggerDocStore } from "@/entities/document/model/document-store";
-import useRouter from "../../../../../shared/hooks/useRouter";
-import useGetApiList from "../../../../../widgets/api-list/module/hooks/useGetApiList";
-import { useGETDocs } from "../../../shared/api/docs";
-import { convertSelectedAPI } from "../../../shared/util/convertSelectedAPI";
+import { useGETDocs } from "@/entities/swagger/api/get-document";
+import { convertSelectedAPI } from "../../../../pages/popup/shared/util/convertSelectedAPI";
+import useRouter from "../../../../shared/hooks/useRouter";
+import useGetApiList from "./useGetApiList";
 
-const useHandlePopup = () => {
+export const useHandleApiList = () => {
   const { push } = useRouter();
 
   // FIRST RENDER
@@ -45,5 +45,3 @@ const useHandlePopup = () => {
     setFilteredApiList,
   };
 };
-
-export default useHandlePopup;

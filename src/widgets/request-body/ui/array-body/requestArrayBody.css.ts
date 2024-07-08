@@ -1,129 +1,9 @@
 import { vars } from "@/shared/ui/styles/theme.css";
 import { style } from "@vanilla-extract/css";
 
-export const requestStyles = {
-  requestWrapper: style({
-    width: "100%",
-    padding: "0 1rem",
-    boxSizing: "border-box",
-  }),
-
-  body: style({
-    width: "100%",
-    boxSizing: "border-box",
-    height: "calc(100vh - 40px - 70px)",
-    backgroundColor: vars.color.darkGrey,
-    color: vars.color.white,
-    borderRadius: "10px",
-    display: "flex",
-    flexDirection: "column",
-  }),
-
-  requestBlock: style({
-    overflowY: "auto",
-    maxHeight: "70%",
-    paddingRight: "0",
-    padding: "20px",
-    selectors: {
-      "&::-webkit-scrollbar": {
-        width: "10px",
-      },
-      "&::-webkit-scrollbar-thumb": {
-        backgroundColor: vars.color.scrollbar,
-        borderRadius: "10px",
-        backgroundClip: "padding-box",
-        border: "2px solid transparent",
-      },
-      "&::-webkit-scrollbar-track": {
-        backgroundColor: vars.color.scrollbarTrack,
-        borderRadius: "10px",
-        boxShadow: vars.color.scrollbarTrackBoxShadow,
-      },
-      "&::-webkit-scrollbar-corner": {
-        backgroundColor: vars.color.darkGrey,
-      },
-    },
-  }),
-
-  leftWrapper: style({
-    display: "flex",
-    columnGap: "10px",
-    alignItems: "center",
-  }),
-
-  iconButton: style({
-    display: "flex",
-    alignItems: "center",
-    flex: 1,
-  }),
-
-  flexView: style({
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-start",
-    columnGap: "10px",
-  }),
-
-  modal: style({
-    display: "flex",
-    backgroundColor: vars.color.darkGrey,
-    color: vars.color.white,
-    borderRadius: "10px",
-    padding: "20px",
-    flexDirection: "column",
-    alignItems: "center",
-    flexShrink: 1,
-    minWidth: 0,
-    maxWidth: "80vw",
-  }),
-
-  descriptionWrapper: style({
-    display: "flex",
-    justifyContent: "space-between",
-  }),
-
-  mainDescription: style({
-    fontWeight: "bold",
-    display: "flex",
-    alignItems: "left",
-    color: vars.color.white,
-    marginLeft: "20px",
-    marginTop: "30px",
-  }),
-
-  description: style({
-    fontWeight: "bold",
-    display: "flex",
-    textAlign: "left",
-    color: vars.color.green,
-    flex: 1,
-  }),
-
-  requestDescription: style({
-    fontWeight: "bold",
-    display: "flex",
-    alignItems: "left",
-    flex: 1,
-    fontSize: "1.1rem",
-    textAlign: "left",
-  }),
-
-  buttonWrapper: style({
-    display: "flex",
-    columnGap: "10px",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    flex: 1,
-  }),
-
+export const requestArrayBodyStyles = {
   type: style({
     color: vars.color.green,
-    width: "100px",
-    textAlign: "left",
-  }),
-
-  bodyType: style({
-    color: vars.color.blue,
     width: "100px",
     textAlign: "left",
   }),
@@ -259,5 +139,32 @@ export const requestStyles = {
     height: "100%",
     width: "100%",
     boxSizing: "border-box",
+  }),
+
+  responseBody: style({
+    display: "flex",
+    flexDirection: "column",
+    width: "90%",
+    maxHeight: "80%",
+    textAlign: "left",
+    alignItems: "left",
+    color: vars.color.white,
+    overflowY: "scroll",
+    selectors: {
+      "&::-webkit-scrollbar": {
+        width: "10px",
+      },
+      "&::-webkit-scrollbar-thumb": {
+        backgroundColor: vars.color.scrollbar,
+        borderRadius: "10px",
+        backgroundClip: "padding-box",
+        border: "2px solid transparent",
+      },
+      "&::-webkit-scrollbar-track": {
+        backgroundColor: vars.color.scrollbarTrack,
+        borderRadius: "10px",
+        boxShadow: vars.color.scrollbarTrackBoxShadow,
+      },
+    },
   }),
 };

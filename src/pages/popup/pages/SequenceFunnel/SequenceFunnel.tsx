@@ -7,10 +7,10 @@ import {
   sequenceStorage,
 } from "../../../../entities/sequence/model/sequence-store";
 import { navigationPath } from "../../../../shared/hooks/useRouter";
+import { useHandleApiList } from "../../../../widgets/api-list/module/hooks/useHandleApiList";
 import DeleteSequencePage from "../../Sequence/pages/Delete/DeleteSequencePage";
 import ReorderSequencePage from "../../Sequence/pages/Reorder/ReorderSequencePage";
 import SequencePage from "../../Sequence/pages/Sequence/SequencePage";
-import useHandlePopup from "../Popup/hooks/useHandlePopup";
 
 export interface SequenceFunnelProps {
   swaggerTitle: string;
@@ -24,7 +24,7 @@ const SequenceFunnel = () => {
     extractNonEmptyArrayKeys(navigationPath.시나리오_관리_퍼널())
   );
 
-  const { apiDocsData } = useHandlePopup();
+  const { apiDocsData } = useHandleApiList();
 
   const [sequenceList, setSequenceList] = useState<SequenceItem[]>([]);
   const [swaggerTitle, setSwaggerTitle] = useState<string>("");
