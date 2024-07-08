@@ -1,4 +1,4 @@
-import { APIWithParamsAndBodyAndHost } from "@/pages/content/modules/getApiList2";
+import { APIWithParamsAndBodyAndHost } from "@/pages/content/modules/getApiList";
 import axios, { RawAxiosRequestHeaders } from "axios";
 import { FormEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";

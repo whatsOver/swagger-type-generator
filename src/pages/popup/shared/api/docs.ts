@@ -1,4 +1,4 @@
-import { Path } from "@/pages/content/modules/getApiList2";
+import { Path } from "@/pages/content/modules/getApiList";
 import { useQuery } from "@tanstack/react-query";
 import axios, { Method } from "axios";
 

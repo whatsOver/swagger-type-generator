@@ -2,7 +2,7 @@ import {
   ApiList,
   GET_API_LIST_RESULT,
   Path,
-} from "@/pages/content/modules/getApiList2";
+} from "@/pages/content/modules/getApiList";
 import { useEffect, useState } from "react";
 import { useSwaggerDocStore } from "src/entities/document/model/document-store";
 

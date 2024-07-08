@@ -1,4 +1,4 @@
-import { POST_API_LIST } from "./modules/getApiList2";
+import { POST_API_LIST } from "./modules/getApiList";
 import injectScript from "./modules/injectScript";
 
 injectScript(chrome.runtime.getURL("getApiList.js"), document.documentElement);

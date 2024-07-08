@@ -1,4 +1,4 @@
-import { API } from "@/pages/content/modules/getApiList2";
+import { API } from "@/pages/content/modules/getApiList";
 
 import { useSwaggerDocStore } from "@/entities/document/model/document-store";
 import useRouter from "../../../../../shared/hooks/useRouter";

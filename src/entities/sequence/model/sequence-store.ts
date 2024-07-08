@@ -1,4 +1,4 @@
-import { API } from "@/pages/content/modules/getApiList2";
+import { API } from "@/pages/content/modules/getApiList";
 import { storage } from "@/shared/module/storageFactory";
 import { FormValues } from "../../../features/request-api/module/hooks/useForm";
 

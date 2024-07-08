@@ -1,5 +1,5 @@
 import { useSwaggerDocStore } from "@/entities/document/model/document-store";
-import { APIWithParamsAndBodyAndHost } from "@/pages/content/modules/getApiList2";
+import { APIWithParamsAndBodyAndHost } from "@/pages/content/modules/getApiList";
 import useHandleCode from "@/pages/popup/hooks/Request/useHandleCode";
 import useHandlePopup from "@/pages/popup/pages/Popup/hooks/useHandlePopup";
 import { popupStyle } from "@/pages/popup/pages/Popup/ui/popup.css";

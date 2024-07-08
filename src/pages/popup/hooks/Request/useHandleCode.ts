@@ -1,5 +1,5 @@
 import { useSettingStore } from "@/entities/setting/model/setting-store";
-import { APIWithParamsAndBodyAndHost } from "@/pages/content/modules/getApiList2";
+import { APIWithParamsAndBodyAndHost } from "@/pages/content/modules/getApiList";
 import { jsonToTs } from "@/shared/util/typeGenerator";
 import {
   Dispatch,
