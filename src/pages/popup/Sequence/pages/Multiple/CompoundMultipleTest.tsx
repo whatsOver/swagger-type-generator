@@ -1,4 +1,4 @@
-import { APIWithParamsOrBody } from "@/pages/content/modules/getApiList";
+import { APIWithParamsOrBody } from "@/pages/content/modules/getApiList2";
 import { HandleCodeReturn } from "@/pages/popup/hooks/Request/useHandleCode";
 import Body from "@/pages/popup/ui/Body";
 import ModalCodeBlock from "@/pages/popup/ui/CodeBlockView";

@@ -1,4 +1,4 @@
-import { popupStyle } from "@/pages/popup/pages/Popup/popup.css";
+import { popupStyle } from "@/pages/popup/pages/Popup/ui/popup.css";
 import { ScenarioFunnelProps } from "@/pages/popup/pages/ScenarioFunnel/ScenarioFunnel";
 import APIItem from "@/pages/popup/ui/APIItem/APIItem";
 import Button from "@/shared/ui/Button";

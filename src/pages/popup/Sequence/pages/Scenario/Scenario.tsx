@@ -1,13 +1,14 @@
-import { popupStyle } from "@/pages/popup/pages/Popup/popup.css";
+import { popupStyle } from "@/pages/popup/pages/Popup/ui/popup.css";
 import { ScenarioFunnelProps } from "@/pages/popup/pages/ScenarioFunnel/ScenarioFunnel";
-import BlankItem from "@/pages/popup/ui/error/BlankItem";
 import Button from "@/shared/ui/Button";
 import Dropdown from "@/shared/ui/Dropdown";
 import Header from "@/shared/ui/Header";
+
 import useRouter, {
   API_관리_퍼널_Key,
   navigationPath,
-} from "@src/shared/hooks/useRouter";
+} from "@/shared/hooks/useRouter";
+import BlankItem from "@/shared/ui/blank-item/BlankItem";
 import ScenarioItem from "../../ui/ScenarioItem/ScenarioItem";
 
 type OmitOnNext = Omit<ScenarioFunnelProps, "onNext" | "setAPIs">;

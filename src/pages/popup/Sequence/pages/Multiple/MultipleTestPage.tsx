@@ -1,9 +1,9 @@
-import { APIWithParamsAndBodyAndHost } from "@/pages/content/modules/getApiList";
-import useHandlePopup from "@/pages/popup/hooks/Popup/useHandlePopup";
+import { useSwaggerDocStore } from "@/entities/document/model/document-store";
+import { APIWithParamsAndBodyAndHost } from "@/pages/content/modules/getApiList2";
 import useHandleCode from "@/pages/popup/hooks/Request/useHandleCode";
-import { popupStyle } from "@/pages/popup/pages/Popup/popup.css";
+import useHandlePopup from "@/pages/popup/pages/Popup/hooks/useHandlePopup";
+import { popupStyle } from "@/pages/popup/pages/Popup/ui/popup.css";
 import { convertSelectedAPI } from "@/pages/popup/shared/util/convertSelectedAPI";
-import useSwaggerDocStore from "@/pages/popup/store/swaggerDoc";
 import Button from "@/shared/ui/Button";
 import BottomFixedButton from "@/shared/ui/Button/BottomFixedButton";
 import Header from "@/shared/ui/Header";
