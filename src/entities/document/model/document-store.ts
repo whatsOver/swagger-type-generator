@@ -5,7 +5,7 @@ interface SwaggerDocStore {
   state: "initial" | "loaded";
   setState: (state: "initial" | "loaded") => void;
 
-  ApiList: ApiList;
+  apiList: ApiList;
   setApiList: (ApiList: ApiList) => void;
 
   filteredApiList: ApiList;
@@ -23,11 +23,11 @@ export const useSwaggerDocStore = create<SwaggerDocStore>((set) => ({
     tags: [],
   },
   setFilteredApiList: (filteredApiList: ApiList) => set({ filteredApiList }),
-  ApiList: {
+  apiList: {
     endpoints: {},
     tags: [],
   },
-  setApiList: (ApiList: ApiList) => set({ ApiList }),
+  setApiList: (apiList: ApiList) => set({ apiList }),
   pathInfo: {
     host: "",
     href: "",
