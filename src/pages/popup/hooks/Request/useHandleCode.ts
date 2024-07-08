@@ -1,3 +1,4 @@
+import { useSettingStore } from "@/entities/setting/model/setting-store";
 import { APIWithParamsAndBodyAndHost } from "@/pages/content/modules/getApiList2";
 import { jsonToTs } from "@/shared/util/typeGenerator";
 import {
@@ -7,7 +8,6 @@ import {
   useRef,
   useState,
 } from "react";
-import useSettingStore from "../../../../entities/setting/model/setting-store";
 import useCopy from "../../../../shared/hooks/useCopy";
 import {
   generateAxiosAPICode,
