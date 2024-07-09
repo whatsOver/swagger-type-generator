@@ -45,7 +45,6 @@ const DeleteSequencePage = ({
           itemProps={{ height: 80, withPadding: true, withBorder: true }}
           onClickItem={(item) => {
             onClickAPI(item.id);
-            console.log(item);
           }}
         >
           {(item) => <SequenceItem {...item} />}

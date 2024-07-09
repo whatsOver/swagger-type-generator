@@ -79,7 +79,6 @@ export const useFunnel = <Steps extends NonEmptyArray<string>>(
 
   const state = useMemo(() => {
     const state = location.state as { step: Steps[number] };
-    console.log(state);
     if (state) return state;
     return null;
   }, [location.state, steps]);

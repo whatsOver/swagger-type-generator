@@ -3,9 +3,7 @@ import { useSettingStore } from "@/entities/setting/model/setting-store";
 const useHandleSetting = () => {
   const { withReactQuery, toggleReactQuery } = useSettingStore();
 
-  const onSaveSetting = () => {
-    console.log("Save setting");
-  };
+  const onSaveSetting = () => {};
 
   return { withReactQuery, toggleReactQuery, onSaveSetting };
 };
