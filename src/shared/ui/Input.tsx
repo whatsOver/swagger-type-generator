@@ -1,6 +1,8 @@
-import { ChangeEvent } from "react";
-import { ComponentPropsWithRef } from "react";
-import { ForwardRefRenderFunction } from "react";
+import {
+  ChangeEvent,
+  ComponentPropsWithRef,
+  ForwardRefRenderFunction,
+} from "react";
 import { inputStyle } from "./styles/input.css";
 
 export type InputProps = {

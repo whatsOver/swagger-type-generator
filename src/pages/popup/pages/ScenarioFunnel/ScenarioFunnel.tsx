@@ -1,16 +1,16 @@
-import { extractNonEmptyArrayKeys } from "@/shared/hooks/funnel/models";
-import { useFunnel } from "@/shared/hooks/funnel/useFunnel";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
 import {
   APIWithOrder,
   sequenceStorage,
-} from "../../../../entities/sequence/model/sequence-store";
-import { navigationPath } from "../../../../shared/hooks/useRouter";
-import APISearchPage from "../../Sequence/pages/APISearch/APISearchPage";
-import DeletePage from "../../Sequence/pages/Delete/DeleteAPIPage";
-import OrderPage from "../../Sequence/pages/Reorder/ReorderAPIPage";
-import Scenario from "../../Sequence/pages/Scenario/Scenario";
+} from "@/entities/sequence/model/sequence-store";
+import { extractNonEmptyArrayKeys } from "@/shared/hooks/funnel/models";
+import { useFunnel } from "@/shared/hooks/funnel/useFunnel";
+import { navigationPath } from "@/shared/hooks/useRouter";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useLocation, useParams } from "react-router-dom";
+import APISearchPage from "../APISearch/APISearchPage";
+import DeleteAPIPage from "../Delete/DeleteAPIPage";
+import ReorderApiPage from "../Reorder/ReorderApiPage2";
+import Scenario from "../Scenario/Scenario";
 
 export interface ScenarioFunnelProps {
   apis: APIWithOrder[];
@@ -50,7 +50,7 @@ const ScenarioFunnel = () => {
         (item) => item.id === Number(sequenceId)
       );
       setScenarioTitle(findSequence.title);
-      if (findSequence) setAPIs(findSequence.ApiList);
+      if (findSequence) setAPIs(findSequence.apiList);
     });
   }, [swaggerTitle]);
 
@@ -75,7 +75,7 @@ const ScenarioFunnel = () => {
         />
       </Funnel.Step>
       <Funnel.Step name="순서_편집_페이지">
-        <OrderPage
+        <ReorderApiPage
           apis={apis}
           sequenceId={sequenceId}
           setAPIs={setAPIs}
@@ -84,7 +84,7 @@ const ScenarioFunnel = () => {
         />
       </Funnel.Step>
       <Funnel.Step name="삭제_페이지">
-        <DeletePage
+        <DeleteAPIPage
           apis={apis}
           sequenceId={sequenceId}
           setAPIs={setAPIs}

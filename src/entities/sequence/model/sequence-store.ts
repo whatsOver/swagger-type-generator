@@ -16,20 +16,20 @@ export interface APIWithOrder extends APIWithKey {
   response: unknown | null;
 }
 
-export interface SequenceItem {
+export interface SequenceItemType {
   id: number;
   title: string;
   iconType: IconType;
-  ApiList: APIWithOrder[];
+  apiList: APIWithOrder[];
 }
 
 interface SequenceState {
-  [swaggerTitle: string]: SequenceItem[];
+  [swaggerTitle: string]: SequenceItemType[];
 }
 
 export const sequenceStorage = storage<SequenceState>("sequence", {});
 
-type OmitId = Omit<SequenceItem, "id">;
+type OmitId = Omit<SequenceItemType, "id">;
 
 export const createSequence = (swaggerTitle: string) => {
   sequenceStorage.set((prev) => {
@@ -67,7 +67,7 @@ export const deleteSequences = (
 
 export const updateSequences = (
   swaggerTitle: string,
-  sequences: SequenceItem[]
+  sequences: SequenceItemType[]
 ) => {
   sequenceStorage.set((prev) => {
     return { ...prev, [swaggerTitle]: sequences };
@@ -83,9 +83,9 @@ export const addAPI = (
     if (!prev[swaggerTitle]) return prev;
     const sequence = prev[swaggerTitle].find((s) => s.id === sequenceId);
     if (!sequence) return prev;
-    sequence.ApiList.push({
+    sequence.apiList.push({
       ...api,
-      order: sequence.ApiList.length,
+      order: sequence.apiList.length,
       formValues: {},
       response: null,
     });
@@ -123,7 +123,7 @@ export const deleteAPIs = (
     if (!prev[swaggerTitle]) return prev;
     const sequence = prev[swaggerTitle].find((s) => s.id === sequenceId);
     if (!sequence) return prev;
-    sequence.ApiList = sequence.ApiList.filter(
+    sequence.apiList = sequence.apiList.filter(
       (api) => !keys.includes(api.key)
     );
     return {
@@ -145,7 +145,7 @@ export const updateFormValues = (
     if (!prev[swaggerTitle]) return prev;
     const sequence = prev[swaggerTitle].find((s) => s.id === sequenceId);
     if (!sequence) return prev;
-    sequence.ApiList = sequence.ApiList.map((api) =>
+    sequence.apiList = sequence.apiList.map((api) =>
       api.key === key ? { ...api, formValues } : api
     );
     return {
@@ -167,7 +167,7 @@ export const updateResponse = (
     if (!prev[swaggerTitle]) return prev;
     const sequence = prev[swaggerTitle].find((s) => s.id === sequenceId);
     if (!sequence) return prev;
-    sequence.ApiList = sequence.ApiList.map((api) =>
+    sequence.apiList = sequence.apiList.map((api) =>
       api.key === key ? { ...api, response } : api
     );
     return {
