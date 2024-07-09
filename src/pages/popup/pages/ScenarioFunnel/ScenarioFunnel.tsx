@@ -8,8 +8,8 @@ import { navigationPath } from "@/shared/hooks/useRouter";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import APISearchPage from "../APISearch/APISearchPage";
-import DeleteAPIPage from "../Delete/DeleteApiage2";
-import ReorderApiPage from "../Reorder/ReorderApiPage2";
+import DeleteAPIPage from "../Delete/DeleteApiage";
+import ReorderApiPage from "../Reorder/ReorderApiPage";
 import Scenario from "../Scenario/Scenario";
 
 export interface ScenarioFunnelProps {
