@@ -4,14 +4,14 @@ import { FiMenu as MenuIcon } from "react-icons/fi";
 
 import useHandleAuth from "@/features/auth/hooks/useHandleAuth";
 import AuthModal from "@/features/auth/ui/auth-modal/AuthModal";
-import useSearch from "@/features/search/module/hooks/useSearch";
+import useSearch from "@/features/search-api/module/hooks/useSearch";
 import useHandleSetting from "@/features/setting/module/hooks/useHandleSetting";
-import SettingModal from "@/widgets/setting/ui/setting-modal/SettingModal";
 import Loading from "@/shared/ui/Loading/Loading";
 import Search from "@/shared/ui/search/Search";
 import BlankApi from "@/widgets/api-list/ui/blank/BlankApi";
 import ApiList from "@/widgets/api-list/ui/normal-list/ApiList";
 import SettingDrawer from "@/widgets/setting/ui/setting-drawer/SettingDrawer";
+import SettingModal from "@/widgets/setting/ui/setting-modal/SettingModal";
 import { useHandleApiList } from "../../../../../widgets/api-list/module/hooks/useHandleApiList";
 import { apiListStyle } from "./apiList.css";
 
