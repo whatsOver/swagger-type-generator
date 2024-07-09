@@ -7,14 +7,14 @@ import ModeItem from "@/shared/ui/ModeItem/ModeItem";
 import APIItem from "@/widgets/api-list/ui/api-item/ApiItem";
 import { useState } from "react";
 
-type DeleteAPIPageProps = ScenarioFunnelProps;
+type DeleteApiageProps = ScenarioFunnelProps;
 
-const DeleteAPIPage = ({
+const DeleteApiage = ({
   apis,
   sequenceId,
   swaggerTitle,
   onNext,
-}: DeleteAPIPageProps) => {
+}: DeleteApiageProps) => {
   const [deleteList, setDeleteList] = useState([]);
   const onClickSave = () => {
     deleteAPIs(swaggerTitle, Number(sequenceId), deleteList);
@@ -53,4 +53,4 @@ const DeleteAPIPage = ({
   );
 };
 
-export default DeleteAPIPage;
+export default DeleteApiage;

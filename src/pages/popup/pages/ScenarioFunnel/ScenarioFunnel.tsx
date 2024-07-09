@@ -8,7 +8,7 @@ import { navigationPath } from "@/shared/hooks/useRouter";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import APISearchPage from "../APISearch/APISearchPage";
-import DeleteAPIPage from "../Delete/DeleteAPIPage";
+import DeleteAPIPage from "../Delete/DeleteApiage2";
 import ReorderApiPage from "../Reorder/ReorderApiPage2";
 import Scenario from "../Scenario/Scenario";
 
@@ -30,7 +30,6 @@ const ScenarioFunnel = () => {
   const [scenarioTitle, setScenarioTitle] = useState<string>("");
 
   useEffect(() => {
-    console.log(locationState);
     if (!locationState) return;
     if (!locationState.swaggerTitle) return;
     setSwaggerTitle(locationState.swaggerTitle);
