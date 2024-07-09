@@ -1,4 +1,4 @@
-import useSearch from "@/features/search/module/hooks/useSearch";
+import useSearch from "@/features/search-api/module/hooks/useSearch";
 import { apiListStyle } from "@/pages/popup/pages/ApiList/ui/apiList.css";
 import { ScenarioFunnelProps } from "@/pages/popup/pages/ScenarioFunnel/ScenarioFunnel";
 import Button from "@/shared/ui/Button";
