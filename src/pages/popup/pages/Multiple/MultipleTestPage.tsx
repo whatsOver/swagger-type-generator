@@ -1,4 +1,4 @@
-import { useSwaggerDocStore } from "@/entities/document/model/document-store";
+import { useSwaggerDocStore } from "@/entities/docs/model/document-store";
 import {
   APIWithOrder,
   sequenceStorage,
