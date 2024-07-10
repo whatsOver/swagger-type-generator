@@ -1,5 +1,5 @@
 import { EMPTY_RESPONSE } from "@/entities/api/config/status";
-import useAuthStore from "@/entities/auth/model/auth-store";
+import { useAuthStore } from "@/entities/auth/model/auth-store";
 import { Schemas } from "@/entities/swagger/types";
 import { APIWithParamsAndBodyAndHost } from "@/pages/content/modules/getApiList";
 import { Mode } from "@/pages/popup/pages/Request/Request";

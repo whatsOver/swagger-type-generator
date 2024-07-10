@@ -1,5 +1,5 @@
+import { useAuthStore } from "@/entities/auth/model/auth-store";
 import { ChangeEvent, useState } from "react";
-import useAuthStore from "../../../entities/auth/model/auth-store";
 
 const useHandleAuth = () => {
   const [authorized, setAuthorized] = useState("");
