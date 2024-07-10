@@ -1,7 +1,7 @@
-import { vars } from "@src/common/ui/styles/theme.css";
+import { vars } from "@/shared/ui/styles/theme.css";
 import { style } from "@vanilla-extract/css";
 
-export const requestStyle = {
+export const requestStyles = {
   requestWrapper: style({
     width: "100%",
     padding: "0 1rem",
@@ -259,32 +259,5 @@ export const requestStyle = {
     height: "100%",
     width: "100%",
     boxSizing: "border-box",
-  }),
-
-  responseBody: style({
-    display: "flex",
-    flexDirection: "column",
-    width: "90%",
-    maxHeight: "80%",
-    textAlign: "left",
-    alignItems: "left",
-    color: vars.color.white,
-    overflowY: "scroll",
-    selectors: {
-      "&::-webkit-scrollbar": {
-        width: "10px",
-      },
-      "&::-webkit-scrollbar-thumb": {
-        backgroundColor: vars.color.scrollbar,
-        borderRadius: "10px",
-        backgroundClip: "padding-box",
-        border: "2px solid transparent",
-      },
-      "&::-webkit-scrollbar-track": {
-        backgroundColor: vars.color.scrollbarTrack,
-        borderRadius: "10px",
-        boxShadow: vars.color.scrollbarTrackBoxShadow,
-      },
-    },
   }),
 };

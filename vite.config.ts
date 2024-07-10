@@ -1,13 +1,13 @@
-import { defineConfig } from "vite";
+import { vanillaExtractPlugin } from "@vanilla-extract/vite-plugin";
 import react from "@vitejs/plugin-react";
 import path, { resolve } from "path";
-import makeManifest from "./utils/plugins/make-manifest";
-import customDynamicImport from "./utils/plugins/custom-dynamic-import";
-import addHmr from "./utils/plugins/add-hmr";
-import manifest from "./manifest";
-import { vanillaExtractPlugin } from "@vanilla-extract/vite-plugin";
 import { PreRenderedChunk } from "rollup";
 import copy from "rollup-plugin-copy";
+import { defineConfig } from "vite";
+import manifest from "./manifest";
+import addHmr from "./utils/plugins/add-hmr";
+import customDynamicImport from "./utils/plugins/custom-dynamic-import";
+import makeManifest from "./utils/plugins/make-manifest";
 
 const root = resolve(__dirname, "src");
 const pagesDir = resolve(root, "pages");
@@ -26,7 +26,12 @@ export default defineConfig({
     alias: {
       "@src": root,
       "@assets": assetsDir,
-      "@pages": pagesDir,
+      "@/app": resolve(root, "app"),
+      "@/pages": resolve(root, "pages"),
+      "@/shared": resolve(root, "shared"),
+      "@/widgets": resolve(root, "widgets"),
+      "@/features": resolve(root, "features"),
+      "@/entities": resolve(root, "entities"),
     },
   },
   plugins: [
@@ -53,7 +58,7 @@ export default defineConfig({
         background: resolve(pagesDir, "background", "index.ts"),
         contentStyle: resolve(pagesDir, "content", "style.scss"),
         popup: resolve(pagesDir, "popup", "index.html"),
-        getAPIList: resolve(pagesDir, "content/modules", "getAPIList.ts"),
+        getApiList: resolve(pagesDir, "content/modules", "getApiList.ts"),
       },
       watch: {
         include: ["src/**", "vite.config.ts"],
@@ -61,8 +66,8 @@ export default defineConfig({
       },
       output: {
         entryFileNames: (assetInfo: PreRenderedChunk) => {
-          if (assetInfo.name === "getAPIList") {
-            return "getAPIList.js";
+          if (assetInfo.name === "getApiList") {
+            return "getApiList.js";
           }
           return `src/pages/${assetInfo.name}/index.js`;
         },

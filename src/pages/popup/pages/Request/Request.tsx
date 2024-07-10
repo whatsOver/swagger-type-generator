@@ -1,21 +1,21 @@
-import Button from "@src/common/ui/Button";
-import Header from "@src/common/ui/Header";
-import Modal from "@src/common/ui/Modal";
-import { vars } from "@src/common/ui/styles/theme.css";
-import { APIWithParamsAndBodyAndHost } from "@src/pages/content/modules/getAPIList";
+import { useHandleRequest } from "@/features/request-api/module/hooks/useHandleRequest";
+import { APIWithParamsAndBodyAndHost } from "@/pages/content/modules/getApiList";
+import Button from "@/shared/ui/Button";
+import Header from "@/shared/ui/Header";
+import Modal from "@/shared/ui/Modal";
+import { vars } from "@/shared/ui/styles/theme.css";
+import { RequestBody } from "@/widgets/request-body/ui/api-body/RequestBody";
+import { RequestParam } from "@/widgets/request-param/ui/api-param/RequestParam";
 import { useCallback, useState } from "react";
 import { VscBracketError as ErrorIcon } from "react-icons/vsc";
 import { useLocation } from "react-router-dom";
 import { Flip, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import useHandleCode from "../../hooks/Request/useHandleCode";
-import useHandleRequest from "../../hooks/Request/useHandleRequest";
-import Body from "../../ui/Body";
-import ModalCodeBlock from "../../ui/CodeBlockView";
-import Params from "../../ui/Params";
-import { popupStyle } from "../Popup/popup.css";
-import { requestStyle } from "./request.css";
-import Loading from "../../ui/loading/Loading";
+import Loading from "../../../../shared/ui/Loading/Loading";
+import useHandleCode from "../../../../widgets/code-block/module/hooks/useHandleCode";
+import ModalCodeBlock from "../../../../widgets/code-block/ui/code-block-modal/CodeBlockView";
+import { apiListStyle } from "../ApiList/ui/apiList.css";
+import { requestStyles } from "./request.css";
 
 export type Mode = "RESPONSE" | "TS" | "ERROR" | "AXIOS" | "FETCH" | "LOADING";
 
@@ -55,14 +55,14 @@ const Request = () => {
   } = useHandleCode({ api, response, setMode });
 
   return (
-    <div className={popupStyle.app}>
+    <div className={apiListStyle.app}>
       <Header showBackButton />
-      <div className={requestStyle.requestWrapper}>
-        <form className={requestStyle.body} onSubmit={handleSubmit}>
-          <h2 className={requestStyle.mainDescription}>{description}</h2>
-          <div className={requestStyle.requestBlock}>
+      <div className={requestStyles.requestWrapper}>
+        <form className={requestStyles.body} onSubmit={handleSubmit}>
+          <h2 className={requestStyles.mainDescription}>{description}</h2>
+          <div className={requestStyles.requestBlock}>
             {!!params?.length && (
-              <Params
+              <RequestParam
                 params={params}
                 formValues={formValues}
                 handleChange={handleChange}
@@ -70,7 +70,7 @@ const Request = () => {
               />
             )}
             {!!body?.type.length && (
-              <Body
+              <RequestBody
                 body={body}
                 formValues={formValues}
                 handleChange={handleChange}
@@ -78,15 +78,15 @@ const Request = () => {
               />
             )}
             {!params?.length && !body?.type.length && (
-              <div className={requestStyle.flexView}>
+              <div className={requestStyles.flexView}>
                 <ErrorIcon size={26} color={vars.color.green} />
-                <span className={requestStyle.description}>
+                <span className={requestStyles.description}>
                   No parameters or body
                 </span>
               </div>
             )}
           </div>
-          <div className={requestStyle.fixedButtonWrapper}>
+          <div className={requestStyles.fixedButtonWrapper}>
             <Modal>
               <Modal.Trigger
                 as={

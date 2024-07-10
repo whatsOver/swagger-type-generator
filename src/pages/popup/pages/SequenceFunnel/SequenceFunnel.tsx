@@ -1,21 +1,21 @@
-import { extractNonEmptyArrayKeys } from "@src/common/hooks/funnel/models";
-import { useFunnel } from "@src/common/hooks/funnel/useFunnel";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import DeleteSequencePage from "../../Sequence/pages/Delete/DeleteSequencePage";
-import ReorderSequencePage from "../../Sequence/pages/Reorder/ReorderSequencePage";
-import SequencePage from "../../Sequence/pages/Sequence/SequencePage";
 import {
-  SequenceItem,
+  SequenceItemType,
   createSequence,
   sequenceStorage,
-} from "../../Sequence/store/sequence";
-import useHandlePopup from "../../hooks/Popup/useHandlePopup";
-import { navigationPath } from "../../hooks/useRouter";
+} from "@/entities/sequence/model/sequence-store";
+import { extractNonEmptyArrayKeys } from "@/shared/hooks/funnel/models";
+import { useFunnel } from "@/shared/hooks/funnel/useFunnel";
+import { navigationPath } from "@/shared/hooks/useRouter";
+import { useHandleApiList } from "@/widgets/api-list/module/hooks/useHandleApiList";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import DeleteSequencePage from "../Delete/DeleteSequencePage";
+import ReorderSequencePage from "../Reorder/ReorderSequencePage";
+import SequencePage from "../Sequence/SequencePage";
 
 export interface SequenceFunnelProps {
   swaggerTitle: string;
-  sequenceList: SequenceItem[];
-  setSequenceList?: Dispatch<SetStateAction<SequenceItem[]>>;
+  sequenceList: SequenceItemType[];
+  setSequenceList?: Dispatch<SetStateAction<SequenceItemType[]>>;
   onNext: () => void;
 }
 
@@ -24,9 +24,9 @@ const SequenceFunnel = () => {
     extractNonEmptyArrayKeys(navigationPath.시나리오_관리_퍼널())
   );
 
-  const { apiDocsData } = useHandlePopup();
+  const { apiDocsData } = useHandleApiList();
 
-  const [sequenceList, setSequenceList] = useState<SequenceItem[]>([]);
+  const [sequenceList, setSequenceList] = useState<SequenceItemType[]>([]);
   const [swaggerTitle, setSwaggerTitle] = useState<string>("");
 
   useEffect(() => {
