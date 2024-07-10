@@ -31,6 +31,7 @@ export default defineConfig({
       "@/shared": resolve(root, "shared"),
       "@/widgets": resolve(root, "widgets"),
       "@/features": resolve(root, "features"),
+      "@/entities": resolve(root, "entities"),
     },
   },
   plugins: [
