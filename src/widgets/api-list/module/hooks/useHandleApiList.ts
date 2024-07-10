@@ -1,4 +1,4 @@
-import { useSwaggerDocStore } from "@/entities/document/model/document-store";
+import { useSwaggerDocStore } from "@/entities/docs/model/document-store";
 import { useGETDocs } from "@/entities/swagger/api/get-document";
 import { transformApiFromSwagger } from "@/features/api-generate/module/utils/apiTransform";
 import { API } from "@/pages/content/modules/getApiList";

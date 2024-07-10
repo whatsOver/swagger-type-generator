@@ -1,10 +1,10 @@
+import { useSwaggerDocStore } from "@/entities/docs/model/document-store";
 import {
   ApiList,
   GET_API_LIST_RESULT,
   Path,
 } from "@/pages/content/modules/getApiList";
 import { useEffect, useState } from "react";
-import { useSwaggerDocStore } from "src/entities/document/model/document-store";
 
 interface GetApiListProps {
   setApiList: (ApiList: ApiList) => void;
