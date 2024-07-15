@@ -7,7 +7,7 @@ export interface SequenceItemProps extends SequenceItemType {
   onClick?: (id: number) => void;
 }
 
-const SequenceItemWithStatus = ({
+export const SequenceItemWithStatus = ({
   apiList,
   iconType,
   id,
@@ -30,5 +30,3 @@ const SequenceItemWithStatus = ({
     </ListItem>
   );
 };
-
-export default SequenceItemWithStatus;

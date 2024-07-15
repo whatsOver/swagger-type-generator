@@ -1,16 +1,17 @@
 import { SequenceItemType } from "@/entities/sequence/model/sequence-store";
-import { SequenceItem } from "../item/SequenceItem";
+import { SequenceItemWithStatus } from "../item/SequenceItemWithStatus";
 
 interface SequenceListProps {
   sequenceList: SequenceItemType[];
   onClick: (id: number, title: string) => void;
 }
 
-const SequenceList = ({ sequenceList, onClick }: SequenceListProps) => {
+export const SequenceList = ({ sequenceList, onClick }: SequenceListProps) => {
   return (
     <>
-      {sequenceList.map((sequence) => (
-        <SequenceItem
+      {sequenceList?.map((sequence) => (
+        <SequenceItemWithStatus
+          iconType={sequence.iconType}
           key={sequence.id}
           id={sequence.id}
           title={sequence.title}
@@ -21,5 +22,3 @@ const SequenceList = ({ sequenceList, onClick }: SequenceListProps) => {
     </>
   );
 };
-
-export default SequenceList;
