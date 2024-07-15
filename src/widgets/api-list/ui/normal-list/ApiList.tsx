@@ -1,4 +1,4 @@
-import { API, ApiList } from "@/pages/content/modules/getApiList";
+import { API, ApiList } from "@/entities/docs/model/types/docs";
 import { vars } from "@/shared/ui/styles/theme.css";
 import APIItem from "../api-item/ApiItem";
 import { ApiListStyle } from "../apiList.css";

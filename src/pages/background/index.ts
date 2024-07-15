@@ -13,6 +13,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     sendResponse({ received: true });
     return true;
   }
+  if (request.message === "GET_SWAGGER_DOCS") {
+    sendResponse({ received: true });
+    return true;
+  }
   if (request.message === "READY") {
     sendResponse({ received: true });
     return true;

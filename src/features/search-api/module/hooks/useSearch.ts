@@ -1,4 +1,4 @@
-import { ApiList } from "@/pages/content/modules/getApiList";
+import type { ApiList } from "@/entities/docs/model/types/docs";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface SearchProps {
@@ -32,8 +32,8 @@ const useSearch = ({ apiList, setFilteredApiList }: SearchProps) => {
       endpoints: Object.keys(apiList.endpoints).reduce((acc, cur) => {
         const filteredAPIs = apiList.endpoints[cur].filter(
           (api) =>
-            api.path.toLowerCase().includes(search.toLowerCase()) ||
-            api.description.toLowerCase().includes(search.toLowerCase())
+            api.path?.toLowerCase().includes(search.toLowerCase()) ||
+            api.description?.toLowerCase().includes(search.toLowerCase())
         );
         if (filteredAPIs.length > 0) {
           acc[cur] = filteredAPIs;

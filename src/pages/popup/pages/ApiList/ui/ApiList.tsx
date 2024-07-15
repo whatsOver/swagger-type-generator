@@ -8,14 +8,14 @@ import useSearch from "@/features/search-api/module/hooks/useSearch";
 import useHandleSetting from "@/features/setting/module/hooks/useHandleSetting";
 import Loading from "@/shared/ui/Loading/Loading";
 import Search from "@/shared/ui/search/Search";
+import { useHandleApiList } from "@/widgets/api-list/module/hooks/useHandleApiList";
 import BlankApi from "@/widgets/api-list/ui/blank/BlankApi";
 import ApiList from "@/widgets/api-list/ui/normal-list/ApiList";
 import SettingDrawer from "@/widgets/setting/ui/setting-drawer/SettingDrawer";
 import SettingModal from "@/widgets/setting/ui/setting-modal/SettingModal";
-import { useHandleApiList } from "../../../../../widgets/api-list/module/hooks/useHandleApiList";
 import { apiListStyle } from "./apiList.css";
 
-const Popup = () => {
+const ApiListPage = () => {
   const { loading, apiList, filteredApiList, onClickAPI, setFilteredApiList } =
     useHandleApiList();
 
@@ -60,4 +60,4 @@ const Popup = () => {
   );
 };
 
-export default Popup;
+export default ApiListPage;

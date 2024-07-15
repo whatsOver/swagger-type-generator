@@ -1,5 +1,5 @@
+import { API } from "@/entities/docs/model/types/docs";
 import { SwaggerDocs } from "@/entities/swagger/types";
-import { API } from "@/pages/content/modules/getApiList";
 import { transformApiFromSwagger } from "./apiTransform";
 
 describe("convertSelectedAPI", () => {

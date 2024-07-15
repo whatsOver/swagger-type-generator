@@ -1,10 +1,10 @@
+import { API, APIWithParamsOrBody } from "@/entities/docs/model/types/docs";
 import {
   ContentType,
   DefaultComplexSchema,
   Schemas,
   SwaggerDocs,
 } from "@/entities/swagger/types";
-import { API, APIWithParamsOrBody } from "@/pages/content/modules/getApiList";
 import { Method } from "axios";
 
 export const transformApiFromSwagger = (
