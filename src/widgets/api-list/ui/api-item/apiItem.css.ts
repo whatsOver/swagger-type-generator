@@ -13,7 +13,7 @@ export const apiItemStyles = {
     flexDirection: "column",
     alignItems: "flex-start",
     justifyContent: "center",
-    padding: "3px ",
+    padding: "3px 5px",
     borderRadius: "10px",
     cursor: "pointer",
     width: "100%",
@@ -37,6 +37,7 @@ export const apiItemStyles = {
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
     fontWeight: "bold",
+    color: vars.color.background,
   }),
 
   description: style({
@@ -45,6 +46,7 @@ export const apiItemStyles = {
     whiteSpace: "nowrap",
     marginTop: "5px",
     marginLeft: "3px",
+    color: vars.color.background,
   }),
 
   menuButton: style({
