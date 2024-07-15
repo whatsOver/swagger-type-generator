@@ -22,6 +22,7 @@ export const ApiListStyle = {
     justifyContent: "flex-start",
     marginBottom: "1rem",
     paddingLeft: "2rem",
+    fontWeight: "bold",
   }),
 
   tagBox: style({
