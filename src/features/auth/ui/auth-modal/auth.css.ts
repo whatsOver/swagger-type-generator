@@ -7,7 +7,7 @@ export const authModalStyle = {
     backgroundColor: vars.color.darkGrey,
     color: vars.color.white,
     width: "300px",
-    height: "200px",
+    height: "150px",
     borderRadius: "10px",
     padding: "20px",
     display: "flex",
