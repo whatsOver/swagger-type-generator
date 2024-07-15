@@ -8,7 +8,7 @@ import Dropdown from "@/shared/ui/Dropdown";
 import Header from "@/shared/ui/Header";
 import BlankItem from "@/shared/ui/blank-item/BlankItem";
 import { vars } from "@/shared/ui/styles/theme.css";
-import SequenceList from "@/widgets/sequence-list/ui/list/SequenceList";
+import { SequenceList } from "@/widgets/sequence-list/ui/list/SequenceList";
 import SettingDrawer from "@/widgets/setting/ui/setting-drawer/SettingDrawer";
 import { FiMenu as MenuIcon } from "react-icons/fi";
 import { useHandleSequencePage } from "./module/hooks/useHandleSequencePage";
@@ -75,10 +75,7 @@ const SequencePage = ({
             </Button>
           </BlankItem>
         )}
-        <SequenceList
-          sequenceList={sequenceList}
-          onClick={() => onClickSequence}
-        />
+        <SequenceList sequenceList={sequenceList} onClick={onClickSequence} />
       </div>
       <SettingDrawer isOpen={open} onClose={closeDrawer} />
     </div>
