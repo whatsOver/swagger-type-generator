@@ -106,6 +106,7 @@ describe("convertSelectedAPI", () => {
 
     // THEN
     expect(result).toEqual({
+      endpoint: "get /api",
       method: "get",
       path: "/api",
       description: "",
@@ -126,6 +127,7 @@ describe("convertSelectedAPI", () => {
 
     // THEN
     expect(result).toEqual({
+      endpoint: "post /api/media",
       method: "post",
       path: "/api/media",
       description: "",

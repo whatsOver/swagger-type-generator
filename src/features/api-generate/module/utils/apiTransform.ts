@@ -50,6 +50,7 @@ export const transformApiFromSwagger = (
   }
 
   return {
+    endpoint: `${method} ${path}`,
     method,
     path,
     description,

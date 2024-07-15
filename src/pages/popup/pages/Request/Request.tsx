@@ -5,6 +5,7 @@ import Header from "@/shared/ui/Header";
 import Loading from "@/shared/ui/Loading/Loading";
 import Modal from "@/shared/ui/Modal";
 import { vars } from "@/shared/ui/styles/theme.css";
+import APIItem from "@/widgets/api-list/ui/api-item/ApiItem";
 import useHandleCode from "@/widgets/code-block/module/hooks/useHandleCode";
 import ModalCodeBlock from "@/widgets/code-block/ui/code-block-modal/CodeBlockView";
 import { RequestBody } from "@/widgets/request-body/ui/api-body/RequestBody";
@@ -23,7 +24,7 @@ const Request = () => {
   // FIRST RENDER
   const api = useLocation().state as APIWithParamsAndBodyAndHost;
 
-  const { description, params, body } = api;
+  const { params, body } = api;
 
   // INTERACTION
   // 1. mode 상태 관리
@@ -60,7 +61,9 @@ const Request = () => {
       <Header showBackButton />
       <div className={requestStyles.requestWrapper}>
         <form className={requestStyles.body} onSubmit={handleSubmit}>
-          <h2 className={requestStyles.mainDescription}>{description}</h2>
+          <div className={requestStyles.apiItemContainer}>
+            <APIItem api={api} />
+          </div>
           <div className={requestStyles.requestBlock}>
             {!!params?.length && (
               <RequestParam

@@ -4,19 +4,26 @@ import { style } from "@vanilla-extract/css";
 export const requestStyles = {
   requestWrapper: style({
     width: "100%",
-    padding: "0 1rem",
     boxSizing: "border-box",
+    padding: "0 20px",
   }),
 
   body: style({
+    display: "flex",
+    flexDirection: "column",
+    position: "relative",
     width: "100%",
     boxSizing: "border-box",
-    height: "calc(100vh - 40px - 70px)",
+    height: "calc(100vh - 40px - 50px)",
+    paddingTop: "1px",
     backgroundColor: vars.color.darkGrey,
     color: vars.color.white,
     borderRadius: "10px",
+  }),
+
+  apiItemContainer: style({
     display: "flex",
-    flexDirection: "column",
+    width: "100%",
   }),
 
   requestBlock: style({
@@ -82,10 +89,20 @@ export const requestStyles = {
     justifyContent: "space-between",
   }),
 
+  endpoint: style({
+    fontSize: "1rem",
+    color: vars.color.white,
+    marginTop: "20px",
+    marginLeft: "20px",
+    textAlign: "left",
+  }),
+
   mainDescription: style({
     fontWeight: "bold",
+    fontSize: "0.8rem",
     display: "flex",
-    alignItems: "left",
+    justifyContent: "left",
+    textAlign: "left",
     color: vars.color.white,
     marginLeft: "20px",
     marginTop: "30px",
@@ -245,9 +262,10 @@ export const requestStyles = {
     display: "flex",
     position: "fixed",
     bottom: "40px",
-    width: "100%",
-    paddingRight: "2rem",
+    justifyContent: "flex-end",
     boxSizing: "border-box",
+    width: "calc(100% - 80px)",
+    left: "40px",
   }),
 
   response: style({

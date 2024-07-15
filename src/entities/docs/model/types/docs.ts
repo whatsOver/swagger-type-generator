@@ -45,6 +45,8 @@ export interface API {
 }
 
 export interface APIWithParamsOrBody extends API {
+  method: Method;
+  endpoint: string;
   contentType: ContentType;
   params?: Parameters[];
   body?: Schemas;
