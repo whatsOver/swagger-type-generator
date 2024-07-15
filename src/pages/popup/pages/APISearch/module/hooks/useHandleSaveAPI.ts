@@ -1,8 +1,8 @@
+import { API } from "@/entities/docs/model/types/docs";
 import {
   APIWithKey,
   updateAPI,
 } from "@/entities/sequence/model/sequence-store";
-import { API } from "@/pages/content/modules/getApiList";
 import { ScenarioFunnelProps } from "@/pages/popup/pages/ScenarioFunnel/ScenarioFunnel";
 import { useEffect, useState } from "react";
 

@@ -6,6 +6,7 @@ import {
   useState,
 } from "react";
 
+import { APIWithParamsAndBodyAndHost } from "@/entities/docs/model/types/docs";
 import { useSettingStore } from "@/entities/setting/model/setting-store";
 import {
   generateAxiosAPICode,
@@ -13,7 +14,6 @@ import {
   generateInterface,
 } from "@/features/api-generate/module/utils/apiGenerator";
 import { generateReactQueryHook } from "@/features/react-query-generate/module/queryGenerator";
-import { APIWithParamsAndBodyAndHost } from "@/pages/content/modules/getApiList";
 import { useCopy } from "@/shared/hooks/useCopy";
 import { jsonToTs } from "@/shared/util/typeGenerator";
 

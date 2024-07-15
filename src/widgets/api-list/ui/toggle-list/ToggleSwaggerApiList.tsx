@@ -1,8 +1,8 @@
-import { API, ApiList } from "@/pages/content/modules/getApiList";
+import { API, ApiList } from "@/entities/docs/model/types/docs";
+import { APIWithOrder } from "@/entities/sequence/model/sequence-store";
 import CheckBox from "@/shared/ui/CheckBox";
 import { vars } from "@/shared/ui/styles/theme.css";
 import APIItem from "@/widgets/api-list/ui/api-item/ApiItem";
-import { APIWithOrder } from "../../../../entities/sequence/model/sequence-store";
 import { ApiListStyle } from "../apiList.css";
 
 interface ApiListProps {

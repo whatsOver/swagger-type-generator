@@ -1,7 +1,7 @@
 import { EMPTY_RESPONSE } from "@/entities/api/config/status";
 import { useAuthStore } from "@/entities/auth/model/auth-store";
+import { APIWithParamsAndBodyAndHost } from "@/entities/docs/model/types/docs";
 import { Schemas } from "@/entities/swagger/types";
-import { APIWithParamsAndBodyAndHost } from "@/pages/content/modules/getApiList";
 import { Mode } from "@/pages/popup/pages/Request/Request";
 import axios, { RawAxiosRequestHeaders } from "axios";
 import { FormEvent, useEffect, useState } from "react";

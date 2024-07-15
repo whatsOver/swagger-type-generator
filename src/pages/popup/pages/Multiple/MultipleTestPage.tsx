@@ -1,4 +1,5 @@
-import { useSwaggerDocStore } from "@/entities/docs/model/document-store";
+import { useSwaggerDocStore } from "@/entities/docs/model/store/document-store";
+import { APIWithParamsAndBodyAndHost } from "@/entities/docs/model/types/docs";
 import {
   APIWithOrder,
   sequenceStorage,
@@ -7,7 +8,6 @@ import {
 } from "@/entities/sequence/model/sequence-store";
 import { transformApiFromSwagger } from "@/features/api-generate/module/utils/apiTransform";
 import { useHandleRequest } from "@/features/request-api/module/hooks/useHandleRequest";
-import { APIWithParamsAndBodyAndHost } from "@/pages/content/modules/getApiList";
 import { apiListStyle } from "@/pages/popup/pages/ApiList/ui/apiList.css";
 import Button from "@/shared/ui/Button";
 import BottomFixedButton from "@/shared/ui/Button/BottomFixedButton";

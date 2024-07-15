@@ -1,6 +1,6 @@
-import { API } from "@/pages/content/modules/getApiList";
+import { API } from "@/entities/docs/model/types/docs";
+import { FormValues } from "@/features/request-api/module/hooks/useForm";
 import { storage } from "@/shared/module/storageFactory";
-import { FormValues } from "../../../features/request-api/module/hooks/useForm";
 
 export type IconType = "SUCCESS" | "FAIL" | "LOADING";
 

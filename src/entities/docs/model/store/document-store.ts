@@ -1,4 +1,4 @@
-import type { ApiList, Path } from "@/pages/content/modules/getApiList";
+import type { ApiList, Path } from "@/entities/docs/model/types/docs";
 import { create } from "zustand";
 
 interface SwaggerDocStore {
@@ -18,16 +18,16 @@ interface SwaggerDocStore {
 export const useSwaggerDocStore = create<SwaggerDocStore>((set) => ({
   state: "initial",
   setState: (state: "initial" | "loaded") => set({ state }),
-  filteredApiList: {
-    endpoints: {},
-    tags: [],
-  },
-  setFilteredApiList: (filteredApiList: ApiList) => set({ filteredApiList }),
   apiList: {
     endpoints: {},
     tags: [],
   },
   setApiList: (apiList: ApiList) => set({ apiList }),
+  filteredApiList: {
+    endpoints: {},
+    tags: [],
+  },
+  setFilteredApiList: (filteredApiList: ApiList) => set({ filteredApiList }),
   pathInfo: {
     host: "",
     href: "",

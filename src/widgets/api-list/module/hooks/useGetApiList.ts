@@ -1,9 +1,9 @@
-import { useSwaggerDocStore } from "@/entities/docs/model/document-store";
+import { useSwaggerDocStore } from "@/entities/docs/model/store/document-store";
 import {
   ApiList,
   GET_API_LIST_RESULT,
   Path,
-} from "@/pages/content/modules/getApiList";
+} from "@/entities/docs/model/types/docs";
 import { useEffect, useState } from "react";
 
 interface GetApiListProps {

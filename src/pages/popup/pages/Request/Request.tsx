@@ -1,9 +1,12 @@
+import { APIWithParamsAndBodyAndHost } from "@/entities/docs/model/types/docs";
 import { useHandleRequest } from "@/features/request-api/module/hooks/useHandleRequest";
-import { APIWithParamsAndBodyAndHost } from "@/pages/content/modules/getApiList";
 import Button from "@/shared/ui/Button";
 import Header from "@/shared/ui/Header";
+import Loading from "@/shared/ui/Loading/Loading";
 import Modal from "@/shared/ui/Modal";
 import { vars } from "@/shared/ui/styles/theme.css";
+import useHandleCode from "@/widgets/code-block/module/hooks/useHandleCode";
+import ModalCodeBlock from "@/widgets/code-block/ui/code-block-modal/CodeBlockView";
 import { RequestBody } from "@/widgets/request-body/ui/api-body/RequestBody";
 import { RequestParam } from "@/widgets/request-param/ui/api-param/RequestParam";
 import { useCallback, useState } from "react";
@@ -11,9 +14,6 @@ import { VscBracketError as ErrorIcon } from "react-icons/vsc";
 import { useLocation } from "react-router-dom";
 import { Flip, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Loading from "../../../../shared/ui/Loading/Loading";
-import useHandleCode from "../../../../widgets/code-block/module/hooks/useHandleCode";
-import ModalCodeBlock from "../../../../widgets/code-block/ui/code-block-modal/CodeBlockView";
 import { apiListStyle } from "../ApiList/ui/apiList.css";
 import { requestStyles } from "./request.css";
 
@@ -22,6 +22,7 @@ export type Mode = "RESPONSE" | "TS" | "ERROR" | "AXIOS" | "FETCH" | "LOADING";
 const Request = () => {
   // FIRST RENDER
   const api = useLocation().state as APIWithParamsAndBodyAndHost;
+
   const { description, params, body } = api;
 
   // INTERACTION
