@@ -49,6 +49,7 @@ export interface SchemasProperties {
     type: SwaggerType;
     format?: SwaggerFormat;
   };
+  $ref?: string;
 }
 
 export interface Schemas {

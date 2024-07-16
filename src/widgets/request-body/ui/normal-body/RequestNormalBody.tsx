@@ -1,7 +1,6 @@
 import { Schemas } from "@/entities/swagger/types";
 import { FormValues } from "@/features/request-api/module/hooks/useForm";
 import Input from "@/shared/ui/Input";
-import { typeConverter } from "@/shared/util/typeConverter";
 import { ChangeEvent } from "react";
 import { requestNormalBodyStyles } from "./requestNormalBody.css";
 
@@ -10,6 +9,7 @@ interface RequestNormalBodyProps {
   formValues: FormValues;
   idx: number;
   property: string;
+  isFileType: boolean;
   type: string;
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
@@ -19,18 +19,18 @@ export const RequestNormalBody = ({
   formValues,
   idx,
   property,
+  isFileType,
   type,
   handleChange,
 }: RequestNormalBodyProps) => {
+  console.log(body);
   return (
     <>
       <div className={requestNormalBodyStyles.inputWrapper} key={property}>
         <div className={requestNormalBodyStyles.inputBox} key={property}>
           <label className={requestNormalBodyStyles.label}>{property}</label>
-          <label className={requestNormalBodyStyles.type}>
-            {typeConverter(body.properties[property].type)}
-          </label>
-          {type === "file" && (
+          <label className={requestNormalBodyStyles.type}>{type}</label>
+          {!!isFileType && (
             <label
               htmlFor="file"
               className={requestNormalBodyStyles.inputLabel}

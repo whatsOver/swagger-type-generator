@@ -1,6 +1,9 @@
+import { useSwaggerDocStore } from "@/entities/docs/model/store/document-store";
+import { useGETDocs } from "@/entities/swagger/api/get-document";
 import { Schemas } from "@/entities/swagger/types";
 import { FormValues } from "@/features/request-api/module/hooks/useForm";
 import { vars } from "@/shared/ui/styles/theme.css";
+import { typeConverter } from "@/shared/util/typeConverter";
 import React, { ChangeEvent, useState } from "react";
 import { RequestArrayBody } from "../array-body/RequestArrayBody";
 import { RequestNormalBody } from "../normal-body/RequestNormalBody";
@@ -26,6 +29,11 @@ export const RequestBody = ({
   // 기존에 custom hook으로 관리하던 paramState와 달리 하나의 input만 담당
   const [bodyValue, setBodyValue] = useState("");
 
+  const { pathInfo } = useSwaggerDocStore();
+
+  const { data: apiDocsData } = useGETDocs(pathInfo);
+  console.log(apiDocsData);
+
   const onChangeBodyValue = (e: ChangeEvent<HTMLInputElement>) => {
     // file type일 경우 직접 addArrayItem 호출
     if (e.target.id === "file" && e.target.files) {
@@ -40,16 +48,29 @@ export const RequestBody = ({
     setBodyValue("");
   };
 
-  const isItemsTypeFile = (property: string) => {
-    let returnType = "text";
+  const isFileType = (property: string) => {
     Object.keys(body.properties).map((property) => {
       if (body.properties[property]?.format === "binary") {
-        returnType = "file";
+        return true;
       }
     });
-    // if (body.properties[property].type === "binary") return "file";
-    if (body.properties[property].items?.format === "binary") return "file";
-    return returnType;
+    if (body.properties[property].items?.format === "binary") return true;
+    return false;
+  };
+
+  const getType = (property: string) => {
+    const type = body.properties[property].type;
+    if (type) {
+      console.log("type", type);
+      return typeConverter(type);
+    }
+    const fullRef = body.properties[property].$ref;
+    console.log("fullRef", fullRef);
+    const ref = fullRef.split("/").pop();
+    console.log("ref", ref);
+    const schema = apiDocsData?.components?.schemas[ref];
+    console.log(schema);
+    return typeConverter(schema?.type);
   };
 
   return (
@@ -71,7 +92,8 @@ export const RequestBody = ({
               property={property}
               addArrayItem={onAddArrayItem}
               removeArrayItem={removeArrayItem}
-              type={isItemsTypeFile(property)}
+              type={getType(property)}
+              isFileType={isFileType(property)}
             />
           ) : (
             <RequestNormalBody
@@ -80,7 +102,8 @@ export const RequestBody = ({
               handleChange={handleChange}
               idx={idx}
               property={property}
-              type={isItemsTypeFile(property)}
+              type={getType(property)}
+              isFileType={isFileType(property)}
             />
           )}
         </>
