@@ -10,6 +10,7 @@ interface RequestArrayBodyProps {
   formValues: FormValues;
   idx: number;
   property: string;
+  isFileType: boolean;
   type: string;
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
   addArrayItem: (key: string) => void;
@@ -22,6 +23,7 @@ export const RequestArrayBody = ({
   idx,
   property,
   type,
+  isFileType,
   addArrayItem,
   removeArrayItem,
   handleChange,
@@ -35,7 +37,7 @@ export const RequestArrayBody = ({
             {typeConverter(body.properties[property].type)}
           </label>
           <div className={requestArrayBodyStyles.rightWrapper}>
-            {type === "file" && (
+            {!!isFileType && (
               <label
                 htmlFor="file"
                 className={requestArrayBodyStyles.inputLabel}
@@ -59,7 +61,7 @@ export const RequestArrayBody = ({
               autoFocus={idx === 0}
               onFocus={(e) => e.target.select()}
             />
-            {type !== "file" && (
+            {!isFileType && (
               <button
                 onClick={() => addArrayItem(property)}
                 type="button"
