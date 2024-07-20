@@ -32,7 +32,6 @@ export const RequestBody = ({
   const { pathInfo } = useSwaggerDocStore();
 
   const { data: apiDocsData } = useGETDocs(pathInfo);
-  console.log(apiDocsData);
 
   const onChangeBodyValue = (e: ChangeEvent<HTMLInputElement>) => {
     // file type일 경우 직접 addArrayItem 호출
@@ -61,15 +60,11 @@ export const RequestBody = ({
   const getType = (property: string) => {
     const type = body.properties[property].type;
     if (type) {
-      console.log("type", type);
       return typeConverter(type);
     }
     const fullRef = body.properties[property].$ref;
-    console.log("fullRef", fullRef);
     const ref = fullRef.split("/").pop();
-    console.log("ref", ref);
     const schema = apiDocsData?.components?.schemas[ref];
-    console.log(schema);
     return typeConverter(schema?.type);
   };
 

@@ -23,7 +23,14 @@ export const RequestNormalBody = ({
   type,
   handleChange,
 }: RequestNormalBodyProps) => {
-  console.log(body);
+  const placeholder =
+    body.properties[property].example !== undefined
+      ? body.properties[property].example + ""
+      : "";
+
+  const defaultValue = body.properties[property].example
+    ? body.properties[property].example
+    : body.properties[property].default ?? "";
   return (
     <>
       <div className={requestNormalBodyStyles.inputWrapper} key={property}>
@@ -43,18 +50,10 @@ export const RequestNormalBody = ({
             type={type}
             name={property}
             value={formValues[property] as string}
-            placeholder={
-              body.properties[property].example !== undefined
-                ? body.properties[property].example + ""
-                : ""
-            }
+            placeholder={placeholder}
             required={body.required?.includes(property)}
             onChange={handleChange}
-            defaultValue={
-              body.properties[property].example
-                ? body.properties[property].example
-                : body.properties[property].default ?? ""
-            }
+            defaultValue={defaultValue}
             id="file"
             autoFocus={idx === 0}
             onFocus={(e) => e.target.select()}
