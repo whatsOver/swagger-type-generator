@@ -17,14 +17,18 @@ const useGetApiList = ({ setApiList, setPathInfo }: GetApiListProps) => {
     tabId: number,
     callback: (isReady: boolean) => void
   ) => {
-    chrome.tabs.sendMessage(tabId, { message: "READY" }, (response) => {
-      if (chrome.runtime.lastError) {
-        setTimeout(() => checkIfReceiverIsReady(tabId, callback), 1000);
-        setLoading(false);
-      } else {
-        callback(response.data);
+    chrome.tabs.sendMessage<{ message: string }, { data: boolean }>(
+      tabId,
+      { message: "READY" },
+      (response) => {
+        if (chrome.runtime.lastError) {
+          setTimeout(() => checkIfReceiverIsReady(tabId, callback), 1000);
+          setLoading(false);
+        } else {
+          callback(response.data);
+        }
       }
-    });
+    );
   };
 
   const getApiList = (
