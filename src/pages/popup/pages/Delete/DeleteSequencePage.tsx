@@ -32,7 +32,7 @@ const DeleteSequencePage = ({
     <div id="main" className={apiListStyle.app}>
       <Header
         showBackButton
-        headerTitle="Delete APIs"
+        headerTitle="Delete Sequence"
         rightButton={
           <Button onClick={onClickSave} color="purple">
             Save
