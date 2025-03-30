@@ -14,6 +14,7 @@ export interface APIWithOrder extends APIWithKey {
   order: number;
   formValues: FormValues;
   response: unknown | null;
+  request: unknown | null;
 }
 
 export interface SequenceItemType {
@@ -23,158 +24,233 @@ export interface SequenceItemType {
   apiList: APIWithOrder[];
 }
 
-interface SequenceState {
+export interface SequenceState {
   [swaggerTitle: string]: SequenceItemType[];
 }
 
 export const sequenceStorage = storage<SequenceState>("sequence", {});
 
+export type { FormValues };
+
 type OmitId = Omit<SequenceItemType, "id">;
 
-export const createSequence = (swaggerTitle: string) => {
-  sequenceStorage.set((prev) => {
-    return { ...prev, [swaggerTitle]: [] };
+export const createSequence = async (swaggerTitle: string) => {
+  await sequenceStorage.set((prev) => {
+    const updatedState = { ...prev };
+    updatedState[swaggerTitle] = updatedState[swaggerTitle] || [];
+    return updatedState;
   });
 };
 
-export const addSequence = (swaggerTitle: string, sequence: OmitId) => {
-  sequenceStorage.set((prev) => {
-    const lastId = prev[swaggerTitle].reduce((acc, cur) => {
-      return acc > cur.id ? acc : cur.id;
-    }, 0);
+export const addSequence = async (swaggerTitle: string, sequence: OmitId) => {
+  await sequenceStorage.set((prev) => {
+    const updatedState = { ...prev };
+    const sequences = [...(updatedState[swaggerTitle] || [])];
+
+    const lastId =
+      sequences.length > 0 ? Math.max(...sequences.map((seq) => seq.id), 0) : 0;
+
     const newSequence = { ...sequence, id: lastId + 1 };
-    const updatedSequences = prev[swaggerTitle]
-      ? [newSequence, ...prev[swaggerTitle]]
-      : [newSequence];
-    return { ...prev, [swaggerTitle]: updatedSequences };
+    updatedState[swaggerTitle] = [newSequence, ...sequences];
+
+    return updatedState;
   });
 };
 
-export const deleteSequences = (
+export const deleteSequences = async (
   swaggerTitle: string,
   sequenceIds: number[]
 ) => {
-  sequenceStorage.set((prev) => {
-    if (!prev[swaggerTitle]) return prev;
-    return {
-      ...prev,
-      [swaggerTitle]: prev[swaggerTitle].filter(
-        (sequence) => !sequenceIds.includes(sequence.id)
-      ),
-    };
+  await sequenceStorage.set((prev) => {
+    const updatedState = { ...prev };
+    if (!updatedState[swaggerTitle]) return updatedState;
+
+    updatedState[swaggerTitle] = updatedState[swaggerTitle].filter(
+      (sequence) => !sequenceIds.includes(sequence.id)
+    );
+
+    return updatedState;
   });
 };
 
-export const updateSequences = (
+export const updateSequences = async (
   swaggerTitle: string,
   sequences: SequenceItemType[]
 ) => {
-  sequenceStorage.set((prev) => {
-    return { ...prev, [swaggerTitle]: sequences };
+  await sequenceStorage.set((prev) => {
+    const updatedState = { ...prev };
+    updatedState[swaggerTitle] = [...sequences];
+    return updatedState;
   });
 };
 
-export const addAPI = (
+export const addAPI = async (
   swaggerTitle: string,
   sequenceId: number,
   api: APIWithKey
 ) => {
-  sequenceStorage.set((prev) => {
-    if (!prev[swaggerTitle]) return prev;
-    const sequence = prev[swaggerTitle].find((s) => s.id === sequenceId);
-    if (!sequence) return prev;
+  await sequenceStorage.set((prev) => {
+    const updatedState = { ...prev };
+    if (!updatedState[swaggerTitle]) return updatedState;
+
+    const sequenceIndex = updatedState[swaggerTitle].findIndex(
+      (s) => s.id === sequenceId
+    );
+
+    if (sequenceIndex === -1) return updatedState;
+
+    // 불변성을 유지하며 시퀀스 배열 복사
+    updatedState[swaggerTitle] = [...updatedState[swaggerTitle]];
+
+    // 시퀀스 객체 복사
+    const sequence = {
+      ...updatedState[swaggerTitle][sequenceIndex],
+      apiList: [...updatedState[swaggerTitle][sequenceIndex].apiList],
+    };
+
+    // 새 API 추가
     sequence.apiList.push({
       ...api,
       order: sequence.apiList.length,
       formValues: {},
       response: null,
+      request: null,
     });
-    return {
-      ...prev,
-      [swaggerTitle]: prev[swaggerTitle].map((s) =>
-        s.id === sequenceId ? sequence : s
-      ),
-    };
+
+    // 업데이트된 시퀀스로 교체
+    updatedState[swaggerTitle][sequenceIndex] = sequence;
+
+    return updatedState;
   });
 };
 
-export const updateAPI = (
+export const updateAPI = async (
   swaggerTitle: string,
   sequenceId: number,
   apis: APIWithOrder[]
 ) => {
-  sequenceStorage.set((prev) => {
-    if (!prev[swaggerTitle]) return prev;
-    return {
-      ...prev,
-      [swaggerTitle]: prev[swaggerTitle].map((s) =>
-        s.id === sequenceId ? { ...s, ApiList: apis } : s
-      ),
+  await sequenceStorage.set((prev) => {
+    const updatedState = { ...prev };
+    if (!updatedState[swaggerTitle]) return updatedState;
+
+    const sequenceIndex = updatedState[swaggerTitle].findIndex(
+      (s) => s.id === sequenceId
+    );
+
+    if (sequenceIndex === -1) return updatedState;
+
+    updatedState[swaggerTitle] = [...updatedState[swaggerTitle]];
+    updatedState[swaggerTitle][sequenceIndex] = {
+      ...updatedState[swaggerTitle][sequenceIndex],
+      apiList: [...apis],
     };
+
+    return updatedState;
   });
 };
 
-export const deleteAPIs = (
+export const deleteAPIs = async (
   swaggerTitle: string,
   sequenceId: number,
   keys: string[]
 ) => {
-  sequenceStorage.set((prev) => {
-    if (!prev[swaggerTitle]) return prev;
-    const sequence = prev[swaggerTitle].find((s) => s.id === sequenceId);
-    if (!sequence) return prev;
-    sequence.apiList = sequence.apiList.filter(
-      (api) => !keys.includes(api.key)
+  await sequenceStorage.set((prev) => {
+    const updatedState = { ...prev };
+    if (!updatedState[swaggerTitle]) return updatedState;
+
+    const sequenceIndex = updatedState[swaggerTitle].findIndex(
+      (s) => s.id === sequenceId
     );
-    return {
-      ...prev,
-      [swaggerTitle]: prev[swaggerTitle].map((s) =>
-        s.id === sequenceId ? sequence : s
+
+    if (sequenceIndex === -1) return updatedState;
+
+    updatedState[swaggerTitle] = [...updatedState[swaggerTitle]];
+    updatedState[swaggerTitle][sequenceIndex] = {
+      ...updatedState[swaggerTitle][sequenceIndex],
+      apiList: updatedState[swaggerTitle][sequenceIndex].apiList.filter(
+        (api) => !keys.includes(api.key)
       ),
     };
+
+    return updatedState;
   });
 };
 
-export const updateFormValues = (
+export const updateFormValues = async (
   swaggerTitle: string,
   sequenceId: number,
   key: string,
   formValues: FormValues
 ) => {
-  sequenceStorage.set((prev) => {
-    if (!prev[swaggerTitle]) return prev;
-    const sequence = prev[swaggerTitle].find((s) => s.id === sequenceId);
-    if (!sequence) return prev;
-    sequence.apiList = sequence.apiList.map((api) =>
-      api.key === key ? { ...api, formValues } : api
+  await sequenceStorage.set((prev) => {
+    const updatedState = { ...prev };
+    if (!updatedState[swaggerTitle]) return updatedState;
+
+    const sequenceIndex = updatedState[swaggerTitle].findIndex(
+      (s) => s.id === sequenceId
     );
-    return {
-      ...prev,
-      [swaggerTitle]: prev[swaggerTitle].map((s) =>
-        s.id === sequenceId ? sequence : s
-      ),
+
+    if (sequenceIndex === -1) return updatedState;
+
+    // 불변성을 유지하며 시퀀스 배열 및 객체 복사
+    updatedState[swaggerTitle] = [...updatedState[swaggerTitle]];
+    const sequence: SequenceItemType = {
+      ...updatedState[swaggerTitle][sequenceIndex],
+      apiList: [...updatedState[swaggerTitle][sequenceIndex].apiList],
     };
+
+    // API 리스트 업데이트
+    sequence.apiList = sequence.apiList.map((api) =>
+      api.key === key ? { ...api, formValues: { ...formValues } } : api
+    );
+
+    // 업데이트된 시퀀스로 교체
+    updatedState[swaggerTitle][sequenceIndex] = sequence;
+
+    return updatedState;
   });
 };
 
-export const updateResponse = (
-  swaggerTitle: string,
-  sequenceId: number,
-  key: string,
-  response: unknown
-) => {
-  sequenceStorage.set((prev) => {
-    if (!prev[swaggerTitle]) return prev;
-    const sequence = prev[swaggerTitle].find((s) => s.id === sequenceId);
-    if (!sequence) return prev;
-    sequence.apiList = sequence.apiList.map((api) =>
-      api.key === key ? { ...api, response } : api
+interface UpdateResponseProps {
+  swaggerTitle: string;
+  sequenceId: number;
+  key: string;
+  response: unknown;
+  request: unknown;
+}
+
+export const updateResponse = async ({
+  swaggerTitle,
+  sequenceId,
+  key,
+  response,
+  request,
+}: UpdateResponseProps) => {
+  await sequenceStorage.set((prev) => {
+    const updatedState = { ...prev };
+    if (!updatedState[swaggerTitle]) return updatedState;
+
+    const sequenceIndex = updatedState[swaggerTitle].findIndex(
+      (s) => s.id === sequenceId
     );
-    return {
-      ...prev,
-      [swaggerTitle]: prev[swaggerTitle].map((s) =>
-        s.id === sequenceId ? sequence : s
-      ),
+
+    if (sequenceIndex === -1) return updatedState;
+
+    // 불변성을 유지하며 시퀀스 배열 및 객체 복사
+    updatedState[swaggerTitle] = [...updatedState[swaggerTitle]];
+    const sequence: SequenceItemType = {
+      ...updatedState[swaggerTitle][sequenceIndex],
+      apiList: [...updatedState[swaggerTitle][sequenceIndex].apiList],
     };
+
+    // API 리스트 업데이트
+    sequence.apiList = sequence.apiList.map((api) =>
+      api.key === key ? { ...api, response, request, iconType: "SUCCESS" } : api
+    );
+
+    // 업데이트된 시퀀스로 교체
+    updatedState[swaggerTitle][sequenceIndex] = sequence;
+
+    return updatedState;
   });
 };
