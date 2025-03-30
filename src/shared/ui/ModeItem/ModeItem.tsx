@@ -1,4 +1,4 @@
-import { Dispatch, ReactNode, SetStateAction } from "react";
+import { ReactNode } from "react";
 import { IoMenuOutline as DragIcon } from "react-icons/io5";
 import CheckBox from "../CheckBox";
 import DragAndDrop from "../DragAndDrop";
@@ -19,20 +19,20 @@ type OmitChildrenFormListProps = Omit<ListItemProps, "children">;
 
 interface DragAndDropProps<T> {
   itemList: T[];
-  setItemList: Dispatch<SetStateAction<T[]>>;
+  onChange: (itemList: T[]) => void;
   uiNode: (item: T) => ReactNode;
   itemProps?: OmitChildrenFormListProps;
 }
 
 const DragAndDropItem = <T extends object>({
   itemList,
-  setItemList,
+  onChange,
   uiNode,
   itemProps,
 }: DragAndDropProps<T>) => (
   <DragAndDrop
     itemList={itemList}
-    setItemList={setItemList}
+    setItemList={onChange}
     renderDragItem={(item) => (
       <div>
         <ListItem key={String(item)} {...itemProps}>

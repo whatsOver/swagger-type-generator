@@ -18,7 +18,7 @@ const DeleteApiPage = ({
   const [deleteList, setDeleteList] = useState([]);
   const onClickSave = () => {
     deleteAPIs(swaggerTitle, Number(sequenceId), deleteList);
-    onNext();
+    onNext(apis.filter((api) => !deleteList.includes(api.key)));
   };
 
   const onClickAPI = (key: string) => {

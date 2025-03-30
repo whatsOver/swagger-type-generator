@@ -18,7 +18,6 @@ const APISearchPage = ({
   sequenceId,
   swaggerTitle,
   onNext,
-  setAPIs,
 }: APISearchPageProps) => {
   const { loading, apiList, filteredApiList, setFilteredApiList } =
     useHandleApiList();
@@ -30,7 +29,6 @@ const APISearchPage = ({
     sequenceId,
     swaggerTitle,
     onNext,
-    setAPIs,
   });
 
   return (
