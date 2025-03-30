@@ -89,7 +89,12 @@ export const extractTagsAndEndpoints = (swaggerJson: any): ApiList => {
       endpoints[tag].push({
         method: method as Method,
         path,
-        description: swaggerJson.paths[path][method].description,
+        description:
+          swaggerJson.paths[path][method].description ??
+          swaggerJson.paths[path][method].summary,
+        summary:
+          swaggerJson.paths[path][method].summary ??
+          swaggerJson.paths[path][method].description,
       });
     });
   });
