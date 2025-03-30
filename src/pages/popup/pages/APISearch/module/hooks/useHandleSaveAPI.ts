@@ -1,7 +1,8 @@
 import { API } from "@/entities/docs/model/types/docs";
+import { useSequence } from "@/entities/sequence/hooks/useSequence";
 import {
   APIWithKey,
-  updateAPI,
+  APIWithOrder,
 } from "@/entities/sequence/model/sequence-store";
 import { ScenarioFunnelProps } from "@/pages/popup/pages/ScenarioFunnel/ScenarioFunnel";
 import { useEffect, useState } from "react";
@@ -15,6 +16,8 @@ export const useHandleSaveAPI = ({
   onNext,
 }: HandleSaveAPIProps) => {
   const [tempApiList, setTempApiList] = useState<APIWithKey[]>([]);
+
+  const { updateAPI } = useSequence();
 
   useEffect(() => {
     setTempApiList(
@@ -33,15 +36,23 @@ export const useHandleSaveAPI = ({
     }
   };
 
-  const onClickSave = () => {
-    const convertTempApiListToApiList = tempApiList.map((tempAPI, idx) => ({
-      order: idx,
-      formValues: {},
-      response: null,
-      ...tempAPI,
-    }));
-    updateAPI(swaggerTitle, Number(sequenceId), convertTempApiListToApiList);
-    onNext();
+  const onClickSave = async () => {
+    const convertTempApiListToApiList: APIWithOrder[] = tempApiList.map(
+      (tempAPI, idx) => ({
+        order: idx,
+        formValues: {},
+        response: null,
+        request: null,
+        ...tempAPI,
+      })
+    );
+
+    await updateAPI(
+      swaggerTitle,
+      Number(sequenceId),
+      convertTempApiListToApiList
+    );
+    onNext(convertTempApiListToApiList);
   };
 
   return { onClickAPI, onClickSave };

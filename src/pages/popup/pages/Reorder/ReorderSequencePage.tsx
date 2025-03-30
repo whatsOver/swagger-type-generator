@@ -33,7 +33,7 @@ const ReorderSequencePage = ({
       <ModeItem>
         <ModeItem.DragAndDrop
           itemList={sequenceList}
-          setItemList={setSequenceList}
+          onChange={setSequenceList}
           uiNode={(item) => <SequenceItem {...item} />}
           itemProps={{ height: 80, withBorder: true, withPadding: true }}
         />

@@ -1,11 +1,9 @@
-import {
-  APIWithOrder,
-  sequenceStorage,
-} from "@/entities/sequence/model/sequence-store";
+import { useSequence } from "@/entities/sequence/hooks/useSequence";
+import { APIWithOrder } from "@/entities/sequence/model/sequence-store";
 import { extractNonEmptyArrayKeys } from "@/shared/hooks/funnel/models";
 import { useFunnel } from "@/shared/hooks/funnel/useFunnel";
 import { navigationPath } from "@/shared/hooks/useRouter";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import APISearchPage from "../APISearch/APISearchPage";
 import DeleteAPIPage from "../Delete/DeleteApiage";
@@ -16,9 +14,12 @@ export interface ScenarioFunnelProps {
   apis: APIWithOrder[];
   sequenceId: string;
   swaggerTitle: string;
-  setAPIs: Dispatch<SetStateAction<APIWithOrder[]>>;
-  onNext: () => void;
+  onNext: (apis: APIWithOrder[]) => void;
 }
+
+// NOTE : 시나리오 페이지
+// 사용자의 시나리오를 정의하고 시나리오에 맞는
+// API를 추가하고 순서를 편집하고 삭제할 수 있는 페이지
 
 const ScenarioFunnel = () => {
   const { id: sequenceId } = useParams<{ id: string }>();
@@ -28,6 +29,10 @@ const ScenarioFunnel = () => {
 
   const [swaggerTitle, setSwaggerTitle] = useState<string>("");
   const [scenarioTitle, setScenarioTitle] = useState<string>("");
+  const [apis, setAPIs] = useState<APIWithOrder[]>([]);
+
+  // useSequence 훅 사용
+  const { sequences, getSequenceById } = useSequence();
 
   useEffect(() => {
     if (!locationState) return;
@@ -38,20 +43,19 @@ const ScenarioFunnel = () => {
   const [Funnel, setStep] = useFunnel(
     extractNonEmptyArrayKeys(navigationPath.API_관리_퍼널(sequenceId))
   );
-  // 1. 크롬 스토리지에서 구독해서 가져오고
-  // 2. 구독한 데이터를 가지고 시나리오 페이지를 렌더링한다.
-  const [apis, setAPIs] = useState<APIWithOrder[]>([]);
 
+  // 시퀀스 및 API 데이터 로드
   useEffect(() => {
     if (!swaggerTitle) return;
-    sequenceStorage.subscribe((sequence) => {
-      const findSequence = sequence[swaggerTitle].find(
-        (item) => item.id === Number(sequenceId)
-      );
-      setScenarioTitle(findSequence.title);
-      if (findSequence) setAPIs(findSequence.apiList);
-    });
-  }, [swaggerTitle]);
+
+    // 초기 데이터 로드 - useSequence 사용
+    const sequenceData = getSequenceById(swaggerTitle, Number(sequenceId));
+
+    if (sequenceData) {
+      setScenarioTitle(sequenceData.title);
+      setAPIs(sequenceData.apiList);
+    }
+  }, [swaggerTitle, sequenceId, sequences]);
 
   return (
     <Funnel>
@@ -68,27 +72,34 @@ const ScenarioFunnel = () => {
         <APISearchPage
           apis={apis}
           sequenceId={sequenceId}
-          setAPIs={setAPIs}
           swaggerTitle={swaggerTitle}
-          onNext={() => setStep("순서_편집_페이지")}
+          onNext={(apis) => {
+            setAPIs(apis);
+            setStep("순서_편집_페이지");
+          }}
         />
       </Funnel.Step>
       <Funnel.Step name="순서_편집_페이지">
         <ReorderApiPage
           apis={apis}
           sequenceId={sequenceId}
-          setAPIs={setAPIs}
+          onChange={setAPIs}
           swaggerTitle={swaggerTitle}
-          onNext={() => setStep("시나리오_페이지")}
+          onNext={(apis) => {
+            setAPIs(apis);
+            setStep("시나리오_페이지");
+          }}
         />
       </Funnel.Step>
       <Funnel.Step name="삭제_페이지">
         <DeleteAPIPage
           apis={apis}
           sequenceId={sequenceId}
-          setAPIs={setAPIs}
           swaggerTitle={swaggerTitle}
-          onNext={() => setStep("시나리오_페이지")}
+          onNext={(apis) => {
+            setAPIs(apis);
+            setStep("시나리오_페이지");
+          }}
         />
       </Funnel.Step>
     </Funnel>
