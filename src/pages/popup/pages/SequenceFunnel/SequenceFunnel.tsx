@@ -19,6 +19,9 @@ export interface SequenceFunnelProps {
   onNext: () => void;
 }
 
+// NOTE : 시퀀스 페이지
+// 스퀀스 : 사용자의 API 목록을 담을 수 있는 목록
+
 const SequenceFunnel = () => {
   const [Funnel, setStep] = useFunnel(
     extractNonEmptyArrayKeys(navigationPath.시나리오_관리_퍼널())
@@ -59,8 +62,8 @@ const SequenceFunnel = () => {
       <Funnel.Step name="순서_편집_페이지">
         <ReorderSequencePage
           sequenceList={sequenceList}
-          setSequenceList={setSequenceList}
           swaggerTitle={swaggerTitle}
+          setSequenceList={setSequenceList}
           onNext={() => setStep("시나리오_페이지")}
         />
       </Funnel.Step>
