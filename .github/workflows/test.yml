@@ -2,7 +2,7 @@ name: Test
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
 
 jobs:
@@ -11,15 +11,30 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+          registry-url: "https://registry.npmjs.org/"
+
       - uses: pnpm/action-setup@v2
         with:
-          version: 6.32.9
+          version: 8.6.0 # 최신 안정 버전으로 업데이트
+          run_install: false
 
       - uses: actions/cache@v3
         with:
           path: node_modules
-          key: ${{ runner.OS }}-build-${{ hashFiles('**/pnpm-lock.json') }}
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.OS }}-build-
 
-      - run: pnpm i --no-frozen-lockfile
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN || '' }}
+          NPM_CONFIG_REGISTRY: https://registry.npmjs.org/
 
-      - run: pnpm test
+      - name: Run tests
+        run: pnpm test
