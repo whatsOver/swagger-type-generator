@@ -1,8 +1,10 @@
 import { useSwaggerDocStore } from "@/entities/docs/model/store/document-store";
 import { APIWithParamsAndBodyAndHost } from "@/entities/docs/model/types/docs";
+import { useSequence } from "@/entities/sequence/hooks/useSequence";
 import {
   APIWithOrder,
-  sequenceStorage,
+  FormValues,
+  SequenceItemType,
   updateFormValues,
   updateResponse,
 } from "@/entities/sequence/model/sequence-store";
@@ -15,7 +17,7 @@ import Header from "@/shared/ui/Header";
 import FullPageLoading from "@/shared/ui/Loading/FullPageLoading";
 import { useHandleApiList } from "@/widgets/api-list/module/hooks/useHandleApiList";
 import useHandleCode from "@/widgets/code-block/module/hooks/useHandleCode";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { Flip, ToastContainer } from "react-toastify";
 import CompoundMultipleTest from "./CompoundMultipleTest";
@@ -29,6 +31,13 @@ export type Mode =
   | "AXIOS"
   | "FETCH"
   | "LOADING";
+
+const SEQUENCE_ITEM: SequenceItemType = {
+  id: 0,
+  title: "",
+  apiList: [],
+  iconType: "SUCCESS",
+};
 
 const MultipleTestPage = () => {
   // FIRST RENDER
@@ -46,22 +55,15 @@ const MultipleTestPage = () => {
   const setRequestMode = () => setMode("REQUEST");
 
   // 1. chrome storage에서 sequence 정보 가져오기
-  const [apis, setAPIs] = useState<APIWithOrder[]>([]);
-  const [sequenceTitle, setSequenceTitle] = useState<string>("");
+  const { sequences } = useSequence();
 
-  useEffect(() => {
-    if (!swaggerTitle) return;
-    sequenceStorage.subscribe((sequence) => {
-      const findSequence = sequence[swaggerTitle].find(
-        (item) => item.id === Number(sequenceId)
-      );
-
-      if (findSequence) {
-        setSequenceTitle(findSequence.title);
-        setAPIs(findSequence.apiList);
-      }
-    });
-  }, [swaggerTitle]);
+  const currentSequence = useMemo(() => {
+    return sequences[swaggerTitle]
+      ? sequences[swaggerTitle].find(
+          (sequence) => sequence.id === Number(sequenceId)
+        ) ?? SEQUENCE_ITEM
+      : SEQUENCE_ITEM;
+  }, [sequences, swaggerTitle, sequenceId]);
 
   // 2. 선택된 API 관리
   const [currentAPIKey, setCurrentAPIKey] = useState<string>("");
@@ -69,11 +71,11 @@ const MultipleTestPage = () => {
 
   // 2-1. 첫 렌더링 시 첫 번째 API 선택
   useEffect(() => {
-    if (!apis.length) return;
+    if (!currentSequence.apiList.length) return;
     if (currentAPIKey !== "") return;
-    setCurrentAPIKey(apis[apiId].key);
-    setAPIKeys(apis.map((item) => item.key));
-  }, [apis, currentAPIKey, apiId]);
+    setCurrentAPIKey(currentSequence.apiList[apiId].key);
+    setAPIKeys(currentSequence.apiList.map((item) => item.key));
+  }, [currentSequence.apiList, currentAPIKey, apiId]);
 
   // 3. 선택된 API 정보 가져오기
   const [currentSwaggerAPI, setCurrentSwaggerAPI] =
@@ -82,9 +84,11 @@ const MultipleTestPage = () => {
   const [currentAPI, setCurrentAPI] = useState<APIWithOrder | null>(null);
 
   useEffect(() => {
-    if (!apis.length) return;
+    if (!currentSequence.apiList.length) return;
     if (!currentAPIKey.length) return;
-    const findAPI = apis.find((item) => item.key === currentAPIKey);
+    const findAPI = currentSequence.apiList.find(
+      (item) => item.key === currentAPIKey
+    );
 
     if (findAPI) {
       setCurrentAPI(findAPI);
@@ -93,16 +97,28 @@ const MultipleTestPage = () => {
         host: pathInfo.host,
       });
     }
-  }, [apis, apiDocs, currentAPIKey]);
+  }, [currentSequence.apiList, apiDocs, currentAPIKey]);
 
-  const onSuccessRequest = (response: unknown) => {
+  const onSuccessRequest = (request: unknown, response: unknown) => {
     updateFormValues(
       swaggerTitle,
       Number(sequenceId),
       currentAPIKey,
       formValues
     );
-    updateResponse(swaggerTitle, Number(sequenceId), currentAPIKey, response);
+    updateResponse({
+      swaggerTitle,
+      sequenceId: Number(sequenceId),
+      key: currentAPIKey,
+      response,
+      request,
+    });
+    setCurrentAPI({
+      ...currentAPI,
+      response,
+      iconType: "SUCCESS",
+      request: formValues,
+    });
   };
 
   const {
@@ -117,7 +133,7 @@ const MultipleTestPage = () => {
     api: currentSwaggerAPI,
     setMode,
     onSuccess: onSuccessRequest,
-    initialFormValues: currentAPI ? currentAPI.formValues : {},
+    initialFormValues: currentAPI ? (currentAPI.request as FormValues) : {},
   });
 
   const codeAction = useHandleCode({
@@ -152,7 +168,7 @@ const MultipleTestPage = () => {
     <div className={apiListStyle.app}>
       <Header
         showBackButton
-        headerTitle={sequenceTitle}
+        headerTitle={currentSequence.title}
         rightButton={
           <div className={multipleStyles.headerRightButtonWrapper}>
             <Button onClick={() => setMode("REQUEST")}>Request</Button>
@@ -168,7 +184,7 @@ const MultipleTestPage = () => {
       />
       <CompoundMultipleTest>
         <CompoundMultipleTest.SequenceApiList
-          ApiList={apis}
+          ApiList={currentSequence.apiList}
           currentAPIKey={currentAPIKey}
           onChangeAPI={onChangeAPI}
         />
@@ -203,7 +219,7 @@ const MultipleTestPage = () => {
       </CompoundMultipleTest>
       <ToastContainer
         position="top-center"
-        autoClose={1000}
+        autoClose={1500}
         theme="dark"
         transition={Flip}
       />
