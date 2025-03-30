@@ -13,7 +13,7 @@ interface HandleRequest {
   api: APIWithParamsAndBodyAndHost | null;
   setMode: React.Dispatch<React.SetStateAction<Mode>>;
   initialFormValues?: FormValues;
-  onSuccess?: (response: unknown) => void;
+  onSuccess?: (request: unknown, response: unknown) => void;
 }
 
 export type ReturnUseHandleRequest = {
@@ -56,25 +56,29 @@ export const useHandleRequest = ({
   useEffect(() => {
     if (!api) return;
     if (!initialFormValues) return;
-    if (Object.keys(initialFormValues).length) return;
+    // if (Object.keys(initialFormValues).length) return;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const initialValues: Record<string, any> = {};
     api.params?.forEach((param) => {
-      if (param.example && param.required) {
-        initialValues[param.name] = param.example;
-      }
       if (param.schema?.default) {
         initialValues[param.name] = param.schema.default;
+      }
+      if (initialFormValues[param.name]) {
+        initialValues[param.name] = initialFormValues[param.name];
+      } else if (param.example && param.required) {
+        initialValues[param.name] = param.example;
       }
     });
 
     api.body?.properties &&
       Object.keys(api.body.properties).forEach((key) => {
-        if (api.body.properties[key].example) {
-          initialValues[key] = api.body.properties[key].example;
-        }
         if (api.body.properties[key].default) {
           initialValues[key] = api.body.properties[key].default;
+        }
+        if (initialFormValues[key]) {
+          initialValues[key] = initialFormValues[key];
+        } else if (api.body.properties[key].example) {
+          initialValues[key] = api.body.properties[key].example;
         }
       });
     setFormValues(initialValues);
@@ -120,7 +124,8 @@ export const useHandleRequest = ({
             .join("&");
         },
       });
-      onSuccess && onSuccess(response.data);
+
+      onSuccess && onSuccess(formValues, response.data);
       // 응답이 없는 경우 Default Response를 보여준다.
       if (!response.data) {
         toast.success(`${response.status} ${response.statusText}`);
