@@ -41,6 +41,7 @@ export interface Endpoints {
 export interface API {
   method: Method;
   path: string;
+  summary: string;
   description: string;
 }
 
