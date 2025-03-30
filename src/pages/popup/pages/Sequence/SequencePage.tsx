@@ -13,6 +13,7 @@ import SettingDrawer from "@/widgets/setting/ui/setting-drawer/SettingDrawer";
 import { FiMenu as MenuIcon } from "react-icons/fi";
 import { useHandleSequencePage } from "./module/hooks/useHandleSequencePage";
 import { sequenceStyles } from "./sequence.css";
+import { Flip, ToastContainer } from "react-toastify";
 
 type OmitOnNext = Omit<SequenceFunnelProps, "onNext">;
 interface SequencePageProps extends OmitOnNext {
@@ -78,6 +79,12 @@ const SequencePage = ({
         <SequenceList sequenceList={sequenceList} onClick={onClickSequence} />
       </div>
       <SettingDrawer isOpen={open} onClose={closeDrawer} />
+      <ToastContainer
+        position="top-center"
+        autoClose={1500}
+        theme="dark"
+        transition={Flip}
+      />
     </div>
   );
 };

@@ -164,7 +164,7 @@ const Request = () => {
         </form>
         <ToastContainer
           position="top-center"
-          autoClose={1000}
+          autoClose={1500}
           theme="dark"
           transition={Flip}
         />
