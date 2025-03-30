@@ -2,6 +2,7 @@ import { addSequence } from "@/entities/sequence/model/sequence-store";
 import { SequenceFunnelProps } from "@/pages/popup/pages/SequenceFunnel/SequenceFunnel";
 import useRouter from "@/shared/hooks/useRouter";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 type Mode = "VIEW" | "ADD";
 
@@ -30,6 +31,10 @@ export const useHandleSequencePage = ({
   };
 
   const onPressEnter = (title: string) => {
+    if (!title) {
+      toast.error("Title is required");
+      return;
+    }
     addSequence(swaggerTitle, { title, iconType: "LOADING", apiList: [] });
     setMode("VIEW");
     setAddTitle("");
