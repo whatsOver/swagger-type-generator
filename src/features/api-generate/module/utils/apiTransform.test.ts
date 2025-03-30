@@ -101,6 +101,7 @@ describe("convertSelectedAPI", () => {
       method: "get",
       path: "/api",
       description: "",
+      summary: "",
     };
     const result = transformApiFromSwagger(data, api);
 
@@ -110,6 +111,7 @@ describe("convertSelectedAPI", () => {
       method: "get",
       path: "/api",
       description: "",
+      summary: "",
       params: [],
       body: null,
       contentType: "application/json",
@@ -122,6 +124,7 @@ describe("convertSelectedAPI", () => {
       method: "post",
       path: "/api/media",
       description: "",
+      summary: "",
     };
     const result = transformApiFromSwagger(data, api);
 
@@ -131,6 +134,7 @@ describe("convertSelectedAPI", () => {
       method: "post",
       path: "/api/media",
       description: "",
+      summary: "",
       params: [],
       body: {
         title: "FileParams",

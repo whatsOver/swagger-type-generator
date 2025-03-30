@@ -16,6 +16,7 @@ export const transformApiFromSwagger = (
 
   const method = api.method;
   const path = api.path;
+  const summary = api.summary;
   const description = api.description;
   const parameters =
     data.paths[path][method.toLowerCase() as Method]?.parameters;
@@ -54,6 +55,7 @@ export const transformApiFromSwagger = (
     method,
     path,
     description,
+    summary,
     params: parameters,
     body,
     contentType,
