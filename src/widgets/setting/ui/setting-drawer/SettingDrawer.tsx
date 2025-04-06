@@ -20,10 +20,16 @@ const SettingDrawer = ({ isOpen, onClose }: SettingDrawerProps) => {
     onClose();
   };
 
+  const onClick_ApiAdd = () => {
+    router("/api-add");
+    onClose();
+  };
+
   return (
     <Drawer isOpen={isOpen} onClose={onClose}>
       <Item text="API List" onClick={onClick_ApiList} />
       <Item text="Sequence" onClick={onClick_Sequence} />
+      <Item text="API Add" onClick={onClick_ApiAdd} />
     </Drawer>
   );
 };
