@@ -3,6 +3,7 @@ import { ButtonHTMLAttributes, ReactNode, forwardRef } from "react";
 import {
   blueButtonStyles,
   buttonStyles,
+  grayButtonStyles,
   greenButtonStyles,
   orangeButtonStyles,
   purpleButtonStyles,
@@ -19,6 +20,7 @@ export type ButtonProps = {
     | "orange"
     | "purple"
     | "purpleLarge"
+    | "gray"
     | "default";
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
@@ -35,6 +37,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           [orangeButtonStyles]: color === "orange",
           [purpleButtonStyles]: color === "purple",
           [purpleLargeButtonStyles]: color === "purpleLarge",
+          [grayButtonStyles]: color === "gray",
         })}
         {...rest}
       >
