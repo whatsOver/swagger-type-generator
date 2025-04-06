@@ -31,6 +31,7 @@ export const vars = createGlobalTheme(":root", {
     darkGreen: "#1E824C",
     darkRed: "#A61B1B",
     darkOrange: "#833606",
+    inputPlaceholder: "#CFCFCF",
   },
   methodColors: {
     get: "#4CA5FD",
