@@ -7,7 +7,7 @@ export const headerStyle = {
     display: "flex",
     top: "1px",
     height: "70px",
-    padding: "1rem",
+    padding: "20px",
     width: "100%",
     alignItems: "center",
     justifyContent: "space-between",

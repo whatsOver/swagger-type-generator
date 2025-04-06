@@ -6,7 +6,7 @@ import { navigationPath } from "@/shared/hooks/useRouter";
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import APISearchPage from "../APISearch/APISearchPage";
-import DeleteAPIPage from "../Delete/DeleteApiage";
+import DeleteAPIPage from "../Delete/DeleteApiPage2";
 import ReorderApiPage from "../Reorder/ReorderApiPage";
 import Scenario from "../Scenario/Scenario";
 

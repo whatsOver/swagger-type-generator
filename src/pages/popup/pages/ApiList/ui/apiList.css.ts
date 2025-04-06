@@ -11,7 +11,7 @@ export const apiListStyle = {
     right: 0,
     display: "flex",
     flexDirection: "column",
-    width: "100vw",
+    width: "100%",
     height: "100vh",
     alignItems: "center",
     justifyContent: "flex-start",

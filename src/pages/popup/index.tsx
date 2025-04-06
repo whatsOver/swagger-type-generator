@@ -5,6 +5,7 @@ import { MemoryRouter, Route, Routes } from "react-router-dom";
 import refreshOnUpdate from "virtual:reload-on-update-in-view";
 import "../../shared/ui/styles/reset.css.js";
 import "./index.css";
+import { ApiAddFunnel } from "./pages/ApiAddFunnel/ApiAddFunnel.js";
 import Popup from "./pages/ApiList/ui/ApiList.js";
 import MultipleTestPage from "./pages/Multiple/MultipleTestPage.js";
 import Request from "./pages/Request/Request";
@@ -25,7 +26,7 @@ function init() {
       <MemoryRouter>
         <ScrollToTop>
           <Routes>
-            <Route path="/" element={<Popup />} />
+            <Route path="/api-add" element={<Popup />} />
             <Route path="/request" element={<Request />} />
             <Route path="/sequence" element={<SequenceFunnel />} />
             <Route path="/sequence/:id" element={<ScenarioFunnel />} />
@@ -33,6 +34,7 @@ function init() {
               path="/sequence/:id/test/:apiId"
               element={<MultipleTestPage />}
             />
+            <Route path="/" element={<ApiAddFunnel />} />
           </Routes>
         </ScrollToTop>
       </MemoryRouter>

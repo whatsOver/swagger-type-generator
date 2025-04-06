@@ -69,10 +69,40 @@ const Trigger = forwardRef<TriggerRef, TriggerProps>(({ as }, ref) => {
 
   useEffect(() => {
     if (isOpen && triggerRef.current) {
-      const { y, height } = triggerRef.current.getBoundingClientRect();
+      const { y, height, left, top, width } =
+        triggerRef.current.getBoundingClientRect();
       const modal = document.querySelector<HTMLElement>("#modal-wrapper");
+
       if (modal) {
-        modal.style.top = `${y + height}px`;
+        // 화면 내 위치 계산
+        const windowHeight = window.innerHeight;
+        const safetyMargin = 10; // 여유 공간 (픽셀)
+
+        // 드롭다운 메뉴를 렌더링한 다음 실제 높이를 측정
+        modal.style.visibility = "hidden"; // 측정 중에는 보이지 않게 함
+        modal.style.top = "0";
+        modal.style.left = "0";
+
+        // 드롭다운 높이 측정
+        const modalHeight = modal.offsetHeight || 240; // 측정 실패 시 기본값 사용
+
+        // 아래쪽 공간 체크 (화면 아래쪽 경계와의 거리)
+        const bottomSpace = windowHeight - (y + height);
+
+        // 위치 계산 및 설정
+        modal.style.visibility = "visible"; // 다시 보이게 함
+
+        // 아래쪽 공간이 부족하다면 위쪽에 표시
+        if (bottomSpace < modalHeight + safetyMargin) {
+          modal.style.top = `${top - modalHeight - safetyMargin}px`;
+          modal.classList.add(dropDownStyles.dropdownTop);
+        } else {
+          modal.style.top = `${y + height + safetyMargin}px`;
+          modal.classList.remove(dropDownStyles.dropdownTop);
+        }
+
+        modal.style.left = `${left}px`;
+        modal.style.width = `${width}px`;
       }
     }
   }, [isOpen]);
