@@ -1,14 +1,12 @@
-import { useSwaggerDocStore } from "@/entities/docs/model/store/document-store";
 import { APIWithParamsAndBodyAndHost } from "@/entities/docs/model/types/docs";
-import { useSequence } from "@/entities/sequence/hooks/useSequence";
+import { useSequenceStore } from "@/entities/sequence/hooks/useSequenceStore";
 import {
   APIWithOrder,
-  FormValues,
   SequenceItemType,
-  updateFormValues,
-  updateResponse,
-} from "@/entities/sequence/model/sequence-store";
+} from "@/entities/sequence/types/sequence";
+import { useSwaggerDocStore } from "@/entities/swagger/model/store/swaggerDocsStore";
 import { transformApiFromSwagger } from "@/features/api-generate/module/utils/apiTransform";
+import { FormValues } from "@/features/request-api/module/hooks/useForm";
 import { useHandleRequest } from "@/features/request-api/module/hooks/useHandleRequest";
 import { apiListStyle } from "@/pages/popup/pages/ApiList/ui/apiList.css";
 import Button from "@/shared/ui/Button";
@@ -45,6 +43,7 @@ const MultipleTestPage = () => {
   const { swaggerTitle } = useLocation().state as { swaggerTitle: string };
 
   // Swagger 문서 정보 가져오기
+  const { updateFormValues, updateResponse } = useSequenceStore();
   const { apiDocsData: apiDocs } = useHandleApiList();
 
   const { pathInfo } = useSwaggerDocStore();
@@ -55,7 +54,7 @@ const MultipleTestPage = () => {
   const setRequestMode = () => setMode("REQUEST");
 
   // 1. chrome storage에서 sequence 정보 가져오기
-  const { sequences } = useSequence();
+  const { sequences } = useSequenceStore();
 
   const currentSequence = useMemo(() => {
     return sequences[swaggerTitle]
