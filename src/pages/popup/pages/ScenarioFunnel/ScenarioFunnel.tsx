@@ -1,5 +1,5 @@
-import { useSequence } from "@/entities/sequence/hooks/useSequence";
-import { APIWithOrder } from "@/entities/sequence/model/sequence-store";
+import { useSequenceStore } from "@/entities/sequence/hooks/useSequenceStore";
+import { APIWithOrder } from "@/entities/sequence/types/sequence";
 import { extractNonEmptyArrayKeys } from "@/shared/hooks/funnel/models";
 import { useFunnel } from "@/shared/hooks/funnel/useFunnel";
 import { navigationPath } from "@/shared/hooks/useRouter";
@@ -31,8 +31,8 @@ const ScenarioFunnel = () => {
   const [scenarioTitle, setScenarioTitle] = useState<string>("");
   const [apis, setAPIs] = useState<APIWithOrder[]>([]);
 
-  // useSequence 훅 사용
-  const { sequences, getSequenceById } = useSequence();
+  // useSequenceStore 훅 사용
+  const { sequences, getSequenceById } = useSequenceStore();
 
   useEffect(() => {
     if (!locationState) return;
@@ -48,7 +48,7 @@ const ScenarioFunnel = () => {
   useEffect(() => {
     if (!swaggerTitle) return;
 
-    // 초기 데이터 로드 - useSequence 사용
+    // 초기 데이터 로드 - useSequenceStore 사용
     const sequenceData = getSequenceById(swaggerTitle, Number(sequenceId));
 
     if (sequenceData) {
