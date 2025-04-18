@@ -40,6 +40,7 @@ const deepMerge = <T extends object>(target: T, source: Partial<T>): T => {
 };
 
 // 스토리지 인스턴스 캐시를 위한 맵
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const storageInstances = new Map<string, StorageFactory<any>>();
 
 const storageFactory =
