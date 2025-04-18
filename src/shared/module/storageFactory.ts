@@ -13,8 +13,8 @@ export type StorageFactory<D extends object> = {
 };
 
 const chromeStorage = new ChromeStorage(StorageType.Local);
-// Define the area name based on the storage instance type
-const storageAreaName = StorageType.Local; // Assuming Local for now
+
+const storageAreaName = StorageType.Local;
 
 // 깊은 병합을 위한 유틸리티 함수
 const deepMerge = <T extends object>(target: T, source: Partial<T>): T => {
