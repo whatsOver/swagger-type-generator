@@ -1,5 +1,5 @@
-import { useSequence } from "@/entities/sequence/hooks/useSequence";
-import { APIWithOrder } from "@/entities/sequence/model/sequence-store";
+import { useSequenceStore } from "@/entities/sequence/hooks/useSequenceStore";
+import { APIWithOrder } from "@/entities/sequence/types/sequence";
 import { apiListStyle } from "@/pages/popup/pages/ApiList/ui/apiList.css";
 import { ScenarioFunnelProps } from "@/pages/popup/pages/ScenarioFunnel/ScenarioFunnel";
 import Button from "@/shared/ui/Button";
@@ -18,7 +18,7 @@ const ReorderApiPage = ({
   onChange,
   onNext,
 }: ReorderApiPageProps) => {
-  const { updateAPI } = useSequence();
+  const { updateAPI } = useSequenceStore();
 
   const onClickSave = () => {
     updateAPI(swaggerTitle, Number(sequenceId), apis);
