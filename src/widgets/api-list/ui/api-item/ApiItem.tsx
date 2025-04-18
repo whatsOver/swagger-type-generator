@@ -29,7 +29,7 @@ const APIItem = ({ api, onClick }: APIItemProps) => {
         </div>
         <span className={apiItemStyles.path}>{api.path}</span>
       </div>
-      <span className={apiItemStyles.description}>{api.summary}</span>
+      <span className={apiItemStyles.description}>{api.description}</span>
     </div>
   );
 };
