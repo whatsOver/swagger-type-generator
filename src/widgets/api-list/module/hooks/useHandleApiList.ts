@@ -1,6 +1,6 @@
-import { useSwaggerDocStore } from "@/entities/docs/model/store/document-store";
 import { API } from "@/entities/docs/model/types/docs";
 import { useGETDocs } from "@/entities/swagger/api/get-document";
+import { useSwaggerDocStore } from "@/entities/swagger/model/store/swaggerDocsStore";
 import { transformApiFromSwagger } from "@/features/api-generate/module/utils/apiTransform";
 import useRouter from "@/shared/hooks/useRouter";
 import useGetApiList from "./useGetApiList";
