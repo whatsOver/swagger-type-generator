@@ -41,6 +41,14 @@ export const apiListStyle = {
     width: "100%",
   }),
 
+  headerButton: style({
+    backgroundColor: "transparent",
+    border: "none",
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+  }),
+
   searchWrapper: style({
     width: "100%",
     padding: "0 1rem",

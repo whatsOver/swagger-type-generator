@@ -10,12 +10,12 @@ import Loading from "@/shared/ui/Loading/Loading";
 import Search from "@/shared/ui/search/Search";
 import { useHandleApiList } from "@/widgets/api-list/module/hooks/useHandleApiList";
 import BlankApi from "@/widgets/api-list/ui/blank/BlankApi";
-import ApiList from "@/widgets/api-list/ui/normal-list/ApiList";
+import { ApiList } from "@/widgets/api-list/ui/normal-list/ApiList";
 import SettingDrawer from "@/widgets/setting/ui/setting-drawer/SettingDrawer";
 import SettingModal from "@/widgets/setting/ui/setting-modal/SettingModal";
 import { apiListStyle } from "./apiList.css";
 
-const ApiListPage = () => {
+export const ApiListPage = () => {
   const { loading, apiList, filteredApiList, onClickAPI, setFilteredApiList } =
     useHandleApiList();
 
@@ -59,5 +59,3 @@ const ApiListPage = () => {
     </div>
   );
 };
-
-export default ApiListPage;
