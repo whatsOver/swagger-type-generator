@@ -9,12 +9,12 @@ import {
 
 interface DocListItemProps {
   item: DocItem;
-  onClick: (id: string) => void;
+  onClick?: (id: string) => void;
 }
 
 export const DocListItem = ({ item, onClick }: DocListItemProps) => {
   return (
-    <div className={itemBase} onClick={() => onClick(item.id)}>
+    <div className={itemBase} onClick={() => onClick?.(item.id)}>
       <div className={roundBall} style={{ backgroundColor: item.color }} />
       <div className={contentContainer}>
         <span className={titleStyle}>{item.title}</span>
