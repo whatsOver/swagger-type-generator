@@ -33,7 +33,7 @@ export const multipleStyles = {
   }),
 
   apiButton: style({
-    width: "5rem",
+    width: "100%",
     border: `2px solid ${vars.color.darkGrey}`,
     padding: "8px",
     borderRadius: "8px",
