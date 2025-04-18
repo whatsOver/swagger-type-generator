@@ -1,4 +1,4 @@
-import { SequenceItemType } from "@/entities/sequence/model/sequence-store";
+import { SequenceItemType } from "@/entities/sequence/types/sequence";
 import ListItem from "@/shared/ui/ListItem";
 import StatusIcon from "@/widgets/scenario-list/ui/icon/StatusIcon";
 import { SequenceItem } from "./SequenceItem";

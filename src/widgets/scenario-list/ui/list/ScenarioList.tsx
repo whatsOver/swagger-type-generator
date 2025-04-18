@@ -1,4 +1,4 @@
-import { APIWithOrder } from "@/entities/sequence/model/sequence-store";
+import { APIWithOrder } from "@/entities/sequence/types/sequence";
 import ScenarioItem from "@/widgets/scenario-list/ui/item/ScenarioItem";
 
 interface ScenarioListProps {

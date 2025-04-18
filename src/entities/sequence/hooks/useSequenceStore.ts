@@ -1,19 +1,19 @@
+import { FormValues } from "@/features/request-api/module/hooks/useForm";
 import { useKeyStorage } from "@/shared/hooks/useStorage";
 import { useCallback } from "react";
 import {
   APIWithKey,
   APIWithOrder,
-  FormValues,
   SequenceItemType,
   SequenceState,
-} from "../model/sequence-store";
+} from "../types/sequence";
 
 /**
  * 시퀀스 스토리지와 연동하는 커스텀 훅
  *
  * @returns 시퀀스 관련 상태와 업데이트 함수들
  */
-export function useSequence() {
+export function useSequenceStore() {
   const [sequences, setSequences] = useKeyStorage<SequenceState>(
     "sequence",
     {}
@@ -213,14 +213,23 @@ export function useSequence() {
     [setSequences]
   );
 
+  interface UpdateResponseProps {
+    swaggerTitle: string;
+    sequenceId: number;
+    key: string;
+    response: unknown;
+    request: unknown;
+  }
+
   // 응답 업데이트
   const updateResponse = useCallback(
-    async (
-      swaggerTitle: string,
-      sequenceId: number,
-      key: string,
-      response: unknown
-    ) => {
+    async ({
+      swaggerTitle,
+      sequenceId,
+      key,
+      response,
+      request,
+    }: UpdateResponseProps) => {
       await setSequences((prev) => {
         const updatedState = { ...prev };
         if (!updatedState[swaggerTitle]) return updatedState;
@@ -233,14 +242,16 @@ export function useSequence() {
 
         // 불변성을 유지하며 시퀀스 배열 및 객체 복사
         updatedState[swaggerTitle] = [...updatedState[swaggerTitle]];
-        const sequence = {
+        const sequence: SequenceItemType = {
           ...updatedState[swaggerTitle][sequenceIndex],
           apiList: [...updatedState[swaggerTitle][sequenceIndex].apiList],
         };
 
         // API 리스트 업데이트
         sequence.apiList = sequence.apiList.map((api) =>
-          api.key === key ? { ...api, response } : api
+          api.key === key
+            ? { ...api, response, request, iconType: "SUCCESS" }
+            : api
         );
 
         // 업데이트된 시퀀스로 교체
@@ -288,6 +299,7 @@ export function useSequence() {
   };
 
   const getSequences = (): SequenceState => {
+    console.log(sequences);
     return sequences;
   };
 

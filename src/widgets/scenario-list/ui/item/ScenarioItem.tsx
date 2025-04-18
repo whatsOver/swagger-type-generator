@@ -1,6 +1,6 @@
+import { APIWithOrder } from "@/entities/sequence/types/sequence";
 import ListItem from "@/shared/ui/ListItem";
 import APIItem from "@/widgets/api-list/ui/api-item/ApiItem";
-import { APIWithOrder } from "../../../../entities/sequence/model/sequence-store";
 import StatusIcon from "../icon/StatusIcon";
 
 interface ScenarioItemProps {
