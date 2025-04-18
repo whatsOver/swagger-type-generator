@@ -35,7 +35,6 @@ export const multipleStyles = {
   apiButton: style({
     width: "100%",
     border: `2px solid ${vars.color.darkGrey}`,
-    padding: "8px",
     borderRadius: "8px",
     color: vars.color.white,
     cursor: "pointer",
@@ -82,6 +81,14 @@ export const multipleStyles = {
     marginLeft: "20px",
     marginRight: "20px",
     marginTop: "30px",
+  }),
+
+  subDescription: style({
+    fontWeight: "bold",
+    display: "flex",
+    textAlign: "left",
+    color: vars.color.white,
+    marginLeft: "20px",
   }),
 
   requestBlock: style({
