@@ -107,6 +107,7 @@ export const useDocsStore = () => {
                   paths: {
                     ...d.swaggerDocs.paths,
                     [pathInfo.path]: {
+                      ...d.swaggerDocs.paths[pathInfo.path],
                       [lowerCaseMethod]: pathInfo.information,
                     },
                   },
