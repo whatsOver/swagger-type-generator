@@ -22,7 +22,7 @@ export const transformApiFromSwagger = (
     data.paths[path][method.toLowerCase() as Method]?.parameters;
   let schemaName = "";
   const requestBody =
-    data.paths[api.path][method.toLowerCase() as Method].requestBody;
+    data.paths[api.path][method.toLowerCase() as Method]?.requestBody;
   let body = null;
   let contentType: ContentType = "application/json";
 
