@@ -20,19 +20,19 @@ const CompoundMultipleTest = ({ children }: CompoundMultipleTestProps) => {
 };
 
 interface SequenceApiListProps {
-  ApiList: APIWithOrder[];
+  apiList: APIWithOrder[];
   currentAPIKey: string;
   onChangeAPI: (key: string) => void;
 }
 
 const SequenceApiList = ({
-  ApiList,
+  apiList,
   currentAPIKey,
   onChangeAPI,
 }: SequenceApiListProps) => {
   return (
     <ul className={multipleStyles.ApiListWrapper}>
-      {ApiList.map((api, idx) => (
+      {apiList.map((api, idx) => (
         <>
           <li
             style={{
@@ -48,10 +48,10 @@ const SequenceApiList = ({
             onClick={() => onChangeAPI(api.key)}
           >
             <div className={multipleStyles.lineClamp}>
-              {api.api.description}
+              {api.api.description || api.api.path}
             </div>
           </li>
-          {idx !== ApiList.length - 1 && (
+          {idx !== apiList.length - 1 && (
             <ArrowDownIcon size={24} color={vars.color.white} />
           )}
         </>

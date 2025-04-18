@@ -183,7 +183,7 @@ const MultipleTestPage = () => {
       />
       <CompoundMultipleTest>
         <CompoundMultipleTest.SequenceApiList
-          ApiList={currentSequence.apiList}
+          apiList={currentSequence.apiList}
           currentAPIKey={currentAPIKey}
           onChangeAPI={onChangeAPI}
         />
