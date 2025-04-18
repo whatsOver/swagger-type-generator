@@ -79,22 +79,22 @@ export const DocsPage = ({ setStep }: DocsPageProps) => {
         )}
 
         {/** Document List or Blank State */}
-        {mode === "VIEW" &&
-          (docsState.docsList.length > 0 ? (
-            <DocsList
-              docsList={docsState.docsList}
-              onItemClick={onClickDocItem}
-            />
-          ) : (
-            <div className={docsPageStyles.blankItemWrapper}>
-              <BlankItem>
-                <p>There are no documents.</p>
-                <Button onClick={onClickAdd} color="purpleLarge">
-                  ADD
-                </Button>
-              </BlankItem>
-            </div>
-          ))}
+        {mode === "VIEW" && docsState.docsList.length > 0 && (
+          <DocsList
+            docsList={docsState.docsList}
+            onItemClick={onClickDocItem}
+          />
+        )}
+        {mode === "VIEW" && docsState.docsList.length === 0 && (
+          <div className={docsPageStyles.blankItemWrapper}>
+            <BlankItem>
+              <p>There are no documents.</p>
+              <Button onClick={onClickAdd} color="purpleLarge">
+                ADD
+              </Button>
+            </BlankItem>
+          </div>
+        )}
       </div>
       <SettingDrawer isOpen={open} onClose={closeDrawer} />
       <ToastContainer

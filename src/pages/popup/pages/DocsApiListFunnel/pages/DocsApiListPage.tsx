@@ -12,13 +12,11 @@ import Button from "@/shared/ui/Button";
 import Dropdown from "@/shared/ui/Dropdown";
 import Header from "@/shared/ui/Header";
 import Search from "@/shared/ui/search/Search";
-import { vars } from "@/shared/ui/styles/theme.css";
 import BlankApi from "@/widgets/api-list/ui/blank/BlankApi";
 import { ApiList } from "@/widgets/api-list/ui/normal-list/ApiList";
 import SettingDrawer from "@/widgets/setting/ui/setting-drawer/SettingDrawer";
 import SettingModal from "@/widgets/setting/ui/setting-modal/SettingModal";
 import { useEffect, useState } from "react";
-import { FiMenu as MenuIcon } from "react-icons/fi";
 import { apiListStyle } from "../../ApiList/ui/apiList.css";
 import { DocsApiListFunnelProps } from "../DocsApiListFunnel";
 
@@ -35,6 +33,7 @@ export const DocsApiListPage = ({
   onClickDelete,
 }: DocsApiListPageProps) => {
   const { push } = useRouter();
+
   const { docsState } = useDocsStore();
 
   const [apiList, setApiList] = useState<ApiListType>({
@@ -62,7 +61,7 @@ export const DocsApiListPage = ({
   const { withReactQuery, toggleReactQuery, onSaveSetting } =
     useHandleSetting();
 
-  const { open, openDrawer, closeDrawer } = useDrawer();
+  const { open, closeDrawer } = useDrawer();
 
   const onClickAPI = (api: API) => {
     const swaggerDocs = docsState.docsList.find(
@@ -78,12 +77,8 @@ export const DocsApiListPage = ({
   return (
     <div id="main" className={apiListStyle.app}>
       <Header
-        headerTitle="My Documents"
-        leftButton={
-          <button className={apiListStyle.headerButton} onClick={openDrawer}>
-            <MenuIcon size={24} color={vars.color.white} />
-          </button>
-        }
+        headerTitle={docsState.docsList.find((doc) => doc.id === id)?.title}
+        showBackButton
         rightButton={
           <div className={apiListStyle.settingButtonWrapper}>
             <Dropdown>
