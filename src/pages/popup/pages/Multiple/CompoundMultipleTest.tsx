@@ -1,5 +1,5 @@
 import { APIWithParamsOrBody } from "@/entities/docs/model/types/docs";
-import { APIWithOrder } from "@/entities/sequence/model/sequence-store";
+import { APIWithOrder } from "@/entities/sequence/types/sequence";
 import { OmitHandleFormValues } from "@/features/request-api/module/hooks/useHandleRequest";
 import { vars } from "@/shared/ui/styles/theme.css";
 import { HandleCodeReturn } from "@/widgets/code-block/module/hooks/useHandleCode";
