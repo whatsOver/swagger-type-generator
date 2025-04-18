@@ -21,7 +21,7 @@ const SettingDrawer = ({ isOpen, onClose }: SettingDrawerProps) => {
   };
 
   const onClick_ApiAdd = () => {
-    router("/api-add");
+    router("/docs");
     onClose();
   };
 
