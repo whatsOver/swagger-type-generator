@@ -1,9 +1,9 @@
-import type { ApiList } from "@/entities/docs/model/types/docs";
+import type { ApiListType } from "@/entities/docs/model/types/docs";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface SearchProps {
-  apiList: ApiList;
-  setFilteredApiList: Dispatch<SetStateAction<ApiList>>;
+  apiList: ApiListType;
+  setFilteredApiList: Dispatch<SetStateAction<ApiListType>>;
 }
 
 const useSearch = ({ apiList, setFilteredApiList }: SearchProps) => {
