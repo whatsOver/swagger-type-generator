@@ -5,10 +5,10 @@ import { useFunnel } from "@/shared/hooks/funnel/useFunnel";
 import { navigationPath } from "@/shared/hooks/useRouter";
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import APISearchPage from "../APISearch/APISearchPage";
-import DeleteAPIPage from "../Delete/DeleteApiPage";
-import ReorderApiPage from "../Reorder/ReorderApiPage";
-import Scenario from "../Scenario/Scenario";
+import { APISearchPage } from "./pages/ApiSearchPage/APISearchPage";
+import { DeleteApiPage } from "./pages/DeleteApiPage/DeleteApiPage";
+import { ReorderApiPage } from "./pages/ReorderApiPage/ReorderApiPage";
+import { ScenarioPage } from "./pages/Scenario/ScenarioPage";
 
 export interface ScenarioFunnelProps {
   apis: APIWithOrder[];
@@ -20,8 +20,7 @@ export interface ScenarioFunnelProps {
 // NOTE : 시나리오 페이지
 // 사용자의 시나리오를 정의하고 시나리오에 맞는
 // API를 추가하고 순서를 편집하고 삭제할 수 있는 페이지
-
-const ScenarioFunnel = () => {
+export const ScenarioFunnel = () => {
   const { id: sequenceId } = useParams<{ id: string }>();
   const locationState = useLocation().state as {
     swaggerTitle: string;
@@ -60,7 +59,7 @@ const ScenarioFunnel = () => {
   return (
     <Funnel>
       <Funnel.Step name="시나리오_페이지">
-        <Scenario
+        <ScenarioPage
           sequenceId={sequenceId}
           apis={apis}
           title={scenarioTitle}
@@ -92,7 +91,7 @@ const ScenarioFunnel = () => {
         />
       </Funnel.Step>
       <Funnel.Step name="삭제_페이지">
-        <DeleteAPIPage
+        <DeleteApiPage
           apis={apis}
           sequenceId={sequenceId}
           swaggerTitle={swaggerTitle}
@@ -105,5 +104,3 @@ const ScenarioFunnel = () => {
     </Funnel>
   );
 };
-
-export default ScenarioFunnel;

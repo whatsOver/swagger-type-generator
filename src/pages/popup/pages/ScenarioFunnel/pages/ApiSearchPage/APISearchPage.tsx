@@ -1,5 +1,5 @@
 import useSearch from "@/features/search-api/module/hooks/useSearch";
-import { apiListStyle } from "@/pages/popup/pages/ApiList/ui/apiList.css";
+import { apiListStyle } from "@/pages/popup/pages/ApiListPage/ui/apiList.css";
 import { ScenarioFunnelProps } from "@/pages/popup/pages/ScenarioFunnel/ScenarioFunnel";
 import Button from "@/shared/ui/Button";
 import Header from "@/shared/ui/Header";
@@ -13,7 +13,7 @@ import { useHandleSaveAPI } from "./module/hooks/useHandleSaveAPI";
 
 type APISearchPageProps = ScenarioFunnelProps;
 
-const APISearchPage = ({
+export const APISearchPage = ({
   apis,
   sequenceId,
   swaggerTitle,
@@ -57,5 +57,3 @@ const APISearchPage = ({
     </div>
   );
 };
-
-export default APISearchPage;

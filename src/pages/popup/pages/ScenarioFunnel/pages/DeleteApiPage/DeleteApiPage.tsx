@@ -1,6 +1,6 @@
 import { useSequenceStore } from "@/entities/sequence/hooks/useSequenceStore";
 
-import { apiListStyle } from "@/pages/popup/pages/ApiList/ui/apiList.css";
+import { apiListStyle } from "@/pages/popup/pages/ApiListPage/ui/apiList.css";
 import { ScenarioFunnelProps } from "@/pages/popup/pages/ScenarioFunnel/ScenarioFunnel";
 import Button from "@/shared/ui/Button";
 import Header from "@/shared/ui/Header";
@@ -10,7 +10,7 @@ import { useState } from "react";
 
 type DeleteApiPageProps = ScenarioFunnelProps;
 
-const DeleteApiPage = ({
+export const DeleteApiPage = ({
   apis,
   sequenceId,
   swaggerTitle,
@@ -56,5 +56,3 @@ const DeleteApiPage = ({
     </div>
   );
 };
-
-export default DeleteApiPage;

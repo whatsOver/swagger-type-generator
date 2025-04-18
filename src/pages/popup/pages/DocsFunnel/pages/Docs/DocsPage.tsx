@@ -1,5 +1,5 @@
 import { DocsAddItem } from "@/features/add-docs/ui/DocsAddItem";
-import { apiListStyle } from "@/pages/popup/pages/ApiList/ui/apiList.css";
+import { apiListStyle } from "@/pages/popup/pages/ApiListPage/ui/apiList.css";
 import useDrawer from "@/shared/hooks/useDrawer";
 import { API_문서_페이지_Key } from "@/shared/hooks/useRouter";
 import Button from "@/shared/ui/Button";

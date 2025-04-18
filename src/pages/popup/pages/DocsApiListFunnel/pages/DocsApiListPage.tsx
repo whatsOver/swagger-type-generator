@@ -17,7 +17,7 @@ import { ApiList } from "@/widgets/api-list/ui/normal-list/ApiList";
 import SettingDrawer from "@/widgets/setting/ui/setting-drawer/SettingDrawer";
 import SettingModal from "@/widgets/setting/ui/setting-modal/SettingModal";
 import { useEffect, useState } from "react";
-import { apiListStyle } from "../../ApiList/ui/apiList.css";
+import { apiListStyle } from "../../ApiListPage/ui/apiList.css";
 import { DocsApiListFunnelProps } from "../DocsApiListFunnel";
 
 type DocsApiListPageProps = DocsApiListFunnelProps & {

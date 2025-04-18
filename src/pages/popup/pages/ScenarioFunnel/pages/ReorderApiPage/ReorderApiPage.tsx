@@ -1,6 +1,6 @@
 import { useSequenceStore } from "@/entities/sequence/hooks/useSequenceStore";
 import { APIWithOrder } from "@/entities/sequence/types/sequence";
-import { apiListStyle } from "@/pages/popup/pages/ApiList/ui/apiList.css";
+import { apiListStyle } from "@/pages/popup/pages/ApiListPage/ui/apiList.css";
 import { ScenarioFunnelProps } from "@/pages/popup/pages/ScenarioFunnel/ScenarioFunnel";
 import Button from "@/shared/ui/Button";
 import Header from "@/shared/ui/Header";
@@ -11,7 +11,7 @@ type ReorderApiPageProps = ScenarioFunnelProps & {
   onChange: (apis: APIWithOrder[]) => void;
 };
 
-const ReorderApiPage = ({
+export const ReorderApiPage = ({
   apis,
   sequenceId,
   swaggerTitle,
@@ -47,5 +47,3 @@ const ReorderApiPage = ({
     </div>
   );
 };
-
-export default ReorderApiPage;

@@ -1,4 +1,4 @@
-import { apiListStyle } from "@/pages/popup/pages/ApiList/ui/apiList.css";
+import { apiListStyle } from "@/pages/popup/pages/ApiListPage/ui/apiList.css";
 import { ScenarioFunnelProps } from "@/pages/popup/pages/ScenarioFunnel/ScenarioFunnel";
 import useRouter, {
   API_관리_퍼널_Key,
@@ -17,7 +17,7 @@ type ScenarioProps = OmitOnNext & {
   setStep: (step: API_관리_퍼널_Key) => void;
 };
 
-const Scenario = ({
+export const ScenarioPage = ({
   apis,
   sequenceId,
   title,
@@ -90,5 +90,3 @@ const Scenario = ({
     </div>
   );
 };
-
-export default Scenario;

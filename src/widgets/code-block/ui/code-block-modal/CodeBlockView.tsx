@@ -1,6 +1,6 @@
 import { ForwardRefRenderFunction, forwardRef } from "react";
 
-import { Mode } from "@/pages/popup/pages/Request/Request";
+import { Mode } from "@/pages/popup/pages/RequestPage/RequestPage";
 import Button from "@/shared/ui/Button";
 import { vars } from "@/shared/ui/styles/theme.css";
 import { IoMdClose as CloseIcon } from "react-icons/io";

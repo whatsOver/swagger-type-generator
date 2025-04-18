@@ -1,4 +1,4 @@
-import { apiListStyle } from "@/pages/popup/pages/ApiList/ui/apiList.css";
+import { apiListStyle } from "@/pages/popup/pages/ApiListPage/ui/apiList.css";
 import { DocsApiListFunnelProps } from "@/pages/popup/pages/DocsApiListFunnel/DocsApiListFunnel";
 import Button from "@/shared/ui/Button";
 import BottomFixedButton from "@/shared/ui/Button/BottomFixedButton";

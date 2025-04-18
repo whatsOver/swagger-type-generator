@@ -1,5 +1,5 @@
 import SequenceAddItem from "@/features/add-sequence/ui/SequenceAddItem/SequenceAddItem";
-import { apiListStyle } from "@/pages/popup/pages/ApiList/ui/apiList.css";
+import { apiListStyle } from "@/pages/popup/pages/ApiListPage/ui/apiList.css";
 import { SequenceFunnelProps } from "@/pages/popup/pages/SequenceFunnel/SequenceFunnel";
 import useDrawer from "@/shared/hooks/useDrawer";
 import { 시나리오_관리_퍼널_Key } from "@/shared/hooks/useRouter";
@@ -20,7 +20,7 @@ interface SequencePageProps extends OmitOnNext {
   setStep: (step: 시나리오_관리_퍼널_Key) => void;
 }
 
-const SequencePage = ({
+export const SequencePage = ({
   sequenceList,
   swaggerTitle,
   setStep,
@@ -88,5 +88,3 @@ const SequencePage = ({
     </div>
   );
 };
-
-export default SequencePage;

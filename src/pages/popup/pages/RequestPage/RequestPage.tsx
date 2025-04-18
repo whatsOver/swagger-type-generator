@@ -14,13 +14,14 @@ import { useCallback, useState } from "react";
 import { VscBracketError as ErrorIcon } from "react-icons/vsc";
 import { useLocation } from "react-router-dom";
 import { Flip, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { apiListStyle } from "../ApiList/ui/apiList.css";
+import { apiListStyle } from "../ApiListPage/ui/apiList.css";
 import { requestStyles } from "./request.css";
+
+import "react-toastify/dist/ReactToastify.css";
 
 export type Mode = "RESPONSE" | "TS" | "ERROR" | "AXIOS" | "FETCH" | "LOADING";
 
-const Request = () => {
+export const RequestPage = () => {
   // FIRST RENDER
   const api = useLocation().state as APIWithParamsAndBodyAndHost;
 
@@ -172,5 +173,3 @@ const Request = () => {
     </div>
   );
 };
-
-export default Request;

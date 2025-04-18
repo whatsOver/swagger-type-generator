@@ -1,5 +1,5 @@
 import { useSequenceStore } from "@/entities/sequence/hooks/useSequenceStore";
-import { apiListStyle } from "@/pages/popup/pages/ApiList/ui/apiList.css";
+import { apiListStyle } from "@/pages/popup/pages/ApiListPage/ui/apiList.css";
 import { SequenceFunnelProps } from "@/pages/popup/pages/SequenceFunnel/SequenceFunnel";
 import Button from "@/shared/ui/Button";
 import Header from "@/shared/ui/Header";
@@ -9,7 +9,7 @@ import { useState } from "react";
 
 type DeleteSequencePageProps = SequenceFunnelProps;
 
-const DeleteSequencePage = ({
+export const DeleteSequencePage = ({
   sequenceList,
   swaggerTitle,
   onNext,
@@ -56,5 +56,3 @@ const DeleteSequencePage = ({
     </div>
   );
 };
-
-export default DeleteSequencePage;

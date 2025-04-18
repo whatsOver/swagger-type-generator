@@ -1,15 +1,18 @@
-import { QueryProvider } from "@/app/providers/query-provider.js";
-import { ScrollToTop } from "@/shared/ui/ScrollToTop.js";
 import { createRoot } from "react-dom/client";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
-import refreshOnUpdate from "virtual:reload-on-update-in-view";
-import { ApiListPage } from "./pages/ApiList/ui/ApiList.js";
+
+import { QueryProvider } from "@/app/providers/query-provider.js";
+import { ScrollToTop } from "@/shared/ui/ScrollToTop.js";
+
+import { ApiListPage } from "./pages/ApiListPage/ui/ApiListPage.js";
 import { DocsApiListFunnel } from "./pages/DocsApiListFunnel/DocsApiListFunnel.js";
 import { DocsFunnel } from "./pages/DocsFunnel/DocsFunnel.js";
-import MultipleTestPage from "./pages/Multiple/MultipleTestPage.js";
-import Request from "./pages/Request/Request";
-import ScenarioFunnel from "./pages/ScenarioFunnel/ScenarioFunnel.js";
-import SequenceFunnel from "./pages/SequenceFunnel/SequenceFunnel.js";
+import { MultipleTestPage } from "./pages/MultipleTestPage/MultipleTestPage.js";
+import { RequestPage } from "./pages/RequestPage/RequestPage.js";
+import { ScenarioFunnel } from "./pages/ScenarioFunnel/ScenarioFunnel.js";
+import { SequenceFunnel } from "./pages/SequenceFunnel/SequenceFunnel.js";
+
+import refreshOnUpdate from "virtual:reload-on-update-in-view";
 
 import "../../shared/ui/styles/reset.css.js";
 import "./index.css";
@@ -29,7 +32,7 @@ function init() {
         <ScrollToTop>
           <Routes>
             <Route path="/" element={<ApiListPage />} />
-            <Route path="/request" element={<Request />} />
+            <Route path="/request" element={<RequestPage />} />
             <Route path="/sequence" element={<SequenceFunnel />} />
             <Route path="/sequence/:id" element={<ScenarioFunnel />} />
             <Route

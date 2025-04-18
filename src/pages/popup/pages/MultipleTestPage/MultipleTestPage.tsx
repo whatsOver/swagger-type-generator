@@ -8,7 +8,7 @@ import { useSwaggerDocStore } from "@/entities/swagger/model/store/swaggerDocsSt
 import { transformApiFromSwagger } from "@/features/api-generate/module/utils/apiTransform";
 import { FormValues } from "@/features/request-api/module/hooks/useForm";
 import { useHandleRequest } from "@/features/request-api/module/hooks/useHandleRequest";
-import { apiListStyle } from "@/pages/popup/pages/ApiList/ui/apiList.css";
+import { apiListStyle } from "@/pages/popup/pages/ApiListPage/ui/apiList.css";
 import Button from "@/shared/ui/Button";
 import BottomFixedButton from "@/shared/ui/Button/BottomFixedButton";
 import Header from "@/shared/ui/Header";
@@ -37,7 +37,7 @@ const SEQUENCE_ITEM: SequenceItemType = {
   iconType: "SUCCESS",
 };
 
-const MultipleTestPage = () => {
+export const MultipleTestPage = () => {
   // FIRST RENDER
   const { id: sequenceId, apiId } = useParams<{ id: string; apiId: string }>();
   const { swaggerTitle } = useLocation().state as { swaggerTitle: string };
@@ -225,5 +225,3 @@ const MultipleTestPage = () => {
     </div>
   );
 };
-
-export default MultipleTestPage;

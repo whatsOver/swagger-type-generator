@@ -1,5 +1,5 @@
 import { transformApiAddToInformation } from "@/entities/api/lib/transformApiAddToInformation";
-import { apiListStyle } from "@/pages/popup/pages/ApiList/ui/apiList.css";
+import { apiListStyle } from "@/pages/popup/pages/ApiListPage/ui/apiList.css";
 import { DocsApiListFunnelProps } from "@/pages/popup/pages/DocsApiListFunnel/DocsApiListFunnel";
 import BottomFixedButton from "@/shared/ui/Button/BottomFixedButton";
 import Header from "@/shared/ui/Header";

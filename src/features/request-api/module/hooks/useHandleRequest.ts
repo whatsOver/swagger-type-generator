@@ -2,7 +2,7 @@ import { EMPTY_RESPONSE } from "@/entities/api/config/status";
 import { useAuthStore } from "@/entities/auth/model/auth-store";
 import { APIWithParamsAndBodyAndHost } from "@/entities/docs/model/types/docs";
 import { Schemas } from "@/entities/swagger/types";
-import { Mode } from "@/pages/popup/pages/Request/Request";
+import { Mode } from "@/pages/popup/pages/RequestPage/RequestPage";
 import { checkPathStartWithHttp } from "@/shared/util/api/api";
 import axios, { RawAxiosRequestHeaders } from "axios";
 import { FormEvent, useEffect, useState } from "react";

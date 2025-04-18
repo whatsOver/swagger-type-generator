@@ -1,5 +1,5 @@
 import { useDocsStore } from "@/entities/docs/model/hooks/useDocsStore";
-import { apiListStyle } from "@/pages/popup/pages/ApiList/ui/apiList.css";
+import { apiListStyle } from "@/pages/popup/pages/ApiListPage/ui/apiList.css";
 import Button from "@/shared/ui/Button";
 import Header from "@/shared/ui/Header";
 import ModeItem from "@/shared/ui/ModeItem/ModeItem";

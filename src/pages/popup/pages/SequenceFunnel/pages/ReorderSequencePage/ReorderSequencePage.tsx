@@ -1,5 +1,5 @@
 import { useSequenceStore } from "@/entities/sequence/hooks/useSequenceStore";
-import { apiListStyle } from "@/pages/popup/pages/ApiList/ui/apiList.css";
+import { apiListStyle } from "@/pages/popup/pages/ApiListPage/ui/apiList.css";
 import { SequenceFunnelProps } from "@/pages/popup/pages/SequenceFunnel/SequenceFunnel";
 import Button from "@/shared/ui/Button";
 import Header from "@/shared/ui/Header";
@@ -8,7 +8,7 @@ import { SequenceItem } from "@/widgets/sequence-list/ui/item/SequenceItem";
 
 type ReorderAPIPageProps = SequenceFunnelProps;
 
-const ReorderSequencePage = ({
+export const ReorderSequencePage = ({
   sequenceList,
   swaggerTitle,
   onNext,
@@ -43,5 +43,3 @@ const ReorderSequencePage = ({
     </div>
   );
 };
-
-export default ReorderSequencePage;
