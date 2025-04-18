@@ -1,4 +1,4 @@
-import { deleteSequences } from "@/entities/sequence/model/sequence-store";
+import { useSequenceStore } from "@/entities/sequence/hooks/useSequenceStore";
 import { apiListStyle } from "@/pages/popup/pages/ApiList/ui/apiList.css";
 import { SequenceFunnelProps } from "@/pages/popup/pages/SequenceFunnel/SequenceFunnel";
 import Button from "@/shared/ui/Button";
@@ -14,7 +14,10 @@ const DeleteSequencePage = ({
   swaggerTitle,
   onNext,
 }: DeleteSequencePageProps) => {
+  const { deleteSequences } = useSequenceStore();
+
   const [deleteList, setDeleteList] = useState<number[]>([]);
+
   const onClickSave = () => {
     deleteSequences(swaggerTitle, deleteList);
     onNext();
