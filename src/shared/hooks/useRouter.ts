@@ -69,9 +69,9 @@ export type API_문서_페이지_Key =
 
 const API_문서_퍼널 = (): Record<API_문서_페이지_Key, string> => {
   return {
-    API_문서_페이지: `/api-docs`,
-    API_문서_순서_편집_페이지: `/api-docs/edit`,
-    API_문서_삭제_페이지: `/api-docs/delete`,
+    API_문서_페이지: `/docs`,
+    API_문서_순서_편집_페이지: `/docs/edit`,
+    API_문서_삭제_페이지: `/docs/delete`,
   };
 };
 
