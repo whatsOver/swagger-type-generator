@@ -1,4 +1,4 @@
-import { addSequence } from "@/entities/sequence/model/sequence-store";
+import { useSequenceStore } from "@/entities/sequence/hooks/useSequenceStore";
 import { SequenceFunnelProps } from "@/pages/popup/pages/SequenceFunnel/SequenceFunnel";
 import useRouter from "@/shared/hooks/useRouter";
 import { useState } from "react";
@@ -14,6 +14,7 @@ export const useHandleSequencePage = ({
 }: HandleSequencePageProps) => {
   const router = useRouter();
   const [mode, setMode] = useState<Mode>("VIEW");
+  const { addSequence } = useSequenceStore();
 
   const onClickAdd = () => {
     setMode("ADD");
