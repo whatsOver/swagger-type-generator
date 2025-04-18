@@ -45,7 +45,7 @@ const SequenceFunnel = () => {
     const title = apiDocsData.info.title;
     setSwaggerTitle(title);
     setSequenceList(sequences[title]);
-  }, [apiDocsData]);
+  }, [apiDocsData, sequences]);
 
   return (
     <Funnel>
