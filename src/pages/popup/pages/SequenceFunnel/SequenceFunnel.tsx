@@ -1,8 +1,5 @@
-import {
-  SequenceItemType,
-  createSequence,
-  sequenceStorage,
-} from "@/entities/sequence/model/sequence-store";
+import { useSequenceStore } from "@/entities/sequence/hooks/useSequenceStore";
+import { SequenceItemType } from "@/entities/sequence/types/sequence";
 import { extractNonEmptyArrayKeys } from "@/shared/hooks/funnel/models";
 import { useFunnel } from "@/shared/hooks/funnel/useFunnel";
 import { navigationPath } from "@/shared/hooks/useRouter";
@@ -32,22 +29,22 @@ const SequenceFunnel = () => {
   const [sequenceList, setSequenceList] = useState<SequenceItemType[]>([]);
   const [swaggerTitle, setSwaggerTitle] = useState<string>("");
 
+  const { sequences, createSequence } = useSequenceStore();
+
   useEffect(() => {
     if (!swaggerTitle.length) return;
-    const data = sequenceStorage.getSnapshot();
+    const data = sequences;
     const keys = Object.keys(data);
     if (keys.includes(swaggerTitle)) return;
     createSequence(swaggerTitle);
-  }, [swaggerTitle, sequenceStorage.getSnapshot()]);
+  }, [swaggerTitle, sequences]);
 
   useEffect(() => {
     if (!apiDocsData) return;
     if (!apiDocsData.info.title) return;
     const title = apiDocsData.info.title;
     setSwaggerTitle(title);
-    sequenceStorage.subscribe((sequence) => {
-      setSequenceList(sequence[title]);
-    });
+    setSequenceList(sequences[title]);
   }, [apiDocsData]);
 
   return (
