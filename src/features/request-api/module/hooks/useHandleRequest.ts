@@ -34,12 +34,10 @@ export type OmitHandleFormValues = Omit<
 
 export const useHandleRequest = ({
   api,
-  setMode,
   initialFormValues,
+  setMode,
   onSuccess,
 }: HandleRequest): ReturnUseHandleRequest => {
-  // FIRST RENDER
-
   const token = useAuthStore((state) => state.token);
 
   // INTERACTION
@@ -56,15 +54,13 @@ export const useHandleRequest = ({
   // 1-1. 유저 > params, body 입력 > 초기값 설정
   useEffect(() => {
     if (!api) return;
-    if (!initialFormValues) return;
-    // if (Object.keys(initialFormValues).length) return;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const initialValues: Record<string, any> = {};
+
+    const initialValues: Record<string, unknown> = {};
     api.params?.forEach((param) => {
       if (param.schema?.default) {
         initialValues[param.name] = param.schema.default;
       }
-      if (initialFormValues[param.name]) {
+      if (initialFormValues && initialFormValues[param.name]) {
         initialValues[param.name] = initialFormValues[param.name];
       } else if (param.example && param.required) {
         initialValues[param.name] = param.example;
@@ -76,13 +72,14 @@ export const useHandleRequest = ({
         if (api.body.properties[key].default) {
           initialValues[key] = api.body.properties[key].default;
         }
-        if (initialFormValues[key]) {
+        if (initialFormValues && initialFormValues[key]) {
           initialValues[key] = initialFormValues[key];
         } else if (api.body.properties[key].example) {
           initialValues[key] = api.body.properties[key].example;
         }
       });
-    setFormValues(initialValues);
+
+    setFormValues(initialValues as FormValues);
   }, [api, initialFormValues, setFormValues]);
 
   // 2. 유저 > 요청 버튼 클릭
