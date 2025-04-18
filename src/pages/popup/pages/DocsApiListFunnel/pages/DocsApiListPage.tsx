@@ -7,7 +7,7 @@ import { extractTagsAndEndpoints } from "@/features/extract-api/module/utils/ext
 import useSearch from "@/features/search-api/module/hooks/useSearch";
 import useHandleSetting from "@/features/setting/module/hooks/useHandleSetting";
 import useDrawer from "@/shared/hooks/useDrawer";
-import useRouter from "@/shared/hooks/useRouter";
+import useRouter, { navigationPath } from "@/shared/hooks/useRouter";
 import Button from "@/shared/ui/Button";
 import Dropdown from "@/shared/ui/Dropdown";
 import Header from "@/shared/ui/Header";
@@ -79,6 +79,7 @@ export const DocsApiListPage = ({
       <Header
         headerTitle={docsState.docsList.find((doc) => doc.id === id)?.title}
         showBackButton
+        backTo={navigationPath.API_문서_퍼널().API_문서_페이지}
         rightButton={
           <div className={apiListStyle.settingButtonWrapper}>
             <Dropdown>
