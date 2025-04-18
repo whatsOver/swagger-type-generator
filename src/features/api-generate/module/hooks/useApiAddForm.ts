@@ -125,7 +125,7 @@ export const useApiAddForm = () => {
   );
 
   const handleParameterChange = useCallback(
-    (id: string, field: keyof Omit<FormParam, "id">, value: any) => {
+    (id: string, field: keyof Omit<FormParam, "id">, value: unknown) => {
       updateParameter(id, field, value);
     },
     [updateParameter]
@@ -141,7 +141,11 @@ export const useApiAddForm = () => {
     [removeRequestBodySchemaProp]
   );
   const handleRequestBodySchemaPropChange = useCallback(
-    (id: string, field: keyof Omit<FormSchemaProperty, "id">, value: any) => {
+    (
+      id: string,
+      field: keyof Omit<FormSchemaProperty, "id">,
+      value: unknown
+    ) => {
       updateRequestBodySchemaProp(id, field, value);
     },
     [updateRequestBodySchemaProp]
@@ -160,11 +164,10 @@ export const useApiAddForm = () => {
   );
 
   const handleResponseChange = useCallback(
-    // Update response metadata
     (
       id: string,
       field: keyof Omit<FormResponse, "id" | "schemaProperties">,
-      value: any
+      value: unknown
     ) => {
       updateResponse(id, field, value);
     },
@@ -203,7 +206,7 @@ export const useApiAddForm = () => {
       responseId: string,
       propId: string,
       field: keyof Omit<FormSchemaProperty, "id">,
-      value: any
+      value: unknown
     ) => {
       updateResponse(
         responseId,
@@ -271,6 +274,7 @@ export const useApiAddForm = () => {
     }, {} as EnhancedApiAdd["responses"]);
 
     const apiParameters: InputParam[] = parameters.map(
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       ({ id, ...rest }) => rest
     );
 
