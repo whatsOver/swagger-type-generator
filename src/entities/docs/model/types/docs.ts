@@ -1,4 +1,10 @@
-import { ContentType, Parameters, Schemas } from "@/entities/swagger/types";
+import {
+  ContentType,
+  Information,
+  Parameters,
+  Schemas,
+  SwaggerDocs,
+} from "@/entities/swagger/types";
 import { Method } from "axios";
 
 declare global {
@@ -12,7 +18,7 @@ declare global {
 export type POST_API_LIST = {
   type: "GET_API_LIST_RESULT";
   data: {
-    prList: ApiList;
+    prList: ApiListType;
     path: Path;
     script: string;
   };
@@ -20,11 +26,11 @@ export type POST_API_LIST = {
 
 export type GET_API_LIST_RESULT = {
   type: "GET_API_LIST_RESULT";
-  prList: ApiList;
+  prList: ApiListType;
   path: Path;
 };
 
-export interface ApiList {
+export interface ApiListType {
   tags: string[];
   endpoints: Endpoints;
 }
@@ -57,7 +63,26 @@ export interface APIWithParamsAndBodyAndHost extends APIWithParamsOrBody {
   host: string;
 }
 
-export interface SwaggerDocs {
+export interface BrowserSwaggerDocs {
   data: any;
   href: string;
+}
+
+export interface DocItem {
+  id: string;
+  title: string;
+  description?: string;
+  createdAt: string;
+  color: string;
+  swaggerDocs: SwaggerDocs;
+}
+
+export interface DocsStorageState {
+  docsList: DocItem[];
+}
+
+export interface PathInfo {
+  path: string;
+  method: Method;
+  information: Information;
 }
