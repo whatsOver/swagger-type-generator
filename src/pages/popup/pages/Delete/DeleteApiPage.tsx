@@ -1,4 +1,5 @@
-import { deleteAPIs } from "@/entities/sequence/model/sequence-store";
+import { useSequenceStore } from "@/entities/sequence/hooks/useSequenceStore";
+
 import { apiListStyle } from "@/pages/popup/pages/ApiList/ui/apiList.css";
 import { ScenarioFunnelProps } from "@/pages/popup/pages/ScenarioFunnel/ScenarioFunnel";
 import Button from "@/shared/ui/Button";
@@ -15,7 +16,10 @@ const DeleteApiPage = ({
   swaggerTitle,
   onNext,
 }: DeleteApiPageProps) => {
+  const { deleteAPIs } = useSequenceStore();
+
   const [deleteList, setDeleteList] = useState([]);
+
   const onClickSave = () => {
     deleteAPIs(swaggerTitle, Number(sequenceId), deleteList);
     onNext(apis.filter((api) => !deleteList.includes(api.key)));
