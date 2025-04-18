@@ -33,7 +33,7 @@ const Header = ({
         {showBackButton && (
           <BiChevronLeft
             color={vars.color.white}
-            size={35}
+            size={24}
             onClick={onClickBack}
           />
         )}
