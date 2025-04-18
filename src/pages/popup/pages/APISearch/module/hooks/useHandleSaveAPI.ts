@@ -1,9 +1,6 @@
 import { API } from "@/entities/docs/model/types/docs";
-import { useSequence } from "@/entities/sequence/hooks/useSequence";
-import {
-  APIWithKey,
-  APIWithOrder,
-} from "@/entities/sequence/model/sequence-store";
+import { useSequenceStore } from "@/entities/sequence/hooks/useSequenceStore";
+import { APIWithKey, APIWithOrder } from "@/entities/sequence/types/sequence";
 import { ScenarioFunnelProps } from "@/pages/popup/pages/ScenarioFunnel/ScenarioFunnel";
 import { useEffect, useState } from "react";
 
@@ -17,7 +14,7 @@ export const useHandleSaveAPI = ({
 }: HandleSaveAPIProps) => {
   const [tempApiList, setTempApiList] = useState<APIWithKey[]>([]);
 
-  const { updateAPI } = useSequence();
+  const { updateAPI } = useSequenceStore();
 
   useEffect(() => {
     setTempApiList(
