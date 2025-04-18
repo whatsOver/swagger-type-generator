@@ -1,4 +1,4 @@
-import { updateSequences } from "@/entities/sequence/model/sequence-store";
+import { useSequenceStore } from "@/entities/sequence/hooks/useSequenceStore";
 import { apiListStyle } from "@/pages/popup/pages/ApiList/ui/apiList.css";
 import { SequenceFunnelProps } from "@/pages/popup/pages/SequenceFunnel/SequenceFunnel";
 import Button from "@/shared/ui/Button";
@@ -14,6 +14,8 @@ const ReorderSequencePage = ({
   onNext,
   setSequenceList,
 }: ReorderAPIPageProps) => {
+  const { updateSequences } = useSequenceStore();
+
   const onClickSave = () => {
     updateSequences(swaggerTitle, sequenceList);
     onNext();
