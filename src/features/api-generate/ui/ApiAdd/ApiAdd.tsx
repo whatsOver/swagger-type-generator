@@ -1,25 +1,27 @@
 import { transformApiAddToInformation } from "@/entities/api/lib/transformApiAddToInformation";
-import { ApiAddFunnelProps } from "@/pages/popup/pages/ApiAddFunnel/ApiAddFunnel";
 import { apiListStyle } from "@/pages/popup/pages/ApiList/ui/apiList.css";
+import { DocsApiListFunnelProps } from "@/pages/popup/pages/DocsApiListFunnel/DocsApiListFunnel";
 import BottomFixedButton from "@/shared/ui/Button/BottomFixedButton";
 import Header from "@/shared/ui/Header";
 import { useApiAddForm } from "../../module/hooks/useApiAddForm";
 import { apiAddStyles } from "./ApiAdd.css";
 import Section from "./core/Section";
 
-// Import newly created components
+import { useDocsStore } from "@/entities/docs/model/hooks/useDocsStore";
 import { ApiPathInput } from "./core/ApiPathInput";
 import { HttpMethodSelector } from "./core/HttpMethodSelector";
 import { ParametersSectionContent } from "./core/ParametersSectionContent";
 import { RequestBodyMetadata } from "./core/RequestBodyMetadata";
 import { SchemaPropertiesList } from "./core/SchemaPropertiesList";
 
-type ApiAddProps = ApiAddFunnelProps & {
+type ApiAddProps = DocsApiListFunnelProps & {
   form: ReturnType<typeof useApiAddForm>;
   onNext: () => void;
 };
 
-export default function ApiAdd({ form }: ApiAddProps) {
+export const ApiAdd = ({ id, form, onNext }: ApiAddProps) => {
+  const { addPathToDoc } = useDocsStore();
+
   const handleSave = () => {
     const formData = form.getFormData();
     const informationData = transformApiAddToInformation(formData);
@@ -28,7 +30,16 @@ export default function ApiAdd({ form }: ApiAddProps) {
     console.log("--- Transformed Data (Information) ---");
     console.log(JSON.stringify(informationData, null, 2));
     alert("API data logged to console. Check the developer tools.");
-    // onNext(); // Or handle navigation
+    try {
+      addPathToDoc(id, {
+        method: formData.method,
+        path: formData.path,
+        information: informationData,
+      });
+      onNext();
+    } catch (error) {
+      alert(error);
+    }
   };
 
   return (
@@ -104,4 +115,4 @@ export default function ApiAdd({ form }: ApiAddProps) {
       </BottomFixedButton>
     </div>
   );
-}
+};
