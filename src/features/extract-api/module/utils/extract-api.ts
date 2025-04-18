@@ -1,9 +1,10 @@
 import type {
-  ApiList,
+  ApiListType,
+  BrowserSwaggerDocs,
   Endpoints,
   Path,
-  SwaggerDocs,
 } from "@/entities/docs/model/types/docs";
+import { SwaggerDocs } from "@/entities/swagger/types";
 import { Method } from "axios";
 
 const extractDocsHref = async (): Promise<Path> => {
@@ -13,13 +14,15 @@ const extractDocsHref = async (): Promise<Path> => {
   return { href: href ?? "", host: window.location.origin };
 };
 
-const fetchSwaggerJsonFromUrl = async (url: string): Promise<SwaggerDocs> => {
+const fetchSwaggerJsonFromUrl = async (
+  url: string
+): Promise<BrowserSwaggerDocs> => {
   const response = await fetch(url);
   const data = await response.json();
   return { data, href: url };
 };
 
-const fetchSwaggerJsonFromScript = async (): Promise<SwaggerDocs> => {
+const fetchSwaggerJsonFromScript = async (): Promise<BrowserSwaggerDocs> => {
   const scripts = Array.from(document.scripts);
   const swaggerScript = scripts.find((script) =>
     script.src.includes("swagger-ui-init.js")
@@ -52,7 +55,7 @@ const fetchSwaggerJsonFromScript = async (): Promise<SwaggerDocs> => {
   return { data, href: "" };
 };
 
-export const fetchSwaggerJson = async (): Promise<SwaggerDocs> => {
+export const fetchSwaggerJson = async (): Promise<BrowserSwaggerDocs> => {
   const swaggerJsonFromScript = await fetchSwaggerJsonFromScript();
   if (swaggerJsonFromScript) {
     return swaggerJsonFromScript;
@@ -73,7 +76,9 @@ export const fetchSwaggerJson = async (): Promise<SwaggerDocs> => {
   throw new Error("Unable to fetch Swagger JSON");
 };
 
-export const extractTagsAndEndpoints = (swaggerJson: any): ApiList => {
+export const extractTagsAndEndpoints = (
+  swaggerJson: SwaggerDocs
+): ApiListType => {
   const tags: string[] = [];
   const endpoints: Endpoints = {};
 
