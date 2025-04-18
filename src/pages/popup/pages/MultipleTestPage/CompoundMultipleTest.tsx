@@ -6,6 +6,7 @@ import { HandleCodeReturn } from "@/widgets/code-block/module/hooks/useHandleCod
 import ModalCodeBlock from "@/widgets/code-block/ui/code-block-modal/CodeBlockView";
 import { RequestBody } from "@/widgets/request-body/ui/api-body/RequestBody";
 import { RequestParam } from "@/widgets/request-param/ui/api-param/RequestParam";
+import { ScenarioItem } from "@/widgets/scenario-list/ui/item/ScenarioItem";
 import { MdOutlineKeyboardArrowDown as ArrowDownIcon } from "react-icons/md";
 import { VscBracketError as ErrorIcon } from "react-icons/vsc";
 import { Mode } from "./MultipleTestPage";
@@ -36,7 +37,6 @@ const SequenceApiList = ({
         <>
           <li
             style={{
-              boxSizing: "border-box",
               backgroundColor: vars.methodColors[api.api.method],
               border:
                 api.key === currentAPIKey
@@ -47,9 +47,12 @@ const SequenceApiList = ({
             key={api.key}
             onClick={() => onChangeAPI(api.key)}
           >
-            <div className={multipleStyles.lineClamp}>
-              {api.api.description || api.api.path}
-            </div>
+            <ScenarioItem
+              api={api}
+              onClick={() => onChangeAPI(api.key)}
+              withPadding={false}
+              showStatus={false}
+            />
           </li>
           {idx !== apiList.length - 1 && (
             <ArrowDownIcon size={24} color={vars.color.white} />
@@ -75,7 +78,11 @@ const Request = ({
 }: RequestProps) => {
   return (
     <form className={multipleStyles.requestWrapper} onSubmit={handleSubmit}>
-      <h2 className={multipleStyles.mainDescription}>{api?.description}</h2>
+      <h2 className={multipleStyles.mainDescription}>{api?.path}</h2>
+      {api?.description && (
+        <h2 className={multipleStyles.subDescription}>{api?.description}</h2>
+      )}
+      {/* <ScenarioItem api={api} withPadding={false} showStatus={false} /> */}
       <div className={multipleStyles.requestBlock}>
         {!!api.params?.length && (
           <RequestParam

@@ -1,5 +1,5 @@
 import { APIWithOrder } from "@/entities/sequence/types/sequence";
-import ScenarioItem from "@/widgets/scenario-list/ui/item/ScenarioItem";
+import { ScenarioItem } from "@/widgets/scenario-list/ui/item/ScenarioItem";
 
 interface ScenarioListProps {
   scenarioList: APIWithOrder[];
