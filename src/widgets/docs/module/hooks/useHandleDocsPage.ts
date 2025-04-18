@@ -1,4 +1,6 @@
-import { addSequence } from "@/entities/sequence/model/sequence-store";
+import { DEFAULT_DOC_ITEM } from "@/entities/docs/model/data/docs";
+import { DocItem } from "@/entities/docs/model/types/docs";
+import { useSequenceStore } from "@/entities/sequence/hooks/useSequenceStore";
 import { SequenceFunnelProps } from "@/pages/popup/pages/SequenceFunnel/SequenceFunnel";
 import useRouter from "@/shared/hooks/useRouter";
 import { useState } from "react";
@@ -9,15 +11,13 @@ type Mode = "VIEW" | "ADD";
 type OmitOnNext = Omit<SequenceFunnelProps, "onNext" | "sequenceList">;
 type HandleSequencePageProps = OmitOnNext;
 
-interface Docs {
-  title: string;
-  description: string;
-}
-
 export const useHandleDocsPage = ({
   swaggerTitle,
 }: HandleSequencePageProps) => {
   const router = useRouter();
+
+  const { addSequence } = useSequenceStore();
+
   const [mode, setMode] = useState<Mode>("VIEW");
 
   const onClickAdd = () => {
@@ -29,10 +29,7 @@ export const useHandleDocsPage = ({
   };
 
   // USER INTERACTION
-  const [docs, setDocs] = useState<Docs>({
-    title: "",
-    description: "",
-  });
+  const [docs, setDocs] = useState<DocItem>(DEFAULT_DOC_ITEM);
 
   const onChangeTitle = (title: string) => {
     setDocs((prev) => ({ ...prev, title }));
@@ -42,6 +39,10 @@ export const useHandleDocsPage = ({
     setDocs((prev) => ({ ...prev, description }));
   };
 
+  const onChangeColor = (color: string) => {
+    setDocs((prev) => ({ ...prev, color }));
+  };
+
   const onPressEnter = (title: string, description: string) => {
     if (!title || !description) {
       toast.error("Title and description are required");
@@ -49,7 +50,7 @@ export const useHandleDocsPage = ({
     }
     addSequence(swaggerTitle, { title, iconType: "LOADING", apiList: [] });
     setMode("VIEW");
-    setDocs({ title, description });
+    setDocs(DEFAULT_DOC_ITEM);
   };
 
   const onClickSequence = (id: number, title: string) => {
@@ -65,6 +66,7 @@ export const useHandleDocsPage = ({
     docs,
     onChangeTitle,
     onChangeDescription,
+    onChangeColor,
     onPressEnter,
     onClickSequence,
   };
