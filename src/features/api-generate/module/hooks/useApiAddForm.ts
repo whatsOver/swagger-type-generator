@@ -247,7 +247,7 @@ export const useApiAddForm = () => {
     const builtResponses = responses.reduce((acc, response) => {
       const responseSchemaProperties = response.schemaProperties || [];
       const builtResponseSchema: SimpleSchema = {
-        type: "object", // Assuming object type for now
+        type: "object",
         properties: responseSchemaProperties.reduce((propsAcc, prop) => {
           propsAcc[prop.name] = {
             type: prop.type,
