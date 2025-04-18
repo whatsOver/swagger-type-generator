@@ -38,7 +38,7 @@ export const SequenceItem = ({ id, title, apiList, onClick }: ItemProps) => {
             key={api.api.path}
           >
             <span className={sequenceItemStyles.description}>
-              {api.api.description}
+              {api.api.description || api.api.path}
             </span>
           </div>
         ))}
