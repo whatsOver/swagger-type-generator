@@ -299,7 +299,6 @@ export function useSequenceStore() {
   };
 
   const getSequences = (): SequenceState => {
-    console.log(sequences);
     return sequences;
   };
 

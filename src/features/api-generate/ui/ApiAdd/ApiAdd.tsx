@@ -25,11 +25,6 @@ export const ApiAdd = ({ id, form, onNext }: ApiAddProps) => {
   const handleSave = () => {
     const formData = form.getFormData();
     const informationData = transformApiAddToInformation(formData);
-    console.log("--- Form Data (EnhancedApiAdd) ---");
-    console.log(formData);
-    console.log("--- Transformed Data (Information) ---");
-    console.log(JSON.stringify(informationData, null, 2));
-    alert("API data logged to console. Check the developer tools.");
     try {
       addPathToDoc(id, {
         method: formData.method,

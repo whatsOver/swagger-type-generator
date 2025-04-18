@@ -37,8 +37,6 @@ export const DocsApiListPage = ({
   const { push } = useRouter();
   const { docsState } = useDocsStore();
 
-  console.log(docsState.docsList);
-
   const [apiList, setApiList] = useState<ApiListType>({
     tags: [],
     endpoints: {},
