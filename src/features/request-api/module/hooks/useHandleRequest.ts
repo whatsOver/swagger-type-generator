@@ -3,6 +3,7 @@ import { useAuthStore } from "@/entities/auth/model/auth-store";
 import { APIWithParamsAndBodyAndHost } from "@/entities/docs/model/types/docs";
 import { Schemas } from "@/entities/swagger/types";
 import { Mode } from "@/pages/popup/pages/Request/Request";
+import { checkPathStartWithHttp } from "@/shared/util/api/api";
 import axios, { RawAxiosRequestHeaders } from "axios";
 import { FormEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -114,7 +115,9 @@ export const useHandleRequest = ({
         : { "Content-Type": api.contentType };
       const response = await axios({
         method: api.method,
-        url: api.host + transformPath,
+        url: checkPathStartWithHttp(transformPath)
+          ? transformPath
+          : api.host + transformPath,
         params: api.params ? getQueryParams(api.params, formValues) : {},
         data: getBodyData(api.body),
         headers,
