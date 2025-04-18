@@ -11,9 +11,9 @@ import { vars } from "@/shared/ui/styles/theme.css";
 import { SequenceList } from "@/widgets/sequence-list/ui/list/SequenceList";
 import SettingDrawer from "@/widgets/setting/ui/setting-drawer/SettingDrawer";
 import { FiMenu as MenuIcon } from "react-icons/fi";
+import { Flip, ToastContainer } from "react-toastify";
 import { useHandleSequencePage } from "./module/hooks/useHandleSequencePage";
 import { sequenceStyles } from "./sequence.css";
-import { Flip, ToastContainer } from "react-toastify";
 
 type OmitOnNext = Omit<SequenceFunnelProps, "onNext">;
 interface SequencePageProps extends OmitOnNext {
@@ -47,7 +47,7 @@ const SequencePage = ({
                   Change Order
                 </Dropdown.Item>
                 <Dropdown.Item onClick={() => setStep("삭제_페이지")}>
-                  Delete Sequence
+                  Delete
                 </Dropdown.Item>
               </Dropdown.Modal>
             </Dropdown>
