@@ -4,7 +4,7 @@ import { DocItem } from "@/entities/docs/model/types/docs";
 import useRouter, { navigationPath } from "@/shared/hooks/useRouter";
 import { useCallback, useState } from "react";
 import { toast } from "react-toastify";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidV4 } from "uuid";
 
 type Mode = "VIEW" | "ADD";
 
@@ -52,7 +52,7 @@ export const useHandleDocsPage = () => {
       title: doc.title.trim(),
       description: doc.description.trim() || undefined,
       createdAt: new Date().toISOString(),
-      id: uuidv4(),
+      id: uuidV4(),
       color: doc.color,
       swaggerDocs: DEFAULT_DOC_ITEM.swaggerDocs,
     });

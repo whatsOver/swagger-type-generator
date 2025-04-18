@@ -7,7 +7,7 @@ export const addItemStyles = {
     flexDirection: "column", // Stack inputs vertically
     gap: "10px",
     width: "100%",
-    padding: "25px 25px 15px 25px",
+    padding: "35px 25px 15px 25px",
     backgroundColor: vars.color.grey, // Use a theme background color
     borderRadius: "8px",
     position: "relative", // For positioning the close button
@@ -61,8 +61,8 @@ export const addItemStyles = {
   }),
   closeButton: style({
     position: "absolute",
-    top: "5px",
-    right: "5px",
+    top: "10px",
+    right: "10px",
     background: "none",
     border: "none",
     cursor: "pointer",

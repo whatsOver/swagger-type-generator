@@ -1,7 +1,9 @@
 import { DocsAddItem } from "@/features/add-docs/ui/DocsAddItem";
 import { apiListStyle } from "@/pages/popup/pages/ApiList/ui/apiList.css";
 import useDrawer from "@/shared/hooks/useDrawer";
+import { API_문서_페이지_Key } from "@/shared/hooks/useRouter";
 import Button from "@/shared/ui/Button";
+import Dropdown from "@/shared/ui/Dropdown";
 import Header from "@/shared/ui/Header";
 import BlankItem from "@/shared/ui/blank-item/BlankItem";
 import { vars } from "@/shared/ui/styles/theme.css";
@@ -12,7 +14,11 @@ import { Flip, ToastContainer } from "react-toastify";
 import { docsPageStyles } from "./docsPage.css";
 import { useHandleDocsPage } from "./module/hooks/useHandleDocsPage";
 
-export const DocsPage = () => {
+type DocsPageProps = {
+  setStep: (step: API_문서_페이지_Key) => void;
+};
+
+export const DocsPage = ({ setStep }: DocsPageProps) => {
   const { open, openDrawer, closeDrawer } = useDrawer();
   const {
     mode,
@@ -37,9 +43,24 @@ export const DocsPage = () => {
           </button>
         }
         rightButton={
-          <Button onClick={onClickAdd} color="purpleLarge">
-            ADD
-          </Button>
+          <>
+            <Dropdown>
+              <Dropdown.Trigger as={<Button color="purple">Edit</Button>} />
+              <Dropdown.Modal>
+                <Dropdown.Item
+                  onClick={() => setStep("API_문서_순서_편집_페이지")}
+                >
+                  Change Order
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => setStep("API_문서_삭제_페이지")}>
+                  Delete
+                </Dropdown.Item>
+              </Dropdown.Modal>
+            </Dropdown>
+            <Button onClick={onClickAdd} color="purpleLarge">
+              ADD
+            </Button>
+          </>
         }
       />
       <div className={docsPageStyles.docsWrapper}>
@@ -65,12 +86,14 @@ export const DocsPage = () => {
               onItemClick={onClickDocItem}
             />
           ) : (
-            <BlankItem>
-              <p>There are no documents.</p>
-              <Button onClick={onClickAdd} color="purpleLarge">
-                ADD
-              </Button>
-            </BlankItem>
+            <div className={docsPageStyles.blankItemWrapper}>
+              <BlankItem>
+                <p>There are no documents.</p>
+                <Button onClick={onClickAdd} color="purpleLarge">
+                  ADD
+                </Button>
+              </BlankItem>
+            </div>
           ))}
       </div>
       <SettingDrawer isOpen={open} onClose={closeDrawer} />

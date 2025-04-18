@@ -62,15 +62,20 @@ const API_관리_퍼널 = (id: string): Record<API_관리_퍼널_Key, string> =>
 const 다수_API_테스트_페이지 = (id: string) => (apiId: string) =>
   `/sequence/${id}/test/${apiId}`;
 
-type API_문서_페이지_Key = "API_문서_페이지";
+export type API_문서_페이지_Key =
+  | "API_문서_페이지"
+  | "API_문서_순서_편집_페이지"
+  | "API_문서_삭제_페이지";
 
 const API_문서_퍼널 = (): Record<API_문서_페이지_Key, string> => {
   return {
     API_문서_페이지: `/api-docs`,
+    API_문서_순서_편집_페이지: `/api-docs/edit`,
+    API_문서_삭제_페이지: `/api-docs/delete`,
   };
 };
 
-type API_문서_리스트_퍼널_Key =
+export type API_문서_리스트_퍼널_Key =
   | "API_문서_리스트_페이지"
   | "META_데이터_입력_페이지"
   | "API_데이터_입력_페이지"

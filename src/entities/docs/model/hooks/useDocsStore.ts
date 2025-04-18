@@ -37,12 +37,29 @@ export const useDocsStore = () => {
     [setDocsState]
   );
 
+  const deleteDocs = useCallback(
+    async (ids: string[]) => {
+      await setDocsState((prev) => ({
+        ...prev,
+        docsList: prev.docsList.filter((doc) => !ids.includes(doc.id)),
+      }));
+    },
+    [setDocsState]
+  );
+
   const updateDoc = useCallback(
     async (id: string, doc: DocItem) => {
       await setDocsState((prev) => ({
         ...prev,
         docsList: prev.docsList.map((d) => (d.id === id ? doc : d)),
       }));
+    },
+    [setDocsState]
+  );
+
+  const updateDocsList = useCallback(
+    async (docsList: DocItem[]) => {
+      await setDocsState((prev) => ({ ...prev, docsList }));
     },
     [setDocsState]
   );
@@ -130,7 +147,9 @@ export const useDocsStore = () => {
     docsState,
     createDoc,
     deleteDoc,
+    deleteDocs,
     updateDoc,
+    updateDocsList,
     updateDocSwaggerDocs,
     addPathToDoc,
     updatePathInfo,

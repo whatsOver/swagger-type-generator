@@ -36,7 +36,6 @@ export const DocsAddItem: React.FC<DocsAddItemProps> = ({
   onPressEnter,
   onClickClose,
 }) => {
-  // Handle Enter key press in the title input
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       onPressEnter();
@@ -50,7 +49,7 @@ export const DocsAddItem: React.FC<DocsAddItemProps> = ({
       </button>
       <input
         type="text"
-        placeholder="Enter document title..."
+        placeholder="Enter document title"
         value={title}
         onChange={onChangeTitle}
         onKeyDown={handleKeyDown} // Add keydown listener
@@ -58,7 +57,7 @@ export const DocsAddItem: React.FC<DocsAddItemProps> = ({
         autoFocus // Automatically focus the title input
       />
       <textarea
-        placeholder="Enter description (optional)..."
+        placeholder="Enter description (optional)"
         value={description}
         onChange={onChangeDescription}
         className={addItemStyles.textarea}
