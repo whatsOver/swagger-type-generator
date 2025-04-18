@@ -102,7 +102,6 @@ const Trigger = forwardRef<TriggerRef, TriggerProps>(({ as }, ref) => {
         }
 
         modal.style.left = `${left}px`;
-        modal.style.width = `${width}px`;
       }
     }
   }, [isOpen]);
