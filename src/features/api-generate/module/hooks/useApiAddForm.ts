@@ -8,29 +8,25 @@ import {
 import { ContentType } from "@/entities/swagger/types";
 import { Method } from "axios";
 import { useCallback, useState } from "react";
-import { v4 as uuidv4 } from "uuid"; // For generating unique IDs
+import { v4 as uuidV4 } from "uuid"; // For generating unique IDs
 import { ManagedItem, useListManager } from "./useListManager";
 
 // --- Type Definitions for Form State ---
 
-// Extending ManagedItem for unique IDs
 export interface FormParam extends ManagedItem, Omit<InputParam, "name"> {
-  // Use InputParam fields
-  name: string; // Ensure name exists, even if InputParam renames it later
+  name: string;
 }
 
 export interface FormSchemaProperty extends ManagedItem, SimpleSchemaProperty {
-  name: string; // Property name within an object schema
-  isRequired: boolean; // Required flag for object properties
+  name: string;
+  isRequired: boolean;
 }
 
-// State for managing Response input, extending ManagedItem
 export interface FormResponse extends ManagedItem {
   statusCode: string;
   description: string;
   contentType: ContentType;
-  schema: SimpleSchema; // Keep using SimpleSchema for input
-  // State for managing schema properties within this response
+  schema: SimpleSchema;
   schemaProperties: FormSchemaProperty[];
 }
 
@@ -52,20 +48,19 @@ const defaultSchemaProperty: Omit<FormSchemaProperty, "id"> = {
   description: "",
   example: "",
   isRequired: false,
-  // items: undefined, // Handle array items separately if needed
 };
 
-const defaultRequestBodySchema: SimpleSchema = {
-  type: "object",
-  properties: {},
-  required: [],
-};
+// const defaultRequestBodySchema: SimpleSchema = {
+//   type: "object",
+//   properties: {},
+//   required: [],
+// };
 
 const defaultResponse: Omit<FormResponse, "id" | "schemaProperties"> = {
   statusCode: "200",
   description: "OK",
   contentType: "application/json",
-  schema: { type: "object", properties: {} }, // Default to empty object schema
+  schema: { type: "object", properties: {} },
 };
 
 export const useApiAddForm = () => {
@@ -89,7 +84,7 @@ export const useApiAddForm = () => {
   const [requestBodyContentType, setRequestBodyContentType] =
     useState<ContentType>("application/json");
   const [requestBodyDescription, setRequestBodyDescription] = useState("");
-  // Manage request body schema properties using useListManager
+
   const {
     items: requestBodySchemaProps,
     addItem: addRequestBodySchemaProp,
@@ -98,17 +93,13 @@ export const useApiAddForm = () => {
   } = useListManager<FormSchemaProperty>();
 
   // --- Responses State ---
-  // Manage multiple responses using useListManager
   const {
     items: responses,
     addItem: addResponse,
     removeItem: removeResponse,
-    updateItem: updateResponse, // Update response metadata (statusCode, description, contentType)
+    updateItem: updateResponse,
   } = useListManager<FormResponse>();
 
-  // --- Handlers ---
-
-  // MetaData Handlers
   const handleAddTag = useCallback(
     (tag: string) => {
       if (tag && !tags.includes(tag)) {
@@ -117,6 +108,7 @@ export const useApiAddForm = () => {
     },
     [tags]
   );
+
   const handleRemoveTag = useCallback((tagToRemove: string) => {
     setTags((prev) => prev.filter((tag) => tag !== tagToRemove));
   }, []);
@@ -126,10 +118,12 @@ export const useApiAddForm = () => {
     () => addParameter(defaultParam),
     [addParameter]
   );
+
   const handleRemoveParameter = useCallback(
     (id: string) => removeParameter(id),
     [removeParameter]
   );
+
   const handleParameterChange = useCallback(
     (id: string, field: keyof Omit<FormParam, "id">, value: any) => {
       updateParameter(id, field, value);
@@ -155,9 +149,8 @@ export const useApiAddForm = () => {
 
   // Response Handlers
   const handleAddResponse = useCallback(() => {
-    // Create a unique ID for the new response
-    const newId = uuidv4();
-    // Add response with default values and an empty schema properties list
+    const newId = uuidV4();
+
     addResponse({ ...defaultResponse, id: newId, schemaProperties: [] });
   }, [addResponse]);
 
@@ -178,10 +171,9 @@ export const useApiAddForm = () => {
     [updateResponse]
   );
 
-  // Response Schema Property Handlers (Needs to target specific response)
   const handleAddResponseSchemaProp = useCallback(
     (responseId: string) => {
-      const newPropId = uuidv4(); // Generate unique ID for the property
+      const newPropId = uuidV4();
       updateResponse(
         responseId,
         "schemaProperties",
@@ -225,19 +217,15 @@ export const useApiAddForm = () => {
     [updateResponse]
   );
 
-  // --- Data Aggregation for Submission ---
   const getFormData = useCallback((): EnhancedApiAdd => {
-    // Build Request Body Schema from properties state
     const builtRequestBodySchema: SimpleSchema = {
       type: "object", // Assuming object type for now
       properties: requestBodySchemaProps.reduce((acc, prop) => {
         acc[prop.name] = {
-          // Use name as key
           type: prop.type,
           format: prop.format,
           description: prop.description,
           example: prop.example,
-          // items handling would need more state if properties can be arrays
         };
         return acc;
       }, {} as { [key: string]: SimpleSchemaProperty }),
@@ -256,7 +244,6 @@ export const useApiAddForm = () => {
           }
         : undefined;
 
-    // Build Responses from state
     const builtResponses = responses.reduce((acc, response) => {
       const responseSchemaProperties = response.schemaProperties || [];
       const builtResponseSchema: SimpleSchema = {
@@ -267,7 +254,6 @@ export const useApiAddForm = () => {
             format: prop.format,
             description: prop.description,
             example: prop.example,
-            // items...
           };
           return propsAcc;
         }, {} as { [key: string]: SimpleSchemaProperty }),
@@ -284,7 +270,6 @@ export const useApiAddForm = () => {
       return acc;
     }, {} as EnhancedApiAdd["responses"]);
 
-    // Map FormParam[] to InputParam[] before returning
     const apiParameters: InputParam[] = parameters.map(
       ({ id, ...rest }) => rest
     );
@@ -295,7 +280,7 @@ export const useApiAddForm = () => {
       summary,
       description,
       tags,
-      parameters: apiParameters, // Use mapped parameters
+      parameters: apiParameters,
       requestBody,
       responses: builtResponses,
     };
@@ -311,7 +296,6 @@ export const useApiAddForm = () => {
     requestBodyDescription,
     requestBodySchemaProps,
     responses,
-    // remove updateResponse from dependencies if it causes infinite loops, review other deps
   ]);
 
   return {
