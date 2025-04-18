@@ -1,83 +1,77 @@
-import SequenceAddItem from "@/features/add-sequence/ui/SequenceAddItem/SequenceAddItem";
+import { DocsAddItem } from "@/features/add-docs/ui/DocsAddItem";
 import { apiListStyle } from "@/pages/popup/pages/ApiList/ui/apiList.css";
-import { SequenceFunnelProps } from "@/pages/popup/pages/SequenceFunnel/SequenceFunnel";
 import useDrawer from "@/shared/hooks/useDrawer";
-import { 시나리오_관리_퍼널_Key } from "@/shared/hooks/useRouter";
 import Button from "@/shared/ui/Button";
-import Dropdown from "@/shared/ui/Dropdown";
 import Header from "@/shared/ui/Header";
 import BlankItem from "@/shared/ui/blank-item/BlankItem";
 import { vars } from "@/shared/ui/styles/theme.css";
-import { SequenceList } from "@/widgets/sequence-list/ui/list/SequenceList";
+import DocsList from "@/widgets/docs-list/ui/list/DocsList";
 import SettingDrawer from "@/widgets/setting/ui/setting-drawer/SettingDrawer";
 import { FiMenu as MenuIcon } from "react-icons/fi";
-
 import { Flip, ToastContainer } from "react-toastify";
-import { useHandleSequencePage } from "../Sequence/module/hooks/useHandleSequencePage";
-import { sequenceStyles } from "../Sequence/sequence.css";
+import { docsPageStyles } from "./docsPage.css";
+import { useHandleDocsPage } from "./module/hooks/useHandleDocsPage";
 
-type OmitOnNext = Omit<SequenceFunnelProps, "onNext">;
-interface SequencePageProps extends OmitOnNext {
-  setStep: (step: 시나리오_관리_퍼널_Key) => void;
-}
-
-const SequencePage = ({
-  sequenceList,
-  swaggerTitle,
-  setStep,
-}: SequencePageProps) => {
+export const DocsPage = () => {
   const { open, openDrawer, closeDrawer } = useDrawer();
-  const { modeSate, addTitle, onChangeTitle, onClickSequence, onPressEnter } =
-    useHandleSequencePage({ swaggerTitle });
+  const {
+    mode,
+    docsState,
+    doc,
+    onChangeTitle,
+    onChangeDescription,
+    onChangeColor,
+    onClickAdd,
+    onClickCloseAdd,
+    onPressEnter,
+    onClickDocItem,
+  } = useHandleDocsPage();
 
   return (
     <div id="main" className={apiListStyle.app}>
       <Header
-        headerTitle=""
+        headerTitle="My Documents"
         leftButton={
-          <button onClick={openDrawer}>
+          <button className={apiListStyle.headerButton} onClick={openDrawer}>
             <MenuIcon size={24} color={vars.color.white} />
           </button>
         }
         rightButton={
-          <>
-            <Dropdown>
-              <Dropdown.Trigger as={<Button color="purple">Edit</Button>} />
-              <Dropdown.Modal>
-                <Dropdown.Item onClick={() => setStep("순서_편집_페이지")}>
-                  Change Order
-                </Dropdown.Item>
-                <Dropdown.Item onClick={() => setStep("삭제_페이지")}>
-                  Delete Sequence
-                </Dropdown.Item>
-              </Dropdown.Modal>
-            </Dropdown>
-            <Button onClick={modeSate.onClickAdd} color="purpleLarge">
-              ADD
-            </Button>
-          </>
+          <Button onClick={onClickAdd} color="purpleLarge">
+            ADD
+          </Button>
         }
       />
-      <div className={sequenceStyles.sequenceWrapper}>
-        {/** API 추가시 입력 */}
-        {modeSate.mode === "ADD" && (
-          <SequenceAddItem
-            title={addTitle}
+      <div className={docsPageStyles.docsWrapper}>
+        {/** Document Add Form */}
+        {mode === "ADD" && (
+          <DocsAddItem
+            title={doc.title}
+            description={doc.description}
+            color={doc.color}
             onChangeTitle={onChangeTitle}
-            onPressEnter={() => onPressEnter(addTitle)}
-            onClickClose={modeSate.onClickClose}
+            onChangeDescription={onChangeDescription}
+            onChangeColor={onChangeColor}
+            onPressEnter={onPressEnter}
+            onClickClose={onClickCloseAdd}
           />
         )}
-        {/** API 리스트 */}
-        {!sequenceList?.length && (
-          <BlankItem>
-            <p>There are no sequences.</p>
-            <Button onClick={modeSate.onClickAdd} color="purpleLarge">
-              ADD
-            </Button>
-          </BlankItem>
-        )}
-        <SequenceList sequenceList={sequenceList} onClick={onClickSequence} />
+
+        {/** Document List or Blank State */}
+        {mode === "VIEW" &&
+          (docsState.docsList.length > 0 ? (
+            <DocsList
+              docsList={docsState.docsList}
+              onItemClick={onClickDocItem}
+            />
+          ) : (
+            <BlankItem>
+              <p>There are no documents.</p>
+              <Button onClick={onClickAdd} color="purpleLarge">
+                ADD
+              </Button>
+            </BlankItem>
+          ))}
       </div>
       <SettingDrawer isOpen={open} onClose={closeDrawer} />
       <ToastContainer
@@ -89,5 +83,3 @@ const SequencePage = ({
     </div>
   );
 };
-
-export default SequencePage;
