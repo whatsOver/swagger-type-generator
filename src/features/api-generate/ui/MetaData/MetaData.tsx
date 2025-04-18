@@ -40,7 +40,7 @@ export const MetaData = ({ form, onNext }: MetaDataProps) => {
 
   return (
     <div id="main" className={apiListStyle.app}>
-      <Header headerTitle="API Spec - Metadata" />
+      <Header showBackButton headerTitle="API Spec - Metadata" />
       <div className={metaDataStyles.content}>
         <div className={metaDataStyles.row}>
           <span className={metaDataStyles.label}>Summary *</span>
