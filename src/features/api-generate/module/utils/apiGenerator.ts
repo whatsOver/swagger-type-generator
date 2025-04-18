@@ -1,12 +1,13 @@
 import { Method } from "axios";
 
 import { ContentType, Parameters, Schemas } from "@/entities/swagger/types";
-import { getBodyProPertyType } from "@/shared/util/typeGenerator";
-import { typeConverter } from "./typeConverter";
 import {
   getParams,
   getQueryParamsArray,
-} from "../../../request-api/module/utils/request";
+} from "@/features/request-api/module/utils/request";
+import { checkPathStartWithHttp } from "@/shared/util/api/api";
+import { getBodyProPertyType } from "@/shared/util/typeGenerator";
+import { typeConverter } from "./typeConverter";
 
 export const generateInterface = (
   params: Parameters[],
@@ -103,7 +104,9 @@ export const generateAxiosAPICode = ({
 
   const headers = `token ? { 'Authorization': \`Bearer \${token}\`, 'Content-Type': '${contentType}' } : { 'Content-Type': '${contentType}' }`;
 
-  const url = `\`${host}${dynamicPath}\``;
+  const url = checkPathStartWithHttp(path)
+    ? `\`${dynamicPath}\``
+    : `\`${host}${dynamicPath}\``;
   const paramsCode =
     params && params.length
       ? `params: { ${getQueryParamsArray(params)} },\n    `
@@ -157,6 +160,10 @@ export const generateFetchAPICode = ({
     path
   );
 
+  const url = checkPathStartWithHttp(path)
+    ? `\`${dynamicPath}\``
+    : `\`${host}${dynamicPath}\``;
+
   const responseInterface = rootInterfaceKey
     ? rootInterfaceKey === "Json"
       ? `<${rootInterfaceKey}>`
@@ -178,7 +185,7 @@ const ${method.toLowerCase()}API = async ({ ${parameters} }: ${interfaceName}): 
   ${generateFormDataCode(contentType, method)}
   ${queryParams.length ? `const query = ${fetchParams};` : ""}
   const headers = token ? { 'Authorization': \`Bearer \${token}\`, 'Content-Type': '${contentType}' } : { 'Content-Type': '${contentType}' };
-  const response = await fetch(\`${host}${dynamicPath}\` + ${
+  const response = await fetch(${url} + ${
     queryParams.length ? "query" : '""'
   }, {
     method: "${method}",
@@ -198,13 +205,3 @@ const ${method.toLowerCase()}API = async ({ ${parameters} }: ${interfaceName}): 
 
   return apiFunction;
 };
-
-export interface Json {
-  userId: string;
-  username: string;
-  email: string;
-  avatar: string;
-  password: string;
-  birthDate: string;
-  registeredAt: string;
-}
