@@ -1,5 +1,5 @@
-import { ApiAddFunnelProps } from "@/pages/popup/pages/ApiAddFunnel/ApiAddFunnel";
 import { apiListStyle } from "@/pages/popup/pages/ApiList/ui/apiList.css";
+import { DocsApiListFunnelProps } from "@/pages/popup/pages/DocsApiListFunnel/DocsApiListFunnel";
 import Button from "@/shared/ui/Button";
 import BottomFixedButton from "@/shared/ui/Button/BottomFixedButton";
 import Header from "@/shared/ui/Header";
@@ -8,7 +8,7 @@ import React, { KeyboardEvent, useState } from "react";
 import { useApiAddForm } from "../../module/hooks/useApiAddForm";
 import { metaDataStyles } from "./MetaData.css";
 
-interface MetaDataProps extends ApiAddFunnelProps {
+interface MetaDataProps extends DocsApiListFunnelProps {
   form: ReturnType<typeof useApiAddForm>;
   onNext: () => void;
 }
