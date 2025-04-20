@@ -12,6 +12,7 @@ const APIItem = ({ api, onClick }: APIItemProps) => {
     <div
       onClick={() => onClick && onClick()}
       style={{
+        boxSizing: "border-box",
         backgroundColor: vars.methodBackgroundColors[api.method],
         border: `2px solid ${vars.methodColors[api.method]}`,
       }}

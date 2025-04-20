@@ -71,6 +71,7 @@ export const multipleStyles = {
     borderRadius: "10px",
     flexDirection: "column",
     minWidth: 0,
+    boxSizing: "border-box",
   }),
 
   mainDescription: style({
