@@ -4,15 +4,13 @@ import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { QueryProvider } from "@/app/providers/query-provider.js";
 import { ScrollToTop } from "@/shared/ui/ScrollToTop.js";
 
-import { ApiListPage } from "./pages/ApiListPage/ui/ApiListPage.js";
+import refreshOnUpdate from "virtual:reload-on-update-in-view";
 import { DocsApiListFunnel } from "./pages/DocsApiListFunnel/DocsApiListFunnel.js";
 import { DocsFunnel } from "./pages/DocsFunnel/DocsFunnel.js";
 import { MultipleTestPage } from "./pages/MultipleTestPage/MultipleTestPage.js";
 import { RequestPage } from "./pages/RequestPage/RequestPage.js";
 import { ScenarioFunnel } from "./pages/ScenarioFunnel/ScenarioFunnel.js";
-import { SequenceFunnel } from "./pages/SequenceFunnel/SequenceFunnel.js";
-
-import refreshOnUpdate from "virtual:reload-on-update-in-view";
+import { SwaggerDocsPage } from "./pages/SwaggerDocsPage.tsx/SwaggerDocsPage.js";
 
 import "../../shared/ui/styles/reset.css.js";
 import "./index.css";
@@ -31,9 +29,8 @@ function init() {
       <MemoryRouter>
         <ScrollToTop>
           <Routes>
-            <Route path="/" element={<ApiListPage />} />
+            <Route path="*" element={<SwaggerDocsPage />} />
             <Route path="/request" element={<RequestPage />} />
-            <Route path="/sequence" element={<SequenceFunnel />} />
             <Route path="/sequence/:id" element={<ScenarioFunnel />} />
             <Route
               path="/sequence/:id/test/:apiId"
