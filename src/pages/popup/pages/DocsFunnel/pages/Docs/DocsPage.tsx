@@ -36,7 +36,7 @@ export const DocsPage = ({ setStep }: DocsPageProps) => {
   return (
     <div id="main" className={apiListStyle.app}>
       <Header
-        headerTitle="My Documents"
+        headerTitle="My Docs"
         leftButton={
           <button className={apiListStyle.headerButton} onClick={openDrawer}>
             <MenuIcon size={24} color={vars.color.white} />
