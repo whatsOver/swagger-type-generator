@@ -10,26 +10,20 @@ interface SettingDrawerProps {
 const SettingDrawer = ({ isOpen, onClose }: SettingDrawerProps) => {
   const router = useNavigate();
 
-  const onClick_ApiList = () => {
+  const onClickSwaggerDocs = () => {
     router("/");
     onClose();
   };
 
-  const onClick_Sequence = () => {
-    router("/sequence");
-    onClose();
-  };
-
-  const onClick_ApiAdd = () => {
+  const onClickMyDocs = () => {
     router("/docs");
     onClose();
   };
 
   return (
     <Drawer isOpen={isOpen} onClose={onClose}>
-      <Item text="API List" onClick={onClick_ApiList} />
-      <Item text="Sequence" onClick={onClick_Sequence} />
-      <Item text="API Add" onClick={onClick_ApiAdd} />
+      <Item text="Swagger Docs" onClick={onClickSwaggerDocs} />
+      <Item text="My Docs" onClick={onClickMyDocs} />
     </Drawer>
   );
 };
