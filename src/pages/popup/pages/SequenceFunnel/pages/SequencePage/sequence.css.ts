@@ -11,5 +11,6 @@ export const sequenceStyles = {
     flex: 1,
     boxSizing: "border-box",
     height: "100%",
+    marginTop: "35px",
   }),
 };
