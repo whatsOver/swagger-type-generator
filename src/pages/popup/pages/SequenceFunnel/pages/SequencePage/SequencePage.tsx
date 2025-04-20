@@ -6,6 +6,7 @@ import { 시나리오_관리_퍼널_Key } from "@/shared/hooks/useRouter";
 import Button from "@/shared/ui/Button";
 import Dropdown from "@/shared/ui/Dropdown";
 import Header from "@/shared/ui/Header";
+import { headerStyle } from "@/shared/ui/Header/Header.css";
 import BlankItem from "@/shared/ui/blank-item/BlankItem";
 import { vars } from "@/shared/ui/styles/theme.css";
 import { SequenceList } from "@/widgets/sequence-list/ui/list/SequenceList";
@@ -32,9 +33,9 @@ export const SequencePage = ({
   return (
     <div id="main" className={apiListStyle.app}>
       <Header
-        headerTitle=""
+        headerTitle="Swagger Docs"
         leftButton={
-          <button onClick={openDrawer}>
+          <button className={headerStyle.menuButton} onClick={openDrawer}>
             <MenuIcon size={24} color={vars.color.white} />
           </button>
         }

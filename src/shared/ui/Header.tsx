@@ -1,5 +1,6 @@
 import { BiChevronLeft } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
+import { MENU_ICON_SIZE } from "./Header/Header.constants";
 import { headerStyle } from "./styles/header.css";
 import { vars } from "./styles/theme.css";
 interface HeaderProps {
@@ -33,7 +34,7 @@ const Header = ({
         {showBackButton && (
           <BiChevronLeft
             color={vars.color.white}
-            size={24}
+            size={MENU_ICON_SIZE}
             onClick={onClickBack}
           />
         )}
