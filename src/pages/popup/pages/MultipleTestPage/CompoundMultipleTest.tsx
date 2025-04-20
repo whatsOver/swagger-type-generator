@@ -2,6 +2,7 @@ import { APIWithParamsOrBody } from "@/entities/docs/model/types/docs";
 import { APIWithOrder } from "@/entities/sequence/types/sequence";
 import { OmitHandleFormValues } from "@/features/request-api/module/hooks/useHandleRequest";
 import { vars } from "@/shared/ui/styles/theme.css";
+import APIItem from "@/widgets/api-list/ui/api-item/ApiItem";
 import { HandleCodeReturn } from "@/widgets/code-block/module/hooks/useHandleCode";
 import ModalCodeBlock from "@/widgets/code-block/ui/code-block-modal/CodeBlockView";
 import { RequestBody } from "@/widgets/request-body/ui/api-body/RequestBody";
@@ -78,11 +79,7 @@ const Request = ({
 }: RequestProps) => {
   return (
     <form className={multipleStyles.requestWrapper} onSubmit={handleSubmit}>
-      <h2 className={multipleStyles.mainDescription}>{api?.path}</h2>
-      {api?.description && (
-        <h2 className={multipleStyles.subDescription}>{api?.description}</h2>
-      )}
-      {/* <ScenarioItem api={api} withPadding={false} showStatus={false} /> */}
+      <APIItem api={api} />
       <div className={multipleStyles.requestBlock}>
         {!!api.params?.length && (
           <RequestParam
