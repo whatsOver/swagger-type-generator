@@ -5,7 +5,7 @@ export const headerStyle = {
   header: style({
     position: "sticky",
     display: "flex",
-    top: "1px",
+    top: "0px",
     height: "70px",
     padding: "20px",
     width: "100%",
