@@ -77,6 +77,8 @@ const API_문서_퍼널 = (): Record<API_문서_페이지_Key, string> => {
 
 export type API_문서_리스트_퍼널_Key =
   | "API_문서_리스트_페이지"
+  | "API_문서_검색_페이지"
+  | "API_문서_삭제_페이지"
   | "META_데이터_입력_페이지"
   | "API_데이터_입력_페이지"
   | "API_테스트_페이지";
@@ -86,6 +88,8 @@ const API_문서_리스트_퍼널 = (
 ): Record<API_문서_리스트_퍼널_Key, string> => {
   return {
     API_문서_리스트_페이지: `/docs/${id}`,
+    API_문서_검색_페이지: `/docs/${id}/search`,
+    API_문서_삭제_페이지: `/docs/${id}/delete`,
     META_데이터_입력_페이지: `/docs/${id}/meta-data`,
     API_데이터_입력_페이지: `/docs/${id}/api-data`,
     API_테스트_페이지: `/docs/${id}/test`,

@@ -120,6 +120,76 @@ export const useDocsStore = () => {
     [setDocsState]
   );
 
+  const addPathsToDoc = useCallback(
+    async (id: string, pathInfos: PathInfo[]) => {
+      await setDocsState((prev) => {
+        const newDocsList = prev.docsList.map((d) => {
+          if (d.id === id) {
+            const updatedPaths = { ...d.swaggerDocs.paths };
+
+            pathInfos.forEach((pathInfo) => {
+              const lowerCaseMethod = pathInfo.method.toLowerCase();
+              updatedPaths[pathInfo.path] = {
+                ...updatedPaths[pathInfo.path],
+                [lowerCaseMethod]: pathInfo.information,
+              };
+            });
+
+            return {
+              ...d,
+              swaggerDocs: {
+                ...d.swaggerDocs,
+                paths: updatedPaths,
+              },
+            };
+          }
+          return d;
+        });
+        return { ...prev, docsList: newDocsList };
+      });
+    },
+    [setDocsState]
+  );
+
+  const deletePathsFromDoc = useCallback(
+    async (id: string, pathKeys: string[]) => {
+      await setDocsState((prev) => {
+        const newDocsList = prev.docsList.map((d) => {
+          if (d.id === id) {
+            const updatedPaths = { ...d.swaggerDocs.paths };
+
+            pathKeys.forEach((pathKey) => {
+              const [method, ...paths] = pathKey.split("-");
+
+              const path = paths.join("-");
+              if (Object.values(updatedPaths[path]?.[method]).length !== 0) {
+                delete updatedPaths[path][method];
+              }
+            });
+
+            // 객체 path에 데이터가 없으면 삭제
+            Object.keys(updatedPaths).forEach((path) => {
+              if (Object.values(updatedPaths[path]).length === 0) {
+                delete updatedPaths[path];
+              }
+            });
+
+            return {
+              ...d,
+              swaggerDocs: {
+                ...d.swaggerDocs,
+                paths: updatedPaths,
+              },
+            };
+          }
+          return d;
+        });
+        return { ...prev, docsList: newDocsList };
+      });
+    },
+    [setDocsState]
+  );
+
   const updatePathInfo = useCallback(
     async (id: string, pathInfo: PathInfo) => {
       await setDocsState((prev) => ({
@@ -153,6 +223,8 @@ export const useDocsStore = () => {
     updateDocsList,
     updateDocSwaggerDocs,
     addPathToDoc,
+    addPathsToDoc,
+    deletePathsFromDoc,
     updatePathInfo,
     deletePathInfo,
   };

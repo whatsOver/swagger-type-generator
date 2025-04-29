@@ -9,7 +9,7 @@ import { vars } from "@/shared/ui/styles/theme.css";
 import SettingDrawer from "@/widgets/setting/ui/setting-drawer/SettingDrawer";
 import SettingModal from "@/widgets/setting/ui/setting-modal/SettingModal";
 import { FiMenu as MenuIcon } from "react-icons/fi";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { ApiListPage } from "../ApiListPage/ui/ApiListPage";
 import { SequenceFunnel } from "../SequenceFunnel/SequenceFunnel";
 import { swaggerDocsStyle } from "./SwaggerDocsPage.css";
@@ -20,10 +20,6 @@ export const SwaggerDocsPage = () => {
     useHandleSetting();
 
   const { open, openDrawer, closeDrawer } = useDrawer();
-
-  const { pathname } = useLocation();
-
-  console.log(pathname);
 
   return (
     <div id="main" className={swaggerDocsStyle.app}>

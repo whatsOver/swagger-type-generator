@@ -6,7 +6,7 @@ import { ScrollToTop } from "@/shared/ui/ScrollToTop.js";
 
 import refreshOnUpdate from "virtual:reload-on-update-in-view";
 import { DocsApiListFunnel } from "./pages/DocsApiListFunnel/DocsApiListFunnel.js";
-import { DocsFunnel } from "./pages/DocsFunnel/DocsFunnel.js";
+import { DocsFunnel } from "./pages/MyDocsFunnel/DocsFunnel.js";
 import { MultipleTestPage } from "./pages/MultipleTestPage/MultipleTestPage.js";
 import { RequestPage } from "./pages/RequestPage/RequestPage.js";
 import { ScenarioFunnel } from "./pages/ScenarioFunnel/ScenarioFunnel.js";

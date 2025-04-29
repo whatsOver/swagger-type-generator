@@ -12,6 +12,7 @@ import Button from "@/shared/ui/Button";
 import Dropdown from "@/shared/ui/Dropdown";
 import Header from "@/shared/ui/Header";
 import Search from "@/shared/ui/search/Search";
+import { useSubItem } from "@/shared/ui/SubItem/SubItem";
 import BlankApi from "@/widgets/api-list/ui/blank/BlankApi";
 import { ApiList } from "@/widgets/api-list/ui/normal-list/ApiList";
 import SettingDrawer from "@/widgets/setting/ui/setting-drawer/SettingDrawer";
@@ -20,10 +21,13 @@ import { useEffect, useState } from "react";
 import { apiListStyle } from "../../ApiListPage/ui/apiList.css";
 import { DocsApiListFunnelProps } from "../DocsApiListFunnel";
 
+const STEPS = ["API List", "Sequence List"] as const;
+
 type DocsApiListPageProps = DocsApiListFunnelProps & {
   onClickAdd: () => void;
   onClickChangeOrder: () => void;
   onClickDelete: () => void;
+  onClickBringFromDocs: () => void;
 };
 
 export const DocsApiListPage = ({
@@ -31,6 +35,7 @@ export const DocsApiListPage = ({
   onClickAdd,
   onClickChangeOrder,
   onClickDelete,
+  onClickBringFromDocs,
 }: DocsApiListPageProps) => {
   const { push } = useRouter();
 
@@ -74,6 +79,11 @@ export const DocsApiListPage = ({
     });
   };
 
+  const { SubItem } = useSubItem({
+    steps: STEPS,
+    items: ["API 추가", "API 순서 변경", "API 삭제"],
+  });
+
   return (
     <div id="main" className={apiListStyle.app}>
       <Header
@@ -93,9 +103,15 @@ export const DocsApiListPage = ({
                 </Dropdown.Item>
               </Dropdown.Modal>
             </Dropdown>
-            <Button onClick={onClickAdd} color="purpleLarge">
-              ADD
-            </Button>
+            <Dropdown>
+              <Dropdown.Trigger as={<Button color="purpleLarge">Add</Button>} />
+              <Dropdown.Modal>
+                <Dropdown.Item onClick={onClickAdd}>Metadata</Dropdown.Item>
+                <Dropdown.Item onClick={onClickBringFromDocs}>
+                  Bring from Docs
+                </Dropdown.Item>
+              </Dropdown.Modal>
+            </Dropdown>
             <SettingModal
               withReactQuery={withReactQuery}
               toggleReactQuery={toggleReactQuery}
@@ -110,14 +126,28 @@ export const DocsApiListPage = ({
         }
       />
 
-      <div className={apiListStyle.searchWrapper}>
-        <Search value={search} onChange={onChange} />
-      </div>
+      <SubItem>
+        <SubItem.Item name="API List">
+          <div className={apiListStyle.searchWrapper}>
+            <Search value={search} onChange={onChange} />
+          </div>
+          {!filteredApiList.tags?.length && (
+            <BlankApi>
+              There is no API
+              <br />
+              Please add API with the &quot;Add&quot; button.
+            </BlankApi>
+          )}
+          {!!filteredApiList.tags?.length && (
+            <ApiList apiList={filteredApiList} onClickAPI={onClickAPI} />
+          )}
+        </SubItem.Item>
 
-      {!!filteredApiList.tags?.length && (
-        <ApiList apiList={filteredApiList} onClickAPI={onClickAPI} />
-      )}
-      {!filteredApiList.tags?.length && <BlankApi />}
+        <SubItem.Item name="Sequence List">
+          <div>API 순서 변경</div>
+        </SubItem.Item>
+      </SubItem>
+
       <SettingDrawer isOpen={open} onClose={closeDrawer} />
     </div>
   );

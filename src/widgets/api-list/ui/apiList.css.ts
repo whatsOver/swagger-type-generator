@@ -5,12 +5,12 @@ export const ApiListStyle = {
   ApiList: style({
     display: "flex",
     width: "100%",
+    boxSizing: "border-box",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
     listStyle: "none",
     margin: 0,
-    padding: "0 1rem",
     border: 0,
   }),
 

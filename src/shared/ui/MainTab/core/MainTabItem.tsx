@@ -1,7 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-
-import { mainTabItem } from "./MinTabItem.css";
+import { mainTabItem } from "./MainTabItem.css";
 
 type HTMLTagProps = Omit<
   React.HTMLProps<HTMLElement>,
