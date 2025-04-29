@@ -86,7 +86,7 @@ export const apiListStyle = {
     padding: "3px ",
     borderRadius: "10px",
     cursor: "pointer",
-    width: "80%",
+    width: "100%",
     marginBottom: "10px",
     ":hover": {
       opacity: 0.8,
@@ -109,7 +109,7 @@ export const apiListStyle = {
     flexDirection: "row",
     alignItems: "center",
     columnGap: "10px",
-    width: "80%",
+    width: "100%",
   }),
 
   path: style({
@@ -139,5 +139,11 @@ export const apiListStyle = {
       opacity: 0.8,
     },
     transition: "opacity 0.3s ease",
+  }),
+
+  blankApiWrapper: style({
+    width: "100%",
+    padding: "0 1rem",
+    boxSizing: "border-box",
   }),
 };
