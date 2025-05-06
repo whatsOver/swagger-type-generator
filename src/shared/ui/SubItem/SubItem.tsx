@@ -76,26 +76,20 @@ export const useSubItem = <T extends string>({
     return forwardRef<HTMLDivElement, SubItemComponentProps>(
       ({ children }, ref) => (
         <>
-          {/* Container -> div with className */}
           <div ref={ref} className={container}>
-            {/* TabContainer -> div with className */}
             <div className={tabContainer}>
               {steps.map((step: T, idx: number) => {
                 const isActive = itemStatus[step]?.isActive || false;
                 return (
-                  // TabButton -> button with recipe className
                   <button
                     key={step}
                     className={tabButton({
                       state: isActive ? "on" : undefined,
                     })}
                     onClick={() => handleItemClick(step)}
-                    aria-selected={isActive} // aria-selected 유지
+                    aria-selected={isActive}
                   >
-                    {/* 제거된 tabContentContainer div 제거 */}
-                    {/* <div className={tabContentContainer}> */}
                     <Text size={400}>{items[idx]}</Text>
-                    {/* </div> */}
                   </button>
                 );
               })}
@@ -105,7 +99,6 @@ export const useSubItem = <T extends string>({
         </>
       )
     );
-    // handleItemClick을 의존성 배열에 추가
   }, [itemStatus, items, steps, handleItemClick]);
 
   const ItemComponent = useCallback(
@@ -113,10 +106,7 @@ export const useSubItem = <T extends string>({
       const isActive = itemStatus[name]?.isActive || false;
 
       return (
-        <>
-          {/* className="SubItem__contents" -> subItemContents 스타일 적용 */}
-          {isActive && <div className={subItemContents}>{children}</div>}
-        </>
+        <>{isActive && <div className={subItemContents}>{children}</div>}</>
       );
     },
     [itemStatus]
