@@ -13,8 +13,7 @@ import Dropdown from "@/shared/ui/Dropdown";
 import Header from "@/shared/ui/Header";
 import Search from "@/shared/ui/search/Search";
 import { useSubItem } from "@/shared/ui/SubItem/SubItem";
-import BlankApi from "@/widgets/api-list/ui/blank/BlankApi";
-import { ApiList } from "@/widgets/api-list/ui/normal-list/ApiList";
+import { DocsApiList } from "@/widgets/api-list/ui/docs-api-list/DocsApiList";
 import SettingDrawer from "@/widgets/setting/ui/setting-drawer/SettingDrawer";
 import SettingModal from "@/widgets/setting/ui/setting-modal/SettingModal";
 import { useEffect, useState } from "react";
@@ -126,16 +125,7 @@ export const DocsApiListPage = ({
           <div className={apiListStyle.searchWrapper}>
             <Search value={search} onChange={onChange} />
           </div>
-          {!filteredApiList.tags?.length && (
-            <BlankApi>
-              There is no API
-              <br />
-              Please add API with the &quot;Add&quot; button.
-            </BlankApi>
-          )}
-          {!!filteredApiList.tags?.length && (
-            <ApiList apiList={filteredApiList} onClickAPI={onClickAPI} />
-          )}
+          <DocsApiList apiList={apiList} onClickAPI={onClickAPI} />
         </SubItem.Item>
 
         <SubItem.Item name="Sequence List">
