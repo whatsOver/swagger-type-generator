@@ -25,7 +25,6 @@ const STEPS = ["API List", "Sequence List"] as const;
 
 type DocsApiListPageProps = DocsApiListFunnelProps & {
   onClickAdd: () => void;
-  onClickChangeOrder: () => void;
   onClickDelete: () => void;
   onClickBringFromDocs: () => void;
 };
@@ -33,7 +32,6 @@ type DocsApiListPageProps = DocsApiListFunnelProps & {
 export const DocsApiListPage = ({
   id,
   onClickAdd,
-  onClickChangeOrder,
   onClickDelete,
   onClickBringFromDocs,
 }: DocsApiListPageProps) => {
@@ -81,7 +79,7 @@ export const DocsApiListPage = ({
 
   const { SubItem } = useSubItem({
     steps: STEPS,
-    items: ["API 추가", "API 순서 변경", "API 삭제"],
+    items: ["API Docs", "API Sequence"],
   });
 
   return (
@@ -95,9 +93,6 @@ export const DocsApiListPage = ({
             <Dropdown>
               <Dropdown.Trigger as={<Button color="purple">Edit</Button>} />
               <Dropdown.Modal>
-                <Dropdown.Item onClick={onClickChangeOrder}>
-                  Change Order
-                </Dropdown.Item>
                 <Dropdown.Item onClick={onClickDelete}>
                   Delete Sequence
                 </Dropdown.Item>

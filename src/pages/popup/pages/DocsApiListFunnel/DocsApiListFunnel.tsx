@@ -38,14 +38,12 @@ export const DocsApiListFunnel = () => {
           id={docId}
           onNext={() => setStep("API_데이터_입력_페이지")}
           onClickAdd={() => setStep("META_데이터_입력_페이지")}
-          onClickChangeOrder={() => setStep("API_데이터_입력_페이지")}
           onClickDelete={() => setStep("API_문서_삭제_페이지")}
           onClickBringFromDocs={() => setStep("API_문서_검색_페이지")}
         />
       </Funnel.Step>
       <Funnel.Step name="API_문서_검색_페이지">
         <DocsApiSearchPage
-          id={docId}
           apis={apis}
           onNext={() => setStep("API_문서_리스트_페이지")}
         />

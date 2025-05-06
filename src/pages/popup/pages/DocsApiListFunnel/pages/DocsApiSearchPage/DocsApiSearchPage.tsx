@@ -13,16 +13,11 @@ import { apiSearchStyles } from "../../../ScenarioFunnel/pages/ApiSearchPage/api
 import { useHandleSaveApi } from "./module/hooks/useHandleSaveApi";
 
 interface DocsApiSearchPageProps {
-  id: string;
   apis: APIWithOrder[];
   onNext: () => void;
 }
 
-export const DocsApiSearchPage = ({
-  id,
-  apis,
-  onNext,
-}: DocsApiSearchPageProps) => {
+export const DocsApiSearchPage = ({ apis, onNext }: DocsApiSearchPageProps) => {
   const { loading, apiList, filteredApiList, setFilteredApiList } =
     useHandleApiList();
 
