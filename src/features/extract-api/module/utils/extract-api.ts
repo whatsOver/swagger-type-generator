@@ -84,7 +84,7 @@ export const extractTagsAndEndpoints = (
 
   Object.keys(swaggerJson.paths).forEach((path) => {
     Object.keys(swaggerJson.paths[path]).forEach((method) => {
-      const tag = swaggerJson.paths[path][method].tags[0];
+      const tag = swaggerJson.paths[path][method]?.tags?.[0];
       if (!tags.includes(tag)) {
         tags.push(tag);
       }
