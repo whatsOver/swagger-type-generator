@@ -8,6 +8,7 @@ interface SearchProps {
 
 const useSearch = ({ apiList, setFilteredApiList }: SearchProps) => {
   const [search, setSearch] = useState("");
+
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
     setFilteredApiList((prev) => ({
