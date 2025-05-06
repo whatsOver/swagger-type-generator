@@ -1,5 +1,5 @@
-import { useSwaggerDocStore } from "@/entities/docs/model/store/document-store";
 import { useGETDocs } from "@/entities/swagger/api/get-document";
+import { useSwaggerDocStore } from "@/entities/swagger/model/store/swaggerDocsStore";
 import { Schemas } from "@/entities/swagger/types";
 import { FormValues } from "@/features/request-api/module/hooks/useForm";
 import { vars } from "@/shared/ui/styles/theme.css";

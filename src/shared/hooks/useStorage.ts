@@ -1,4 +1,4 @@
-import { useSyncExternalStore } from "react";
+import { useMemo, useSyncExternalStore } from "react";
 import { storage, StorageFactory } from "../module/storageFactory";
 
 /**
@@ -8,11 +8,7 @@ import { storage, StorageFactory } from "../module/storageFactory";
  * @returns 최신 스토리지 상태
  */
 export function useStorage<T extends object>(factory: StorageFactory<T>): T {
-  return useSyncExternalStore(
-    factory.subscribe,
-    factory.getSnapshot,
-    factory.getSnapshot
-  );
+  return useSyncExternalStore(factory.subscribe, factory.getSnapshot);
 }
 
 /**
@@ -26,16 +22,20 @@ export function useKeyStorage<T extends object>(
   key: string,
   initialState: T
 ): [T, (value: T | ((prev: T) => T)) => Promise<void>] {
-  const storageInstance = storage<T>(key, initialState);
+  const storageInstance = useMemo(() => storage<T>(key, initialState), [key]);
   const state = useStorage(storageInstance);
 
-  const setState = async (value: T | ((prev: T) => T)): Promise<void> => {
-    await storageInstance.set(
-      typeof value === "function"
-        ? (prev) => (value as (prev: T) => T)(prev)
-        : value
-    );
-  };
+  const setState = useMemo(
+    () =>
+      async (value: T | ((prev: T) => T)): Promise<void> => {
+        await storageInstance.set(
+          typeof value === "function"
+            ? (prev) => (value as (prev: T) => T)(prev)
+            : value
+        );
+      },
+    [storageInstance]
+  );
 
   return [state, setState];
 }

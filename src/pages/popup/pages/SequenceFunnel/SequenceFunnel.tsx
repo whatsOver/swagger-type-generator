@@ -1,16 +1,13 @@
-import {
-  SequenceItemType,
-  createSequence,
-  sequenceStorage,
-} from "@/entities/sequence/model/sequence-store";
+import { useSequenceStore } from "@/entities/sequence/hooks/useSequenceStore";
+import { SequenceItemType } from "@/entities/sequence/types/sequence";
 import { extractNonEmptyArrayKeys } from "@/shared/hooks/funnel/models";
 import { useFunnel } from "@/shared/hooks/funnel/useFunnel";
 import { navigationPath } from "@/shared/hooks/useRouter";
 import { useHandleApiList } from "@/widgets/api-list/module/hooks/useHandleApiList";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import DeleteSequencePage from "../Delete/DeleteSequencePage";
-import ReorderSequencePage from "../Reorder/ReorderSequencePage";
-import SequencePage from "../Sequence/SequencePage";
+import { DeleteSequencePage } from "./pages/DeleteSequencePage/DeleteSequencePage";
+import { ReorderSequencePage } from "./pages/ReorderSequencePage/ReorderSequencePage";
+import { SequencePage } from "./pages/SequencePage/SequencePage";
 
 export interface SequenceFunnelProps {
   swaggerTitle: string;
@@ -22,7 +19,7 @@ export interface SequenceFunnelProps {
 // NOTE : 시퀀스 페이지
 // 스퀀스 : 사용자의 API 목록을 담을 수 있는 목록
 
-const SequenceFunnel = () => {
+export const SequenceFunnel = () => {
   const [Funnel, setStep] = useFunnel(
     extractNonEmptyArrayKeys(navigationPath.시나리오_관리_퍼널())
   );
@@ -32,23 +29,23 @@ const SequenceFunnel = () => {
   const [sequenceList, setSequenceList] = useState<SequenceItemType[]>([]);
   const [swaggerTitle, setSwaggerTitle] = useState<string>("");
 
+  const { sequences, createSequence } = useSequenceStore();
+
   useEffect(() => {
     if (!swaggerTitle.length) return;
-    const data = sequenceStorage.getSnapshot();
+    const data = sequences;
     const keys = Object.keys(data);
     if (keys.includes(swaggerTitle)) return;
     createSequence(swaggerTitle);
-  }, [swaggerTitle, sequenceStorage.getSnapshot()]);
+  }, [swaggerTitle, sequences]);
 
   useEffect(() => {
     if (!apiDocsData) return;
     if (!apiDocsData.info.title) return;
     const title = apiDocsData.info.title;
     setSwaggerTitle(title);
-    sequenceStorage.subscribe((sequence) => {
-      setSequenceList(sequence[title]);
-    });
-  }, [apiDocsData]);
+    setSequenceList(sequences[title]);
+  }, [apiDocsData, sequences]);
 
   return (
     <Funnel>
@@ -77,5 +74,3 @@ const SequenceFunnel = () => {
     </Funnel>
   );
 };
-
-export default SequenceFunnel;

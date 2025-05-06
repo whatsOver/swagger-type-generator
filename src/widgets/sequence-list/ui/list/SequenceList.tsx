@@ -1,4 +1,4 @@
-import { SequenceItemType } from "@/entities/sequence/model/sequence-store";
+import { SequenceItemType } from "@/entities/sequence/types/sequence";
 import { SequenceItemWithStatus } from "../item/SequenceItemWithStatus";
 
 interface SequenceListProps {

@@ -1,22 +1,27 @@
+import { APIWithOrder } from "@/entities/sequence/types/sequence";
 import ListItem from "@/shared/ui/ListItem";
 import APIItem from "@/widgets/api-list/ui/api-item/ApiItem";
-import { APIWithOrder } from "../../../../entities/sequence/model/sequence-store";
 import StatusIcon from "../icon/StatusIcon";
 
 interface ScenarioItemProps {
   api: APIWithOrder;
-  onClick: () => void;
+  onClick?: () => void;
+  withPadding?: boolean;
+  showStatus?: boolean;
 }
 
-const ScenarioItem = ({ api, onClick }: ScenarioItemProps) => {
+export const ScenarioItem = ({
+  api,
+  onClick,
+  withPadding = true,
+  showStatus = true,
+}: ScenarioItemProps) => {
   return (
-    <ListItem onClick={onClick} height={80} withPadding>
+    <ListItem onClick={onClick} height={80} withPadding={withPadding}>
       <ListItem.Left
-        left={<StatusIcon iconType={api.iconType} />}
+        left={showStatus && <StatusIcon iconType={api.iconType} />}
         middle={<APIItem api={api.api} />}
       />
     </ListItem>
   );
 };
-
-export default ScenarioItem;

@@ -12,6 +12,7 @@ const APIItem = ({ api, onClick }: APIItemProps) => {
     <div
       onClick={() => onClick && onClick()}
       style={{
+        boxSizing: "border-box",
         backgroundColor: vars.methodBackgroundColors[api.method],
         border: `2px solid ${vars.methodColors[api.method]}`,
       }}
@@ -29,7 +30,7 @@ const APIItem = ({ api, onClick }: APIItemProps) => {
         </div>
         <span className={apiItemStyles.path}>{api.path}</span>
       </div>
-      <span className={apiItemStyles.description}>{api.summary}</span>
+      <span className={apiItemStyles.description}>{api.description}</span>
     </div>
   );
 };

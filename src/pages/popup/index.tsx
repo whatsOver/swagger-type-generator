@@ -1,15 +1,19 @@
-import { QueryProvider } from "@/app/providers/query-provider.js";
-import { ScrollToTop } from "@/shared/ui/ScrollToTop.js";
 import { createRoot } from "react-dom/client";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
+
+import { QueryProvider } from "@/app/providers/query-provider.js";
+import { ScrollToTop } from "@/shared/ui/ScrollToTop.js";
+
 import refreshOnUpdate from "virtual:reload-on-update-in-view";
+import { DocsApiListFunnel } from "./pages/DocsApiListFunnel/DocsApiListFunnel.js";
+import { DocsFunnel } from "./pages/MyDocsFunnel/DocsFunnel.js";
+import { MultipleTestPage } from "./pages/MultipleTestPage/MultipleTestPage.js";
+import { RequestPage } from "./pages/RequestPage/RequestPage.js";
+import { ScenarioFunnel } from "./pages/ScenarioFunnel/ScenarioFunnel.js";
+import { SwaggerDocsPage } from "./pages/SwaggerDocsPage.tsx/SwaggerDocsPage.js";
+
 import "../../shared/ui/styles/reset.css.js";
 import "./index.css";
-import Popup from "./pages/ApiList/ui/ApiList.js";
-import MultipleTestPage from "./pages/Multiple/MultipleTestPage.js";
-import Request from "./pages/Request/Request";
-import ScenarioFunnel from "./pages/ScenarioFunnel/ScenarioFunnel.js";
-import SequenceFunnel from "./pages/SequenceFunnel/SequenceFunnel.js";
 
 refreshOnUpdate("pages/popup");
 
@@ -25,14 +29,15 @@ function init() {
       <MemoryRouter>
         <ScrollToTop>
           <Routes>
-            <Route path="/" element={<Popup />} />
-            <Route path="/request" element={<Request />} />
-            <Route path="/sequence" element={<SequenceFunnel />} />
+            <Route path="*" element={<SwaggerDocsPage />} />
+            <Route path="/request" element={<RequestPage />} />
             <Route path="/sequence/:id" element={<ScenarioFunnel />} />
             <Route
               path="/sequence/:id/test/:apiId"
               element={<MultipleTestPage />}
             />
+            <Route path="/docs" element={<DocsFunnel />} />
+            <Route path="/docs/:id" element={<DocsApiListFunnel />} />
           </Routes>
         </ScrollToTop>
       </MemoryRouter>

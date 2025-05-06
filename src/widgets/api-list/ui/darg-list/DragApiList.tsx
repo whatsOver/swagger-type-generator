@@ -1,7 +1,7 @@
+import { APIWithOrder } from "@/entities/sequence/types/sequence";
 import DragAndDrop from "@/shared/ui/DragAndDrop";
 import { Dispatch } from "react";
 import { IoMdMenu as MenuIcon } from "react-icons/io";
-import { APIWithOrder } from "../../../../entities/sequence/model/sequence-store";
 import APIItem from "../api-item/ApiItem";
 import { dragApiStyles } from "./dragApi.css";
 

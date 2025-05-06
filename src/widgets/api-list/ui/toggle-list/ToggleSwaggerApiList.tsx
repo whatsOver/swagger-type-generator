@@ -1,12 +1,12 @@
-import { API, ApiList } from "@/entities/docs/model/types/docs";
-import { APIWithOrder } from "@/entities/sequence/model/sequence-store";
+import { API, ApiListType } from "@/entities/docs/model/types/docs";
+import { APIWithOrder } from "@/entities/sequence/types/sequence";
 import CheckBox from "@/shared/ui/CheckBox";
 import { vars } from "@/shared/ui/styles/theme.css";
 import APIItem from "@/widgets/api-list/ui/api-item/ApiItem";
 import { ApiListStyle } from "../apiList.css";
 
 interface ApiListProps {
-  ApiList: ApiList;
+  ApiList: ApiListType;
   filterApiList: APIWithOrder[];
   onClickAPI: (key: string, api: API) => void;
 }

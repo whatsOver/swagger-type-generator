@@ -2,7 +2,8 @@ import { EMPTY_RESPONSE } from "@/entities/api/config/status";
 import { useAuthStore } from "@/entities/auth/model/auth-store";
 import { APIWithParamsAndBodyAndHost } from "@/entities/docs/model/types/docs";
 import { Schemas } from "@/entities/swagger/types";
-import { Mode } from "@/pages/popup/pages/Request/Request";
+import { Mode } from "@/pages/popup/pages/RequestPage/RequestPage";
+import { checkPathStartWithHttp } from "@/shared/util/api/api";
 import axios, { RawAxiosRequestHeaders } from "axios";
 import { FormEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -33,12 +34,10 @@ export type OmitHandleFormValues = Omit<
 
 export const useHandleRequest = ({
   api,
-  setMode,
   initialFormValues,
+  setMode,
   onSuccess,
 }: HandleRequest): ReturnUseHandleRequest => {
-  // FIRST RENDER
-
   const token = useAuthStore((state) => state.token);
 
   // INTERACTION
@@ -55,15 +54,13 @@ export const useHandleRequest = ({
   // 1-1. 유저 > params, body 입력 > 초기값 설정
   useEffect(() => {
     if (!api) return;
-    if (!initialFormValues) return;
-    // if (Object.keys(initialFormValues).length) return;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const initialValues: Record<string, any> = {};
+
+    const initialValues: Record<string, unknown> = {};
     api.params?.forEach((param) => {
       if (param.schema?.default) {
         initialValues[param.name] = param.schema.default;
       }
-      if (initialFormValues[param.name]) {
+      if (initialFormValues && initialFormValues[param.name]) {
         initialValues[param.name] = initialFormValues[param.name];
       } else if (param.example && param.required) {
         initialValues[param.name] = param.example;
@@ -75,13 +72,14 @@ export const useHandleRequest = ({
         if (api.body.properties[key].default) {
           initialValues[key] = api.body.properties[key].default;
         }
-        if (initialFormValues[key]) {
+        if (initialFormValues && initialFormValues[key]) {
           initialValues[key] = initialFormValues[key];
         } else if (api.body.properties[key].example) {
           initialValues[key] = api.body.properties[key].example;
         }
       });
-    setFormValues(initialValues);
+
+    setFormValues(initialValues as FormValues);
   }, [api, initialFormValues, setFormValues]);
 
   // 2. 유저 > 요청 버튼 클릭
@@ -114,7 +112,9 @@ export const useHandleRequest = ({
         : { "Content-Type": api.contentType };
       const response = await axios({
         method: api.method,
-        url: api.host + transformPath,
+        url: checkPathStartWithHttp(transformPath)
+          ? transformPath
+          : api.host + transformPath,
         params: api.params ? getQueryParams(api.params, formValues) : {},
         data: getBodyData(api.body),
         headers,

@@ -33,7 +33,7 @@ export const buttonStyles = style({
 
 export const blueButtonStyles = style({
   width: "40px",
-  height: "30px",
+  height: "32px",
   fontSize: "11px",
   fontWeight: "bold",
   backgroundColor: vars.color.blue,
@@ -46,7 +46,7 @@ export const blueButtonStyles = style({
 
 export const greenButtonStyles = style({
   width: "40px",
-  height: "30px",
+  height: "32px",
   fontSize: "11px",
   fontWeight: "bold",
   backgroundColor: vars.color.green,
@@ -59,7 +59,7 @@ export const greenButtonStyles = style({
 
 export const redButtonStyles = style({
   width: "40px",
-  height: "30px",
+  height: "32px",
   fontSize: "11px",
   fontWeight: "bold",
   backgroundColor: vars.color.red,
@@ -72,7 +72,7 @@ export const redButtonStyles = style({
 
 export const orangeButtonStyles = style({
   width: "40px",
-  height: "30px",
+  height: "32px",
   fontSize: "11px",
   fontWeight: "bold",
   backgroundColor: vars.color.orange,
@@ -85,7 +85,7 @@ export const orangeButtonStyles = style({
 
 export const purpleButtonStyles = style({
   width: "40px",
-  height: "30px",
+  height: "32px",
   fontSize: "11px",
   fontWeight: "bold",
   backgroundColor: vars.color.purple,
@@ -97,14 +97,25 @@ export const purpleButtonStyles = style({
 });
 
 export const purpleLargeButtonStyles = style({
-  width: "80px",
-  height: "30px",
+  height: "32px",
   fontSize: "11px",
   fontWeight: "bold",
   backgroundColor: vars.color.purple,
   selectors: {
     "&:active": {
       backgroundColor: vars.color.darkPurple,
+    },
+  },
+});
+
+export const grayButtonStyles = style({
+  height: "32px",
+  fontSize: "11px",
+  fontWeight: "bold",
+  backgroundColor: vars.color.grey,
+  selectors: {
+    "&:active": {
+      backgroundColor: vars.color.darkGrey,
     },
   },
 });

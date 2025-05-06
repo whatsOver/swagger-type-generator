@@ -1,9 +1,14 @@
-import { style, keyframes } from "@vanilla-extract/css";
+import { keyframes, style } from "@vanilla-extract/css";
 import { vars } from "./theme.css";
 
 const showUp = keyframes({
-  "0%": { opacity: 0 },
-  "100%": { opacity: 1 },
+  "0%": { opacity: 0, transform: "translateY(10px)" },
+  "100%": { opacity: 1, transform: "translateY(0)" },
+});
+
+const showDown = keyframes({
+  "0%": { opacity: 0, transform: "translateY(-10px)" },
+  "100%": { opacity: 1, transform: "translateY(0)" },
 });
 
 const showOut = keyframes({
@@ -16,11 +21,14 @@ export const dropDownStyles = {
     position: "fixed",
     display: "flex",
     backgroundColor: vars.color.lightGrey,
-    width: "240px",
     flexDirection: "column",
     padding: "12px 0",
     borderRadius: "8px",
     zIndex: 1000,
+    maxHeight: "300px",
+    overflowY: "auto",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+    transition: "opacity 0.2s ease-in-out",
   }),
   listButtonStyle: style({
     display: "flex",
@@ -47,5 +55,9 @@ export const dropDownStyles = {
   hideAnimation: style({
     animation: `${showOut} 0.2s ease-in-out`,
     display: "none",
+  }),
+  dropdownTop: style({
+    animation: `${showDown} 0.2s ease-in-out`,
+    borderRadius: "8px",
   }),
 };

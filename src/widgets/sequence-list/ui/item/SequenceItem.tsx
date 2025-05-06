@@ -1,7 +1,7 @@
 import { vars } from "@/shared/ui/styles/theme.css";
 import classNames from "classnames";
 
-import type { SequenceItemType } from "@/entities/sequence/model/sequence-store";
+import type { SequenceItemType } from "@/entities/sequence/types/sequence";
 import { sequenceItemStyles } from "./sequenceItem.css";
 
 export interface SequenceItemProps extends SequenceItemType {
@@ -38,7 +38,7 @@ export const SequenceItem = ({ id, title, apiList, onClick }: ItemProps) => {
             key={api.api.path}
           >
             <span className={sequenceItemStyles.description}>
-              {api.api.description}
+              {api.api.description || api.api.path}
             </span>
           </div>
         ))}

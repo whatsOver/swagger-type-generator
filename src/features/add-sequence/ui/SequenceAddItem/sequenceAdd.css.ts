@@ -7,7 +7,6 @@ export const sequenceAddItemStyles = {
     alignItems: "center",
     height: "80px",
     padding: "0.625rem 1.25rem",
-    borderRadius: "10px",
     backgroundColor: vars.color.grey,
     marginBottom: "1rem",
     columnGap: "1rem",

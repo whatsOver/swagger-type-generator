@@ -1,14 +1,14 @@
-import { API, ApiList } from "@/entities/docs/model/types/docs";
+import { API, ApiListType } from "@/entities/docs/model/types/docs";
 import { vars } from "@/shared/ui/styles/theme.css";
 import APIItem from "../api-item/ApiItem";
 import { ApiListStyle } from "../apiList.css";
 
 interface ApiListProps {
-  apiList: ApiList;
+  apiList: ApiListType;
   onClickAPI: (api: API) => void;
 }
 
-const ApiList = ({ apiList, onClickAPI }: ApiListProps) => {
+export const ApiList = ({ apiList, onClickAPI }: ApiListProps) => {
   return (
     <ul className={ApiListStyle.ApiList}>
       {apiList.tags?.map((tag) => (
@@ -37,5 +37,3 @@ const ApiList = ({ apiList, onClickAPI }: ApiListProps) => {
     </ul>
   );
 };
-
-export default ApiList;

@@ -18,6 +18,7 @@ const getSwaggerDocsFromPage = async (): Promise<SwaggerDocs> => {
         { message: "GET_SWAGGER_DOCS" },
         (response) => {
           if (chrome.runtime.lastError) {
+            console.error(chrome.runtime.lastError);
           } else {
             resolve(response.data);
           }
@@ -32,6 +33,7 @@ const getSwaggerDocsFromPage = async (): Promise<SwaggerDocs> => {
           { message: "GET_SWAGGER_DOCS" },
           (response) => {
             if (chrome.runtime.lastError) {
+              console.error(chrome.runtime.lastError);
             } else {
               resolve(response.data);
             }

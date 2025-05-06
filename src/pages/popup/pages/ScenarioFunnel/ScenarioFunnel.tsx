@@ -1,14 +1,14 @@
-import { useSequence } from "@/entities/sequence/hooks/useSequence";
-import { APIWithOrder } from "@/entities/sequence/model/sequence-store";
+import { useSequenceStore } from "@/entities/sequence/hooks/useSequenceStore";
+import { APIWithOrder } from "@/entities/sequence/types/sequence";
 import { extractNonEmptyArrayKeys } from "@/shared/hooks/funnel/models";
 import { useFunnel } from "@/shared/hooks/funnel/useFunnel";
 import { navigationPath } from "@/shared/hooks/useRouter";
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import APISearchPage from "../APISearch/APISearchPage";
-import DeleteAPIPage from "../Delete/DeleteApiage";
-import ReorderApiPage from "../Reorder/ReorderApiPage";
-import Scenario from "../Scenario/Scenario";
+import { APISearchPage } from "./pages/ApiSearchPage/APISearchPage";
+import { DeleteApiPage } from "./pages/DeleteApiPage/DeleteApiPage";
+import { ReorderApiPage } from "./pages/ReorderApiPage/ReorderApiPage";
+import { ScenarioPage } from "./pages/Scenario/ScenarioPage";
 
 export interface ScenarioFunnelProps {
   apis: APIWithOrder[];
@@ -20,8 +20,7 @@ export interface ScenarioFunnelProps {
 // NOTE : 시나리오 페이지
 // 사용자의 시나리오를 정의하고 시나리오에 맞는
 // API를 추가하고 순서를 편집하고 삭제할 수 있는 페이지
-
-const ScenarioFunnel = () => {
+export const ScenarioFunnel = () => {
   const { id: sequenceId } = useParams<{ id: string }>();
   const locationState = useLocation().state as {
     swaggerTitle: string;
@@ -31,8 +30,8 @@ const ScenarioFunnel = () => {
   const [scenarioTitle, setScenarioTitle] = useState<string>("");
   const [apis, setAPIs] = useState<APIWithOrder[]>([]);
 
-  // useSequence 훅 사용
-  const { sequences, getSequenceById } = useSequence();
+  // useSequenceStore 훅 사용
+  const { sequences, getSequenceById } = useSequenceStore();
 
   useEffect(() => {
     if (!locationState) return;
@@ -48,7 +47,7 @@ const ScenarioFunnel = () => {
   useEffect(() => {
     if (!swaggerTitle) return;
 
-    // 초기 데이터 로드 - useSequence 사용
+    // 초기 데이터 로드 - useSequenceStore 사용
     const sequenceData = getSequenceById(swaggerTitle, Number(sequenceId));
 
     if (sequenceData) {
@@ -60,7 +59,7 @@ const ScenarioFunnel = () => {
   return (
     <Funnel>
       <Funnel.Step name="시나리오_페이지">
-        <Scenario
+        <ScenarioPage
           sequenceId={sequenceId}
           apis={apis}
           title={scenarioTitle}
@@ -92,7 +91,7 @@ const ScenarioFunnel = () => {
         />
       </Funnel.Step>
       <Funnel.Step name="삭제_페이지">
-        <DeleteAPIPage
+        <DeleteApiPage
           apis={apis}
           sequenceId={sequenceId}
           swaggerTitle={swaggerTitle}
@@ -105,5 +104,3 @@ const ScenarioFunnel = () => {
     </Funnel>
   );
 };
-
-export default ScenarioFunnel;

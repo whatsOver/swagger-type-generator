@@ -8,10 +8,11 @@ export const inputStyle = {
     border: "none",
     color: vars.color.white,
     borderRadius: "10px",
-    height: "40px",
+    height: "36px",
     width: "100%",
-    padding: "0 10px",
+    padding: "0 5px",
     transition: "all 0.2s ease-in-out",
+    boxSizing: "border-box",
     ":focus": {
       outline: "none",
       backgroundColor: vars.color.lightGrey,

@@ -3,7 +3,7 @@ import { vars } from "./theme.css";
 
 export const drawerStyles = {
   container: style({
-    position: "absolute",
+    position: "fixed",
     top: 0,
     left: 0,
     height: "100%",
