@@ -1,7 +1,8 @@
+import { noop } from "@/shared/util/common";
 import { useEffect } from "react";
 
 export default function App() {
-  useEffect(() => {}, []);
+  useEffect(noop, []);
 
   return <div className="content-view">content view</div>;
 }

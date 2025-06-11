@@ -11,12 +11,13 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { noop } from "../util/common";
 import { dropDownStyles } from "./styles/dropdown.css";
 
 const DropdownContext = React.createContext<{
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}>({ isOpen: false, setIsOpen: () => {} });
+}>({ isOpen: false, setIsOpen: noop });
 
 const Dropdown = ({ children }: { children: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);

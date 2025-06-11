@@ -2,6 +2,7 @@
 import Button from "@/shared/ui/Button";
 import Modal from "@/shared/ui/Modal";
 import { vars } from "@/shared/ui/styles/theme.css";
+import { noop } from "@/shared/util/common";
 import LogoImg from "@assets/img/react-query-logo.png";
 import { IoIosSettings as SettingIcon } from "react-icons/io";
 import { settingModalStyle } from "./settingModal.css";
@@ -21,7 +22,7 @@ const SettingModal = ({
     <Modal>
       <Modal.Trigger
         as={
-          <button onClick={() => {}}>
+          <button onClick={noop}>
             <SettingIcon size={24} color={vars.color.lightGreen} />
           </button>
         }

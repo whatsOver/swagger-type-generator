@@ -17,6 +17,7 @@ import { Flip, ToastContainer } from "react-toastify";
 import { apiListStyle } from "../ApiListPage/ui/apiList.css";
 import { requestStyles } from "./request.css";
 
+import { noop } from "@/shared/util/common";
 import "react-toastify/dist/ReactToastify.css";
 
 export type Mode =
@@ -103,8 +104,7 @@ export const RequestPage = () => {
             <Modal>
               <Modal.Trigger
                 as={
-                  // eslint-disable-next-line @typescript-eslint/no-empty-function
-                  <Button onClick={() => {}} type="submit">
+                  <Button onClick={noop} type="submit">
                     SUBMIT
                   </Button>
                 }
