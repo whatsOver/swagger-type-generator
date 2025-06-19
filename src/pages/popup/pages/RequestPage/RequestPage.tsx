@@ -156,26 +156,32 @@ export const RequestPage = () => {
             <Modal>
               <Modal.Trigger
                 as={
-                  <div onClick={noop}>
+                  <div
+                    onClick={noop}
+                    className={requestStyles.modalTriggerContainer}
+                  >
                     <div className={requestStyles.typeExtractionContainer}>
                       <div className={requestStyles.typeExtractionButtons}>
                         <Button
                           type="button"
-                          color="typeExtraction"
+                          color="blue"
+                          style={{ flex: 1 }}
                           onClick={() => {
                             setSchemaMode("REQUEST_TYPE");
                           }}
                         >
-                          📝 Request Type
+                          Extract Request
                         </Button>
+
                         <Button
                           type="button"
-                          color="typeExtraction"
+                          color="green"
+                          style={{ flex: 1 }}
                           onClick={() => {
                             setSchemaMode("RESPONSE_TYPE");
                           }}
                         >
-                          📄 Response Type
+                          Extract Response
                         </Button>
                       </div>
                     </div>
