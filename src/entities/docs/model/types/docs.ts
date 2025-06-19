@@ -59,6 +59,7 @@ export interface APIWithParamsOrBody extends API {
   contentType: ContentType;
   params?: Parameters[];
   body?: Schemas;
+  typeInfo?: DetailSchema;
 }
 
 export interface APIWithParamsAndBodyAndHost extends APIWithParamsOrBody {

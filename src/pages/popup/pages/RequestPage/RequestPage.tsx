@@ -17,6 +17,7 @@ import { Flip, ToastContainer } from "react-toastify";
 import { apiListStyle } from "../ApiListPage/ui/apiList.css";
 import { requestStyles } from "./request.css";
 
+import { SchemaInfo } from "@/entities/swagger/types";
 import { noop } from "@/shared/util/common";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -29,24 +30,64 @@ export type Mode =
   | "LOADING"
   | "ZOD";
 
+type SchemaMode = "REQUEST_TYPE" | "RESPONSE_TYPE";
+
 export const RequestPage = () => {
   // FIRST RENDER
   const api = useLocation().state as APIWithParamsAndBodyAndHost;
 
   const { params, body } = api;
+  const typeInfo = (api as any).typeInfo || (api as any).detailSchema;
 
   // INTERACTION
   // 1. mode 상태 관리
   const [mode, setMode] = useState<Mode>("RESPONSE");
+  const [schemaMode, setSchemaMode] = useState<SchemaMode | null>(null);
   // 2. modal 닫기
   const onCloseModal = () => {
     // modal 애니메이션 끝나고 mode 변경
     setTimeout(() => {
       setMode("RESPONSE");
+      setSchemaMode(null);
     }, 500);
   };
   // 3. modal 상태 초기화
   const initializeMode = useCallback(() => setMode("RESPONSE"), []);
+
+  const getJSONSchema = (typeSchema: SchemaInfo) => {
+    if (!typeSchema) {
+      return "No type available for this API";
+    }
+
+    const { properties, required } = typeSchema;
+    const jsonData: Record<string, any> = {};
+
+    Object.entries(properties).forEach(([key, value]) => {
+      const isRequired = required.includes(key);
+      const type = getTypeScriptType(value);
+      jsonData[isRequired ? key : `${key}?`] = type;
+    });
+
+    return jsonData;
+  };
+
+  const getTypeScriptType = (property: unknown): string => {
+    if (typeof property === "object" && property !== null) {
+      const prop = property as any;
+      if (prop.type === "string") {
+        if (prop.format === "date-time") return "string";
+        return "string";
+      }
+      if (prop.type === "integer" || prop.type === "number") return "number";
+      if (prop.type === "boolean") return "boolean";
+      if (prop.type === "array") {
+        const itemType = getTypeScriptType(prop.items);
+        return `${itemType}[]`;
+      }
+      if (prop.type === "object") return "object";
+    }
+    return "unknown";
+  };
 
   // 2. Request 비지니스 로직
   const { response, formValues, handleChange, handleSubmit, handleArray } =
@@ -54,6 +95,17 @@ export const RequestPage = () => {
       api,
       setMode,
     });
+
+  const currentCode = (() => {
+    if (schemaMode === "REQUEST_TYPE") {
+      return getJSONSchema(typeInfo?.requestType);
+    }
+
+    if (schemaMode === "RESPONSE_TYPE") {
+      return getJSONSchema(typeInfo?.responseType);
+    }
+    return response;
+  })();
 
   // 3. Code 비지니스 로직
   const {
@@ -64,7 +116,7 @@ export const RequestPage = () => {
     onClickFetch,
     onClickTS,
     onClickZod,
-  } = useHandleCode({ api, response, setMode });
+  } = useHandleCode({ api, response: currentCode, setMode });
 
   return (
     <div className={apiListStyle.app}>
@@ -104,14 +156,38 @@ export const RequestPage = () => {
             <Modal>
               <Modal.Trigger
                 as={
-                  <Button onClick={noop} type="submit">
-                    SUBMIT
-                  </Button>
+                  <div onClick={noop}>
+                    <div className={requestStyles.typeExtractionContainer}>
+                      <div className={requestStyles.typeExtractionButtons}>
+                        <Button
+                          type="button"
+                          color="typeExtraction"
+                          onClick={() => {
+                            setSchemaMode("REQUEST_TYPE");
+                          }}
+                        >
+                          📝 Request Type
+                        </Button>
+                        <Button
+                          type="button"
+                          color="typeExtraction"
+                          onClick={() => {
+                            setSchemaMode("RESPONSE_TYPE");
+                          }}
+                        >
+                          📄 Response Type
+                        </Button>
+                      </div>
+                    </div>
+                    <Button onClick={() => setSchemaMode(null)} type="submit">
+                      SUBMIT
+                    </Button>
+                  </div>
                 }
               />
               <Modal.Content>
                 {mode === "LOADING" && <Loading />}
-                {response && mode === "RESPONSE" && (
+                {schemaMode === null && response && mode === "RESPONSE" && (
                   <ModalCodeBlock
                     description="Response"
                     code={JSON.stringify(response, null, 2)}
@@ -123,6 +199,19 @@ export const RequestPage = () => {
                     onClickAxios={onClickAxios}
                     onClickFetch={onClickFetch}
                     onClickZod={onClickZod}
+                  />
+                )}
+                {schemaMode !== null && mode === "RESPONSE" && (
+                  <ModalCodeBlock
+                    description={schemaMode}
+                    code={JSON.stringify(currentCode, null, 2)}
+                    mode="RESPONSE"
+                    ref={codeRef}
+                    onClose={onCloseModal}
+                    onClickCopy={copyToClipboard}
+                    onClickTS={onClickTS}
+                    onClickAxios={onClickAxios}
+                    onClickFetch={onClickFetch}
                   />
                 )}
                 {mode === "TS" && (
