@@ -1,5 +1,6 @@
 import {
   ContentType,
+  DetailSchema,
   Information,
   Parameters,
   Schemas,
@@ -49,6 +50,7 @@ export interface API {
   path: string;
   summary: string;
   description: string;
+  detailSchema?: DetailSchema;
 }
 
 export interface APIWithParamsOrBody extends API {

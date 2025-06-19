@@ -2,6 +2,12 @@ import { API, APIWithParamsOrBody } from "@/entities/docs/model/types/docs";
 import {
   ContentType,
   DefaultComplexSchema,
+  DetailSchema,
+  Information,
+  RefArraySchema,
+  RefSchema,
+  Schema,
+  SchemaInfo,
   Schemas,
   SwaggerDocs,
 } from "@/entities/swagger/types";
@@ -50,6 +56,8 @@ export const transformApiFromSwagger = (
     }
   }
 
+  const detailSchema = extractTypeSchemaInfo(data, api);
+
   return {
     endpoint: `${method} ${path}`,
     method,
@@ -59,6 +67,7 @@ export const transformApiFromSwagger = (
     params: parameters,
     body,
     contentType,
+    detailSchema,
   };
 };
 
@@ -74,3 +83,72 @@ function transformDefaultComplexSchema(schema: DefaultComplexSchema): Schemas {
 
   return { type: "object", required, properties };
 }
+
+const extractSchemaInfo = (
+  schema: RefSchema | RefArraySchema | DefaultComplexSchema | Schema,
+  components: SwaggerDocs["components"]
+): SchemaInfo => {
+  if ("$ref" in schema) {
+    const typeName = schema.$ref.split("/")[3];
+    const schemaData = components.schemas[typeName];
+
+    return {
+      schema: schema.$ref,
+      typeName,
+      properties: schemaData.properties || {},
+      required: schemaData.required || [],
+      type: schemaData.type || "object",
+    };
+  }
+
+  return {
+    schema: "inline",
+    typeName: "inline",
+    properties: (schema as Schema).properties || {},
+    required: (schema as Schema).required || [],
+    type: (schema as Schema).type || "object",
+  };
+};
+
+const extractRequestType = (
+  methodData: Information,
+  components: SwaggerDocs["components"]
+): SchemaInfo | null => {
+  const requestBody = methodData?.requestBody;
+  if (!requestBody) return null;
+
+  const contentType = Object.keys(requestBody.content)[0] as ContentType;
+  const schema = requestBody.content[contentType]?.schema;
+  if (!schema) return null;
+
+  return extractSchemaInfo(schema, components);
+};
+
+const extractResponseType = (
+  methodData: Information,
+  components: SwaggerDocs["components"]
+): SchemaInfo | null => {
+  const responses = methodData?.responses;
+  if (!responses) return null;
+
+  const successResponse =
+    responses["200"] || responses["201"] || responses["202"];
+  if (!successResponse?.content) return null;
+
+  const contentType = Object.keys(successResponse.content)[0] as ContentType;
+  const schema = successResponse.content[contentType]?.schema;
+  if (!schema) return null;
+
+  return extractSchemaInfo(schema, components);
+};
+
+// reqeust, response Schema 추출
+const extractTypeSchemaInfo = (data: SwaggerDocs, api: API): DetailSchema => {
+  const pathData = data.paths[api.path];
+  const methodData = pathData[api.method.toLowerCase() as Method];
+
+  return {
+    requestType: extractRequestType(methodData, data.components),
+    responseType: extractResponseType(methodData, data.components),
+  };
+};

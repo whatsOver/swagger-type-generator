@@ -20,6 +20,28 @@ export type SwaggerFormat =
   | "date-time"
   | "password";
 
+export type RefSchema = {
+  $ref: string;
+};
+
+export type RefArraySchema = {
+  type: "array";
+  items: RefSchema;
+};
+
+export interface SchemaInfo {
+  schema: string;
+  typeName: string;
+  properties: Record<string, unknown>;
+  required: string[];
+  type: string;
+}
+
+export interface DetailSchema {
+  requestType: SchemaInfo | null;
+  responseType: SchemaInfo | null;
+}
+
 export interface Schema {
   title: string;
   type: string;
@@ -83,15 +105,6 @@ export type ContentType =
   | "multipart/form-data"
   | "application/x-www-form-urlencoded"
   | "*/*";
-
-type RefSchema = {
-  $ref: string;
-};
-
-type RefArraySchema = {
-  type: "array";
-  items: RefSchema;
-};
 
 export type DefaultComplexSchema = {
   title: string;
