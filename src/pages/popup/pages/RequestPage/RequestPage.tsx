@@ -58,7 +58,7 @@ export const RequestPage = () => {
   };
   // 3. modal 상태 초기화
   const initializeMode = useCallback(
-    () => dispatch({ type: "INITIALIZE" }),
+    () => dispatch({ type: "INITIALIZE_TYPE" }),
     []
   );
 
@@ -108,7 +108,13 @@ export const RequestPage = () => {
     <div className={apiListStyle.app}>
       <Header showBackButton />
       <div className={requestStyles.requestWrapper}>
-        <form className={requestStyles.body} onSubmit={handleSubmit}>
+        <form
+          className={requestStyles.body}
+          onSubmit={(e) => {
+            dispatch({ type: "SET_API_MODE", payload: "RESPONSE" });
+            handleSubmit(e);
+          }}
+        >
           <div className={requestStyles.apiItemContainer}>
             <APIItem api={api} />
           </div>
@@ -140,14 +146,11 @@ export const RequestPage = () => {
           </div>
           <div className={requestStyles.fixedButtonWrapper}>
             <Modal>
-              <Modal.Trigger
-                as={
-                  <div
-                    onClick={noop}
-                    className={requestStyles.modalTriggerContainer}
-                  >
-                    <div className={requestStyles.typeExtractionContainer}>
-                      <div className={requestStyles.typeExtractionButtons}>
+              <div className={requestStyles.modalTriggerContainer}>
+                <div className={requestStyles.typeExtractionContainer}>
+                  <div className={requestStyles.typeExtractionButtons}>
+                    <Modal.Trigger
+                      as={
                         <Button
                           type="button"
                           color="blue"
@@ -161,7 +164,10 @@ export const RequestPage = () => {
                         >
                           Extract Request
                         </Button>
-
+                      }
+                    />
+                    <Modal.Trigger
+                      as={
                         <Button
                           type="button"
                           color="green"
@@ -175,19 +181,18 @@ export const RequestPage = () => {
                         >
                           Extract Response
                         </Button>
-                      </div>
-                    </div>
-                    <Button
-                      onClick={() =>
-                        dispatch({ type: "SET_API_MODE", payload: "RESPONSE" })
                       }
-                      type="submit"
-                    >
+                    />
+                  </div>
+                </div>
+                <Modal.Trigger
+                  as={
+                    <Button type="submit" onClick={noop}>
                       SUBMIT
                     </Button>
-                  </div>
-                }
-              />
+                  }
+                />
+              </div>
               <Modal.Content>
                 {state.mode === "LOADING" && <Loading />}
                 {state.type === "API_RESPONSE" && state.mode === "RESPONSE" && (

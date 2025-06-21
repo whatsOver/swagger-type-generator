@@ -23,6 +23,7 @@ export type RequestState =
 
 type RequestAction =
   | { type: "INITIALIZE" }
+  | { type: "INITIALIZE_TYPE" }
   | { type: "SET_API_MODE"; payload: ApiMode }
   | {
       type: "SET_SCHEMA_MODE";
@@ -50,6 +51,19 @@ export const requestReducer = (
         ...state,
         ...initialState,
       };
+
+    case "INITIALIZE_TYPE": {
+      if (state.type === "API_RESPONSE") {
+        return {
+          ...state,
+          mode: "RESPONSE",
+        };
+      }
+      return {
+        ...state,
+        mode: "BASE",
+      };
+    }
 
     case "SET_API_MODE":
       return {
