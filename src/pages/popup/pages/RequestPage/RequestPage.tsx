@@ -20,7 +20,6 @@ import { requestStyles } from "./request.css";
 import {
   ApiMode,
   initialState,
-  Mode,
   requestReducer,
   SchemaMode,
 } from "@/features/request-api/module/requestReducer";
@@ -62,7 +61,7 @@ export const RequestPage = () => {
     []
   );
 
-  const handleMode = (mode: Mode) => {
+  const handleMode = (mode: "RESPONSE" | "ERROR" | "LOADING") => {
     if (state.type === "API_RESPONSE") {
       dispatch({ type: "SET_API_MODE", payload: mode as ApiMode });
       return;

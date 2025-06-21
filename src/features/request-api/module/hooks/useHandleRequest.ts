@@ -6,13 +6,14 @@ import { checkPathStartWithHttp } from "@/shared/util/api/api";
 import axios, { RawAxiosRequestHeaders } from "axios";
 import { FormEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { Mode } from "../requestReducer";
 import { generateFormData, getBody, getQueryParams } from "../utils/request";
 import useForm, { FormValues, ReturnUseForm } from "./useForm";
 
 interface HandleRequest {
   api: APIWithParamsAndBodyAndHost | null;
-  setMode: React.Dispatch<React.SetStateAction<Mode>>;
+  setMode: React.Dispatch<
+    React.SetStateAction<"RESPONSE" | "ERROR" | "LOADING">
+  >;
   initialFormValues?: FormValues;
   onSuccess?: (request: unknown, response: unknown) => void;
 }
