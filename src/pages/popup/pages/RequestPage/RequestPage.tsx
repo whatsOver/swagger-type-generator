@@ -17,7 +17,6 @@ import { Flip, ToastContainer } from "react-toastify";
 import { apiListStyle } from "../ApiListPage/ui/apiList.css";
 import { requestStyles } from "./request.css";
 
-import { SchemaInfo } from "@/entities/swagger/types";
 import {
   ApiMode,
   initialState,
@@ -26,6 +25,7 @@ import {
   SchemaMode,
 } from "@/features/request-api/module/requestReducer";
 import { noop } from "@/shared/util/common";
+import { openApiToJson } from "@/shared/util/typeGenerator";
 import "react-toastify/dist/ReactToastify.css";
 
 export type Mode =
@@ -62,41 +62,6 @@ export const RequestPage = () => {
     []
   );
 
-  const getJSONSchema = (typeSchema: SchemaInfo) => {
-    if (!typeSchema) {
-      return "No type available for this API";
-    }
-
-    const { properties, required } = typeSchema;
-    const jsonData: Record<string, any> = {};
-
-    Object.entries(properties).forEach(([key, value]) => {
-      const isRequired = required.includes(key);
-      const type = getTypeScriptType(value);
-      jsonData[isRequired ? key : `${key}?`] = type;
-    });
-
-    return jsonData;
-  };
-
-  const getTypeScriptType = (property: unknown): string => {
-    if (typeof property === "object" && property !== null) {
-      const prop = property as any;
-      if (prop.type === "string") {
-        if (prop.format === "date-time") return "string";
-        return "string";
-      }
-      if (prop.type === "integer" || prop.type === "number") return "number";
-      if (prop.type === "boolean") return "boolean";
-      if (prop.type === "array") {
-        const itemType = getTypeScriptType(prop.items);
-        return `${itemType}[]`;
-      }
-      if (prop.type === "object") return "object";
-    }
-    return "unknown";
-  };
-
   const handleMode = (mode: Mode) => {
     if (state.type === "API_RESPONSE") {
       dispatch({ type: "SET_API_MODE", payload: mode as ApiMode });
@@ -118,11 +83,13 @@ export const RequestPage = () => {
     if (state.type === "API_RESPONSE") return response;
 
     if (state.schemaType === "REQUEST_TYPE") {
-      return getJSONSchema(api.typeInfo?.requestType);
+      const Json = openApiToJson(api.typeInfo?.requestType);
+      return Json ?? "Request type is not defined for this API";
     }
 
     if (state.schemaType === "RESPONSE_TYPE") {
-      return getJSONSchema(api.typeInfo?.responseType);
+      const Json = openApiToJson(api.typeInfo?.responseType);
+      return Json ?? "Response type is not defined for this API";
     }
   }, [state, api.typeInfo]);
 
@@ -173,7 +140,6 @@ export const RequestPage = () => {
           </div>
           <div className={requestStyles.fixedButtonWrapper}>
             <Modal>
-              {/* 트리거 분리 해야함;; */}
               <Modal.Trigger
                 as={
                   <div

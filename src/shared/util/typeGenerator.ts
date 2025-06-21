@@ -1,9 +1,11 @@
 import { EMPTY_RESPONSE } from "@/entities/api/config/status";
 import {
+  SchemaInfo,
   SchemasProperties,
   SwaggerFormat,
   SwaggerType,
 } from "@/entities/swagger/types";
+import { FormSchemaProperty } from "@/features/api-generate/module/hooks/useApiAddForm";
 
 export const isArrayType = (value: any): boolean =>
   typeof value === "string" && value.startsWith("[") && value.endsWith("]");
@@ -124,6 +126,41 @@ export const jsonToTs = (
   }
 
   return { interfaceArray: interfaces, rootInterfaceKey };
+};
+
+export const openApiToJson = (schema: SchemaInfo | null) => {
+  if (!schema) {
+    return null;
+  }
+
+  const { properties, required } = schema;
+  const jsonData: Record<string, unknown> = {};
+
+  Object.entries(properties).forEach(([key, value]) => {
+    const isRequired = required.includes(key);
+    const type = getTypeScriptType(value);
+    jsonData[isRequired ? key : `${key}?`] = type;
+  });
+
+  return jsonData;
+};
+
+const getTypeScriptType = (property: unknown): string => {
+  if (typeof property === "object" && property !== null) {
+    const prop = property as FormSchemaProperty;
+    if (prop.type === "string") {
+      if (prop.format === "date-time") return "string";
+      return "string";
+    }
+    if (prop.type === "integer" || prop.type === "number") return "number";
+    if (prop.type === "boolean") return "boolean";
+    if (prop.type === "array") {
+      const itemType = getTypeScriptType(prop.items);
+      return `${itemType}[]`;
+    }
+    if (prop.type === "object") return "object";
+  }
+  return "unknown";
 };
 
 export const jsonToZod = (json: unknown, rootName = "Root"): string => {
