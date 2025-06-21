@@ -2,11 +2,11 @@ import { EMPTY_RESPONSE } from "@/entities/api/config/status";
 import { useAuthStore } from "@/entities/auth/model/auth-store";
 import { APIWithParamsAndBodyAndHost } from "@/entities/docs/model/types/docs";
 import { Schemas } from "@/entities/swagger/types";
-import { Mode } from "@/pages/popup/pages/RequestPage/RequestPage";
 import { checkPathStartWithHttp } from "@/shared/util/api/api";
 import axios, { RawAxiosRequestHeaders } from "axios";
 import { FormEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { Mode } from "../requestReducer";
 import { generateFormData, getBody, getQueryParams } from "../utils/request";
 import useForm, { FormValues, ReturnUseForm } from "./useForm";
 
