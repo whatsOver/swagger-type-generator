@@ -83,15 +83,15 @@ export const RequestPage = () => {
     if (state.type === "API_RESPONSE") return response;
 
     if (state.schemaType === "REQUEST_TYPE") {
-      const Json = openApiToJson(api.typeInfo?.requestType);
+      const Json = openApiToJson(api.detailSchema?.requestType);
       return Json ?? "Request type is not defined for this API";
     }
 
     if (state.schemaType === "RESPONSE_TYPE") {
-      const Json = openApiToJson(api.typeInfo?.responseType);
+      const Json = openApiToJson(api.detailSchema?.responseType);
       return Json ?? "Response type is not defined for this API";
     }
-  }, [state, api.typeInfo]);
+  }, [state, api.detailSchema]);
 
   // 3. Code 비지니스 로직
   const {
