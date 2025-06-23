@@ -15,7 +15,7 @@ import {
 } from "@/features/api-generate/module/utils/apiGenerator";
 import { generateReactQueryHook } from "@/features/react-query-generate/module/queryGenerator";
 import { useCopy } from "@/shared/hooks/useCopy";
-import { jsonToTs } from "@/shared/util/typeGenerator";
+import { jsonToTs, jsonToZod } from "@/shared/util/typeGenerator";
 
 interface HandleCode {
   api: APIWithParamsAndBodyAndHost | null;
@@ -29,6 +29,7 @@ export interface HandleCodeReturn {
   onClickTS: () => void;
   onClickAxios: () => void;
   onClickFetch: () => void;
+  onClickZod: () => void;
   copyToClipboard: () => void;
 }
 
@@ -115,7 +116,14 @@ const useHandleCode = ({
     );
   };
 
-  // 5. 유저 > 복사 버튼 클릭
+  // 5. 유저 > Zod 버튼 클릭
+  const onClickZod = () => {
+    setMode("ZOD");
+    const zodSchema = jsonToZod(response, "Response");
+    setCode(zodSchema);
+  };
+
+  // 6. 유저 > 복사 버튼 클릭
   const codeRef = useRef(null);
   const { copyToClipboard } = useCopy({ codeRef });
 
@@ -125,6 +133,7 @@ const useHandleCode = ({
     onClickTS,
     onClickAxios,
     onClickFetch,
+    onClickZod,
     copyToClipboard,
   };
 };

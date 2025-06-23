@@ -192,6 +192,17 @@ const CodeBlock = ({
           isModal={false}
         />
       )}
+      {mode === "ZOD" && (
+        <ModalCodeBlock
+          description="ZOD"
+          descriptionColor="purple"
+          code={code}
+          mode="ZOD"
+          ref={codeRef}
+          onClickBack={initializeMode}
+          onClickCopy={copyToClipboard}
+        />
+      )}
     </div>
   );
 };
