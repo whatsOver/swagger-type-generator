@@ -278,4 +278,23 @@ describe("jsonToZod", () => {
 
     expect(jsonToZod(json)).toEqual(expected);
   });
+
+  it("optional 필드에 대해 nullish를 적용한다", () => {
+    const json = {
+      id: 0,
+      title: "string",
+      "content?": "string",
+      "updatedAt?": "date_time_string",
+    };
+
+    const expected =
+      "const RootSchema = z.object({\n" +
+      "  id: z.number().int(),\n" +
+      "  title: z.string(),\n" +
+      "  content: z.string().nullish(),\n" +
+      "  updatedAt: z.string().nullish()\n" +
+      "});";
+
+    expect(jsonToZod(json)).toEqual(expected);
+  });
 });

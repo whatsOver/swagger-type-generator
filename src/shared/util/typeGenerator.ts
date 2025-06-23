@@ -164,7 +164,12 @@ export const jsonToZod = (json: unknown, rootName = "Root"): string => {
         const schema = entries
           .map(([key, value]) => {
             const fieldSchema = generateZodSchema(value, key);
-            return `  ${key}: ${fieldSchema}`;
+            const cleanKey = key.endsWith("?") ? key.slice(0, -1) : key;
+            const isOptional = key.endsWith("?");
+            const finalSchema = isOptional
+              ? `${fieldSchema}.nullish()`
+              : fieldSchema;
+            return `  ${cleanKey}: ${finalSchema}`;
           })
           .join(",\n");
 
