@@ -115,6 +115,16 @@ describe("convertSelectedAPI", () => {
       params: [],
       body: null,
       contentType: "application/json",
+      detailSchema: {
+        requestType: null,
+        responseType: {
+          properties: {},
+          required: [],
+          schema: "#/components/schemas/RealTimeSearchesView",
+          type: "object",
+          typeName: "RealTimeSearchesView",
+        },
+      },
     });
   });
 
@@ -152,6 +162,31 @@ describe("convertSelectedAPI", () => {
         required: ["files"],
       },
       contentType: "multipart/form-data",
+      detailSchema: {
+        requestType: {
+          properties: {
+            files: {
+              items: {
+                format: "binary",
+                type: "string",
+              },
+              title: "Files",
+              type: "array",
+            },
+          },
+          required: ["files"],
+          schema: "inline",
+          type: "object",
+          typeName: "inline",
+        },
+        responseType: {
+          properties: {},
+          required: [],
+          schema: "#/components/schemas/MediaListView",
+          type: "object",
+          typeName: "MediaListView",
+        },
+      },
     });
   });
 });

@@ -95,9 +95,9 @@ const extractSchemaInfo = (
     return {
       schema: schema.$ref,
       typeName,
-      properties: schemaData.properties || {},
-      required: schemaData.required || [],
-      type: schemaData.type || "object",
+      properties: schemaData?.properties || {},
+      required: schemaData?.required || [],
+      type: schemaData?.type || "object",
     };
   }
 
