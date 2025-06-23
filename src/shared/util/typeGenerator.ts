@@ -127,6 +127,9 @@ export const jsonToTs = (
 };
 
 export const jsonToZod = (json: unknown, rootName = "Root"): string => {
+  const schemas: string[] = [];
+  const schemaMap = new Map<string, string>();
+
   const generateZodSchema = (obj: unknown, name: string): string => {
     if (obj === null) return "z.null()";
     if (obj === undefined) return "z.undefined()";
@@ -148,20 +151,45 @@ export const jsonToZod = (json: unknown, rootName = "Root"): string => {
           return `z.array(${itemSchema})`;
         }
 
-        const schema = Object.entries(obj as Record<string, unknown>)
+        const entries = Object.entries(obj as Record<string, unknown>);
+        const objKey = JSON.stringify(entries);
+
+        if (schemaMap.has(objKey)) {
+          const existingSchema = schemaMap.get(objKey);
+          if (existingSchema) {
+            return existingSchema;
+          }
+        }
+
+        const schema = entries
           .map(([key, value]) => {
             const fieldSchema = generateZodSchema(value, key);
             return `  ${key}: ${fieldSchema}`;
           })
           .join(",\n");
 
-        return `z.object({\n${schema}\n})`;
+        const zodSchema = `z.object({\n${schema}\n})`;
+        const schemaName = `${name}Schema`;
+
+        schemaMap.set(objKey, schemaName);
+        schemas.push(`const ${schemaName} = ${zodSchema};`);
+
+        return schemaName;
       }
       default:
         return "z.unknown()";
     }
   };
 
-  const schema = generateZodSchema(json, rootName);
-  return `const ${rootName}Schema = ${schema};`;
+  const rootSchema = generateZodSchema(json, rootName);
+
+  if (
+    !schemaMap.has(
+      JSON.stringify(Object.entries(json as Record<string, unknown>))
+    )
+  ) {
+    schemas.push(`const ${rootName}Schema = ${rootSchema};`);
+  }
+
+  return schemas.join("\n\n");
 };

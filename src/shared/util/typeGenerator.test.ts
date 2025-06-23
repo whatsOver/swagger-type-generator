@@ -122,13 +122,14 @@ describe("jsonToZod", () => {
     };
 
     const expected =
+      "const objectArrayItemSchema = z.object({\n" +
+      "  id: z.number().int(),\n" +
+      "  name: z.string()\n" +
+      "});\n\n" +
       "const RootSchema = z.object({\n" +
       "  stringArray: z.array(z.string()),\n" +
       "  numberArray: z.array(z.number().int()),\n" +
-      "  objectArray: z.array(z.object({\n" +
-      "  id: z.number().int(),\n" +
-      "  name: z.string()\n" +
-      "})),\n" +
+      "  objectArray: z.array(objectArrayItemSchema),\n" +
       "  emptyArray: z.array(z.unknown())\n" +
       "});";
 
@@ -148,15 +149,17 @@ describe("jsonToZod", () => {
     };
 
     const expected =
-      "const RootSchema = z.object({\n" +
-      "  user: z.object({\n" +
-      "  id: z.number().int(),\n" +
-      "  profile: z.object({\n" +
+      "const profileSchema = z.object({\n" +
       "  name: z.string(),\n" +
       "  age: z.number().int(),\n" +
       "  active: z.boolean()\n" +
-      "})\n" +
-      "})\n" +
+      "});\n\n" +
+      "const userSchema = z.object({\n" +
+      "  id: z.number().int(),\n" +
+      "  profile: profileSchema\n" +
+      "});\n\n" +
+      "const RootSchema = z.object({\n" +
+      "  user: userSchema\n" +
       "});";
 
     expect(jsonToZod(json)).toEqual(expected);
@@ -169,10 +172,11 @@ describe("jsonToZod", () => {
     ];
 
     const expected =
-      "const RootSchema = z.array(z.object({\n" +
+      "const RootItemSchema = z.object({\n" +
       "  id: z.number().int(),\n" +
       "  name: z.string()\n" +
-      "}));";
+      "});\n\n" +
+      "const RootSchema = z.array(RootItemSchema);";
 
     expect(jsonToZod(json)).toEqual(expected);
   });
@@ -223,21 +227,24 @@ describe("jsonToZod", () => {
     };
 
     const expected =
-      "const RootSchema = z.object({\n" +
-      "  users: z.array(z.object({\n" +
-      "  id: z.number().int(),\n" +
-      "  name: z.string(),\n" +
-      "  posts: z.array(z.object({\n" +
+      "const postsItemSchema = z.object({\n" +
       "  id: z.number().int(),\n" +
       "  title: z.string(),\n" +
       "  tags: z.array(z.string()),\n" +
       "  published: z.boolean()\n" +
-      "}))\n" +
-      "})),\n" +
-      "  metadata: z.object({\n" +
+      "});\n\n" +
+      "const usersItemSchema = z.object({\n" +
+      "  id: z.number().int(),\n" +
+      "  name: z.string(),\n" +
+      "  posts: z.array(postsItemSchema)\n" +
+      "});\n\n" +
+      "const metadataSchema = z.object({\n" +
       "  total: z.number().int(),\n" +
       "  page: z.number().int()\n" +
-      "})\n" +
+      "});\n\n" +
+      "const RootSchema = z.object({\n" +
+      "  users: z.array(usersItemSchema),\n" +
+      "  metadata: metadataSchema\n" +
       "});";
 
     expect(jsonToZod(json)).toEqual(expected);
