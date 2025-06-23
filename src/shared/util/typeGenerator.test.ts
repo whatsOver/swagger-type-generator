@@ -1,4 +1,6 @@
-import { jsonToTs, jsonToZod, toTsType } from "./typeGenerator";
+import { jsonToTs, jsonToZod, toTsType openApiToLiteralJson } from "./typeGenerator";
+import { jsonToTs, jsonToZod, toTsType, openApiToLiteralJson } from "./typeGenerator";
+
 
 describe("toTsType", () => {
   it('타입이 숫자인 경우 "number"를 반환한다', () => {
@@ -296,5 +298,311 @@ describe("jsonToZod", () => {
       "});";
 
     expect(jsonToZod(json)).toEqual(expected);
+  });
+});
+
+describe("openApiToLiteralJson", () => {
+  it("기본 타입들에 대해 매핑되는 리터럴 값을 생성한다", () => {
+    const schema = {
+      schema: "inline",
+      typeName: "TestSchema",
+      properties: {
+        id: {
+          type: "integer",
+          format: "int32",
+          description: "게시글 ID",
+        },
+        title: {
+          type: "string",
+          description: "게시글 제목",
+        },
+        isActive: {
+          type: "boolean",
+          description: "활성화 여부",
+        },
+        content: {
+          type: "string",
+        },
+      },
+      required: ["id", "title", "isActive"],
+      type: "object",
+    };
+
+    const expected = {
+      id: 0,
+      title: "string",
+      isActive: true,
+      "content?": "string",
+    };
+
+    expect(openApiToLiteralJson(schema)).toEqual(expected);
+  });
+
+  it("필수 필드와 선택 필드를 올바르게 구분한다", () => {
+    const schema = {
+      schema: "inline",
+      typeName: "RequiredOptionalSchema",
+      properties: {
+        requiredField: {
+          type: "string",
+        },
+        optionalField: {
+          type: "number",
+        },
+      },
+      required: ["requiredField"],
+      type: "object",
+    };
+
+    const expected = {
+      requiredField: "string",
+      "optionalField?": 0,
+    };
+
+    expect(openApiToLiteralJson(schema)).toEqual(expected);
+  });
+
+  it("중첩된 객체 구조를 올바르게 처리한다", () => {
+    const schema = {
+      schema: "inline",
+      typeName: "NestedObjectSchema",
+      properties: {
+        user: {
+          type: "object",
+          properties: {
+            id: {
+              type: "integer",
+              format: "int32",
+            },
+            profile: {
+              type: "object",
+              properties: {
+                name: {
+                  type: "string",
+                },
+                age: {
+                  type: "integer",
+                },
+              },
+              required: ["name", "age"],
+            },
+          },
+          required: ["id", "profile"],
+        },
+      },
+      required: ["user"],
+      type: "object",
+    };
+
+    const expected = {
+      user: {
+        id: 0,
+        profile: {
+          name: "string",
+          age: 0,
+        },
+      },
+    };
+
+    expect(openApiToLiteralJson(schema)).toEqual(expected);
+  });
+
+  it("배열 타입을 올바르게 처리한다", () => {
+    const schema = {
+      schema: "inline",
+      typeName: "ArraySchema",
+      properties: {
+        tags: {
+          type: "array",
+          items: {
+            type: "string",
+          },
+        },
+        scores: {
+          type: "array",
+          items: {
+            type: "integer",
+            format: "int32",
+          },
+        },
+        users: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              id: {
+                type: "integer",
+              },
+              name: {
+                type: "string",
+              },
+            },
+            required: ["id", "name"],
+          },
+        },
+      },
+      required: ["tags", "scores", "users"],
+      type: "object",
+    };
+
+    const expected = {
+      tags: ["string"],
+      scores: [0],
+      users: [
+        {
+          id: 0,
+          name: "string",
+        },
+      ],
+    };
+
+    expect(openApiToLiteralJson(schema)).toEqual(expected);
+  });
+
+  it("특수 포맷의 문자열을 올바르게 처리한다", () => {
+    const schema = {
+      schema: "inline",
+      typeName: "FormatStringSchema",
+      properties: {
+        createdAt: {
+          type: "string",
+          format: "date-time",
+        },
+        birthDate: {
+          type: "string",
+          format: "date",
+        },
+        password: {
+          type: "string",
+          format: "password",
+        },
+        fileData: {
+          type: "string",
+          format: "binary",
+        },
+      },
+      required: ["createdAt", "birthDate", "password", "fileData"],
+      type: "object",
+    };
+
+    const expected = {
+      createdAt: "date_time_string",
+      birthDate: "date_string",
+      password: "password_string",
+      fileData: "base64_string",
+    };
+
+    expect(openApiToLiteralJson(schema)).toEqual(expected);
+  });
+
+  it("null 스키마에 대해 null을 반환한다", () => {
+    expect(openApiToLiteralJson(null)).toBeNull();
+  });
+
+  it("빈 properties에 대해 빈 객체를 반환한다", () => {
+    const schema = {
+      schema: "inline",
+      typeName: "EmptySchema",
+      properties: {},
+      required: [],
+      type: "object",
+    };
+
+    const expected = {};
+
+    expect(openApiToLiteralJson(schema)).toEqual(expected);
+  });
+
+  it("복잡한 중첩 구조를 올바르게 처리한다", () => {
+    const schema = {
+      schema: "inline",
+      typeName: "ComplexNestedSchema",
+      properties: {
+        posts: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              id: {
+                type: "integer",
+              },
+              title: {
+                type: "string",
+              },
+              author: {
+                type: "object",
+                properties: {
+                  id: {
+                    type: "integer",
+                  },
+                  name: {
+                    type: "string",
+                  },
+                  profile: {
+                    type: "object",
+                    properties: {
+                      avatar: {
+                        type: "string",
+                        format: "binary",
+                      },
+                      bio: {
+                        type: "string",
+                      },
+                    },
+                    required: ["avatar"],
+                  },
+                },
+                required: ["id", "name", "profile"],
+              },
+              tags: {
+                type: "array",
+                items: {
+                  type: "string",
+                },
+              },
+            },
+            required: ["id", "title", "author", "tags"],
+          },
+        },
+        metadata: {
+          type: "object",
+          properties: {
+            total: {
+              type: "integer",
+            },
+            page: {
+              type: "integer",
+            },
+          },
+          required: ["total", "page"],
+        },
+      },
+      required: ["posts", "metadata"],
+      type: "object",
+    };
+
+    const expected = {
+      posts: [
+        {
+          id: 0,
+          title: "string",
+          author: {
+            id: 0,
+            name: "string",
+            profile: {
+              avatar: "base64_string",
+              "bio?": "string",
+            },
+          },
+          tags: ["string"],
+        },
+      ],
+      metadata: {
+        total: 0,
+        page: 0,
+      },
+    };
+
+    expect(openApiToLiteralJson(schema)).toEqual(expected);
   });
 });
