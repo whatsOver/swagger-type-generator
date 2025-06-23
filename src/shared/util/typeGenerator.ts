@@ -125,3 +125,43 @@ export const jsonToTs = (
 
   return { interfaceArray: interfaces, rootInterfaceKey };
 };
+
+export const jsonToZod = (json: unknown, rootName = "Root"): string => {
+  const generateZodSchema = (obj: unknown, name: string): string => {
+    if (obj === null) return "z.null()";
+    if (obj === undefined) return "z.undefined()";
+
+    const type = typeof obj;
+
+    switch (type) {
+      case "string":
+        return "z.string()";
+      case "number":
+        return Number.isInteger(obj) ? "z.number().int()" : "z.number()";
+      case "boolean":
+        return "z.boolean()";
+      case "object": {
+        if (Array.isArray(obj)) {
+          if (obj.length === 0) return "z.array(z.unknown())";
+          const firstItem = obj[0];
+          const itemSchema = generateZodSchema(firstItem, `${name}Item`);
+          return `z.array(${itemSchema})`;
+        }
+
+        const schema = Object.entries(obj as Record<string, unknown>)
+          .map(([key, value]) => {
+            const fieldSchema = generateZodSchema(value, key);
+            return `  ${key}: ${fieldSchema}`;
+          })
+          .join(",\n");
+
+        return `z.object({\n${schema}\n})`;
+      }
+      default:
+        return "z.unknown()";
+    }
+  };
+
+  const schema = generateZodSchema(json, rootName);
+  return `const ${rootName}Schema = ${schema};`;
+};
