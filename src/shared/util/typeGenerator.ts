@@ -128,7 +128,7 @@ export const jsonToTs = (
   return { interfaceArray: interfaces, rootInterfaceKey };
 };
 
-export const openApiToJson = (schema: SchemaInfo | null) => {
+export const openApiToLiteralJson = (schema: SchemaInfo | null) => {
   if (!schema) {
     return null;
   }
@@ -138,28 +138,59 @@ export const openApiToJson = (schema: SchemaInfo | null) => {
 
   Object.entries(properties).forEach(([key, value]) => {
     const isRequired = required.includes(key);
-    const type = getTypeScriptType(value);
-    jsonData[isRequired ? key : `${key}?`] = type;
+    const literalValue = getLiteralValue(value, required);
+    jsonData[isRequired ? key : `${key}?`] = literalValue;
   });
 
   return jsonData;
 };
 
-const getTypeScriptType = (property: unknown): string => {
+const getLiteralValue = (
+  property: unknown,
+  parentRequired: string[] = []
+): unknown => {
   if (typeof property === "object" && property !== null) {
     const prop = property as FormSchemaProperty;
+
+    if (prop.properties) {
+      const nestedObject: Record<string, unknown> = {};
+      const nestedRequired = prop.required || [];
+
+      Object.entries(prop.properties).forEach(([key, value]) => {
+        const isRequired = nestedRequired.includes(key);
+        const literalValue = getLiteralValue(value, nestedRequired);
+        nestedObject[isRequired ? key : `${key}?`] = literalValue;
+      });
+      return nestedObject;
+    }
+
     if (prop.type === "string") {
-      if (prop.format === "date-time") return "string";
+      if (prop.format === "date-time") return "date_time_string";
+      if (prop.format === "date") return "date_string";
+      if (prop.format === "password") return "password_string";
+      if (prop.format === "byte" || prop.format === "binary")
+        return "base64_string";
       return "string";
     }
-    if (prop.type === "integer" || prop.type === "number") return "number";
-    if (prop.type === "boolean") return "boolean";
-    if (prop.type === "array") {
-      const itemType = getTypeScriptType(prop.items);
-      return `${itemType}[]`;
+
+    if (prop.type === "integer" || prop.type === "number") {
+      return 0;
     }
-    if (prop.type === "object") return "object";
+
+    if (prop.type === "boolean") {
+      return true;
+    }
+
+    if (prop.type === "array") {
+      const itemValue = getLiteralValue(prop.items, parentRequired);
+      return [itemValue];
+    }
+
+    if (prop.type === "object") {
+      return {};
+    }
   }
+
   return "unknown";
 };
 

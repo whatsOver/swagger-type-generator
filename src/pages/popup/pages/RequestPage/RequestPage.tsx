@@ -24,7 +24,7 @@ import {
   SchemaMode,
 } from "@/features/request-api/module/requestReducer";
 import { noop } from "@/shared/util/common";
-import { openApiToJson } from "@/shared/util/typeGenerator";
+import { openApiToLiteralJson } from "@/shared/util/typeGenerator";
 import "react-toastify/dist/ReactToastify.css";
 
 export type Mode =
@@ -82,12 +82,12 @@ export const RequestPage = () => {
     if (state.type === "API_RESPONSE") return response;
 
     if (state.schemaType === "REQUEST_TYPE") {
-      const Json = openApiToJson(api.detailSchema?.requestType);
+      const Json = openApiToLiteralJson(api.detailSchema?.requestType);
       return Json ?? "Request type is not defined for this API";
     }
 
     if (state.schemaType === "RESPONSE_TYPE") {
-      const Json = openApiToJson(api.detailSchema?.responseType);
+      const Json = openApiToLiteralJson(api.detailSchema?.responseType);
       return Json ?? "Response type is not defined for this API";
     }
   }, [state, api.detailSchema]);

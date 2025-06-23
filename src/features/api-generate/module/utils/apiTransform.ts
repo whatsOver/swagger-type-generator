@@ -12,6 +12,10 @@ import {
   SwaggerDocs,
 } from "@/entities/swagger/types";
 import { Method } from "axios";
+import { FormSchemaProperty } from "../hooks/useApiAddForm";
+
+// $ref에서 타입 이름 추출하는 유틸리티 함수
+const extractTypeNameFromRef = (ref: string): string => ref.split("/")[3];
 
 export const transformApiFromSwagger = (
   data: SwaggerDocs,
@@ -36,7 +40,7 @@ export const transformApiFromSwagger = (
     contentType = Object.keys(requestBody.content)[0] as ContentType;
     const schema = requestBody.content[contentType].schema;
     if ("$ref" in schema) {
-      schemaName = schema.$ref.split("/")[3];
+      schemaName = extractTypeNameFromRef(schema.$ref);
       body = data.components.schemas[schemaName];
     }
     if (
@@ -45,7 +49,7 @@ export const transformApiFromSwagger = (
       "items" in schema &&
       "$ref" in schema.items
     ) {
-      schemaName = schema.items.$ref.split("/")[3];
+      schemaName = extractTypeNameFromRef(schema.items.$ref);
       body = data.components.schemas[schemaName];
     }
     if ("default" in schema) {
@@ -89,25 +93,107 @@ const extractSchemaInfo = (
   components: SwaggerDocs["components"]
 ): SchemaInfo => {
   if ("$ref" in schema) {
-    const typeName = schema.$ref.split("/")[3];
+    const typeName = extractTypeNameFromRef(schema.$ref);
     const schemaData = components.schemas[typeName];
+
+    const properties = schemaData?.properties || {};
+    const processedProperties = processNestedProperties(properties, components);
 
     return {
       schema: schema.$ref,
       typeName,
-      properties: schemaData?.properties || {},
+      properties: processedProperties,
       required: schemaData?.required || [],
       type: schemaData?.type || "object",
     };
   }
 
+  const properties = (schema as Schema).properties || {};
+  const processedProperties = processNestedProperties(properties, components);
+
   return {
     schema: "inline",
     typeName: "inline",
-    properties: (schema as Schema).properties || {},
+    properties: processedProperties,
     required: (schema as Schema).required || [],
     type: (schema as Schema).type || "object",
   };
+};
+
+const processNestedProperties = (
+  properties: Record<string, unknown>,
+  components: SwaggerDocs["components"]
+): Record<string, unknown> => {
+  const processed: Record<string, unknown> = {};
+
+  Object.entries(properties).forEach(([key, value]) => {
+    if (typeof value === "object" && value !== null) {
+      const prop = value as FormSchemaProperty;
+
+      if (prop.$ref) {
+        const typeName = extractTypeNameFromRef(prop.$ref);
+        const schemaData = components.schemas[typeName];
+
+        if (schemaData?.properties) {
+          const expandedProperties = processNestedProperties(
+            schemaData.properties,
+            components
+          );
+
+          processed[key] = {
+            type: "object",
+            properties: expandedProperties,
+            required: schemaData.required || [],
+            $ref: prop.$ref,
+          };
+        } else {
+          processed[key] = value;
+        }
+      } else if (prop.type === "array" && prop.items) {
+        const processedItems = processArrayItems(prop.items, components);
+        processed[key] = {
+          ...prop,
+          items: processedItems,
+        };
+      } else {
+        processed[key] = value;
+      }
+    } else {
+      processed[key] = value;
+    }
+  });
+
+  return processed;
+};
+
+const processArrayItems = (
+  items: unknown,
+  components: SwaggerDocs["components"]
+): unknown => {
+  if (typeof items === "object" && items !== null) {
+    const itemProp = items as FormSchemaProperty;
+
+    if (itemProp.$ref) {
+      const typeName = extractTypeNameFromRef(itemProp.$ref);
+      const schemaData = components.schemas[typeName];
+
+      if (schemaData?.properties) {
+        const expandedProperties = processNestedProperties(
+          schemaData.properties,
+          components
+        );
+
+        return {
+          type: "object",
+          properties: expandedProperties,
+          required: schemaData.required || [],
+          $ref: itemProp.$ref,
+        };
+      }
+    }
+  }
+
+  return items;
 };
 
 const extractRequestType = (
