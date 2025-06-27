@@ -6,7 +6,8 @@ export type ApiMode =
   | "ERROR"
   | "AXIOS"
   | "FETCH"
-  | "LOADING";
+  | "LOADING"
+  | "ZOD";
 
 export type SchemaMode =
   | Exclude<ApiMode, "LOADING" | "RESPONSE" | "ERROR">

@@ -1,6 +1,9 @@
-import { jsonToTs, jsonToZod, toTsType openApiToLiteralJson } from "./typeGenerator";
-import { jsonToTs, jsonToZod, toTsType, openApiToLiteralJson } from "./typeGenerator";
-
+import {
+  jsonToTs,
+  jsonToZod,
+  openApiToLiteralJson,
+  toTsType,
+} from "./typeGenerator";
 
 describe("toTsType", () => {
   it('타입이 숫자인 경우 "number"를 반환한다', () => {

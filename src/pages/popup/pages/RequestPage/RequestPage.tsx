@@ -27,17 +27,6 @@ import { noop } from "@/shared/util/common";
 import { openApiToLiteralJson } from "@/shared/util/typeGenerator";
 import "react-toastify/dist/ReactToastify.css";
 
-export type Mode =
-  | "RESPONSE"
-  | "TS"
-  | "ERROR"
-  | "AXIOS"
-  | "FETCH"
-  | "LOADING"
-  | "ZOD";
-
-type SchemaMode = "REQUEST_TYPE" | "RESPONSE_TYPE";
-
 export const RequestPage = () => {
   // FIRST RENDER
   const api = useLocation().state as APIWithParamsAndBodyAndHost;
@@ -220,6 +209,7 @@ export const RequestPage = () => {
                       onClickTS={onClickTS}
                       onClickAxios={onClickAxios}
                       onClickFetch={onClickFetch}
+                      onClickZod={onClickZod}
                     />
                   )}
                 {state.mode === "TS" && (
@@ -265,7 +255,7 @@ export const RequestPage = () => {
                     onClickCopy={copyToClipboard}
                   />
                 )}
-                {mode === "ZOD" && (
+                {state.mode === "ZOD" && (
                   <ModalCodeBlock
                     description="ZOD"
                     descriptionColor="purple"
