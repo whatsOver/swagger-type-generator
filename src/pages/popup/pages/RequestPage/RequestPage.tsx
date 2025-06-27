@@ -19,7 +19,14 @@ import { requestStyles } from "./request.css";
 
 import "react-toastify/dist/ReactToastify.css";
 
-export type Mode = "RESPONSE" | "TS" | "ERROR" | "AXIOS" | "FETCH" | "LOADING";
+export type Mode =
+  | "RESPONSE"
+  | "TS"
+  | "ERROR"
+  | "AXIOS"
+  | "FETCH"
+  | "LOADING"
+  | "ZOD";
 
 export const RequestPage = () => {
   // FIRST RENDER
@@ -55,6 +62,7 @@ export const RequestPage = () => {
     onClickAxios,
     onClickFetch,
     onClickTS,
+    onClickZod,
   } = useHandleCode({ api, response, setMode });
 
   return (
@@ -114,6 +122,7 @@ export const RequestPage = () => {
                     onClickTS={onClickTS}
                     onClickAxios={onClickAxios}
                     onClickFetch={onClickFetch}
+                    onClickZod={onClickZod}
                   />
                 )}
                 {mode === "TS" && (
@@ -154,6 +163,17 @@ export const RequestPage = () => {
                     descriptionColor="orange"
                     code={code}
                     mode="FETCH"
+                    ref={codeRef}
+                    onClickBack={initializeMode}
+                    onClickCopy={copyToClipboard}
+                  />
+                )}
+                {mode === "ZOD" && (
+                  <ModalCodeBlock
+                    description="ZOD"
+                    descriptionColor="purple"
+                    code={code}
+                    mode="ZOD"
                     ref={codeRef}
                     onClickBack={initializeMode}
                     onClickCopy={copyToClipboard}

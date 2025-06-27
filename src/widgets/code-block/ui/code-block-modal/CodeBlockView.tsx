@@ -20,6 +20,7 @@ interface CodeBlockProps {
   onClickCopy?: () => void;
   onClickAxios?: () => void;
   onClickFetch?: () => void;
+  onClickZod?: () => void;
 }
 
 const CodeBlockView: ForwardRefRenderFunction<
@@ -38,6 +39,7 @@ const CodeBlockView: ForwardRefRenderFunction<
     onClickCopy,
     onClickAxios,
     onClickFetch,
+    onClickZod,
   },
   ref
 ) => {
@@ -120,6 +122,11 @@ const CodeBlockView: ForwardRefRenderFunction<
             {onClickFetch && (
               <Button color="orange" onClick={onClickFetch}>
                 Fetch
+              </Button>
+            )}
+            {onClickZod && (
+              <Button color="purple" onClick={onClickZod}>
+                Zod
               </Button>
             )}
           </div>

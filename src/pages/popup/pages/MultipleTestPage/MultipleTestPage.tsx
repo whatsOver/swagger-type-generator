@@ -28,6 +28,7 @@ export type Mode =
   | "ERROR"
   | "AXIOS"
   | "FETCH"
+  | "ZOD"
   | "LOADING";
 
 const SEQUENCE_ITEM: SequenceItemType = {
