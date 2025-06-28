@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 
+import { noop } from "@/shared/util/common";
 import CodeBlock from "@/widgets/code-block/ui/code-block/CodeBlock";
 import classNames from "classnames";
 import {
@@ -28,7 +29,7 @@ const ModalContext = createContext<{
   onClose?: () => void;
 }>({
   modalOpen: false,
-  setModalOpen: () => {},
+  setModalOpen: noop,
 });
 
 interface ModalProps {

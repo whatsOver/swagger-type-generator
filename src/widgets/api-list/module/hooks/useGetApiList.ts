@@ -11,36 +11,62 @@ interface GetApiListProps {
   setPathInfo: (pathInfo: Path) => void;
 }
 
+const MAX_RETRIES = 3;
+const INITIAL_DELAY = 1000;
+
 const useGetApiList = ({ setApiList, setPathInfo }: GetApiListProps) => {
   const [loading, setLoading] = useState(true);
+
   const checkIfReceiverIsReady = (
     tabId: number,
-    callback: (isReady: boolean) => void
+    callback: (isReady: boolean) => void,
+    retryCount = 0,
+    delay = INITIAL_DELAY
   ) => {
-    chrome.tabs.sendMessage<{ message: string }, { data: boolean }>(
-      tabId,
-      { message: "READY" },
-      (response) => {
-        if (chrome.runtime.lastError) {
-          setTimeout(() => checkIfReceiverIsReady(tabId, callback), 1000);
-          setLoading(false);
-        } else {
-          callback(response.data);
-        }
+    if (retryCount >= MAX_RETRIES) {
+      console.error("retry exceed max retries");
+      setLoading(false);
+      callback(false);
+      return;
+    }
+
+    chrome.tabs.sendMessage(tabId, { message: "READY" }, (response) => {
+      if (chrome.runtime.lastError) {
+        const nextDelay = delay * 1.5;
+        setTimeout(
+          () =>
+            checkIfReceiverIsReady(tabId, callback, retryCount + 1, nextDelay),
+          delay
+        );
+      } else {
+        setLoading(false);
+        callback(response.data);
       }
-    );
+    });
   };
 
   const getApiList = (
     tabId: number,
-    callback: (data: GET_API_LIST_RESULT) => void
+    callback: (data: GET_API_LIST_RESULT) => void,
+    retryCount = 0,
+    delay = INITIAL_DELAY
   ) => {
+    if (retryCount >= MAX_RETRIES) {
+      console.error("getApiList: retry exceed max retries");
+      setLoading(false);
+      return;
+    }
+
     chrome.tabs.sendMessage(
       tabId,
       { message: "GET_SWAGGER_LIST" },
       (response) => {
         if (chrome.runtime.lastError) {
-          setTimeout(() => getApiList(tabId, callback), 1000);
+          const nextDelay = delay * 1.5;
+          setTimeout(
+            () => getApiList(tabId, callback, retryCount + 1, nextDelay),
+            delay
+          );
         } else {
           callback(response.data);
         }
@@ -56,6 +82,7 @@ const useGetApiList = ({ setApiList, setPathInfo }: GetApiListProps) => {
       return;
     }
     setLoading(true);
+
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       checkIfReceiverIsReady(tabs[0].id, (isReady) => {
         if (isReady) {
@@ -64,14 +91,12 @@ const useGetApiList = ({ setApiList, setPathInfo }: GetApiListProps) => {
             setPathInfo(data.path);
             setState("loaded");
           });
-          setTimeout(() => {
-            setLoading(false);
-          }, 500);
         } else {
           console.error("Error: Receiving end does not exist");
         }
       });
     });
+
     // Context menu를 위한 코드
     chrome.tabs.query({ active: true, currentWindow: false }, (tabs) => {
       if (tabs.length === 0) return;
@@ -83,9 +108,6 @@ const useGetApiList = ({ setApiList, setPathInfo }: GetApiListProps) => {
               setPathInfo(data.path);
               setState("loaded");
             });
-            setTimeout(() => {
-              setLoading(false);
-            }, 500);
           }
         })
       );

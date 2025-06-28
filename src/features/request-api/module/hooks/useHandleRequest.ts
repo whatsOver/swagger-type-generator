@@ -2,7 +2,6 @@ import { EMPTY_RESPONSE } from "@/entities/api/config/status";
 import { useAuthStore } from "@/entities/auth/model/auth-store";
 import { APIWithParamsAndBodyAndHost } from "@/entities/docs/model/types/docs";
 import { Schemas } from "@/entities/swagger/types";
-import { Mode } from "@/pages/popup/pages/RequestPage/RequestPage";
 import { checkPathStartWithHttp } from "@/shared/util/api/api";
 import axios, { RawAxiosRequestHeaders } from "axios";
 import { FormEvent, useEffect, useState } from "react";
@@ -12,7 +11,9 @@ import useForm, { FormValues, ReturnUseForm } from "./useForm";
 
 interface HandleRequest {
   api: APIWithParamsAndBodyAndHost | null;
-  setMode: React.Dispatch<React.SetStateAction<Mode>>;
+  setMode: React.Dispatch<
+    React.SetStateAction<"RESPONSE" | "ERROR" | "LOADING">
+  >;
   initialFormValues?: FormValues;
   onSuccess?: (request: unknown, response: unknown) => void;
 }

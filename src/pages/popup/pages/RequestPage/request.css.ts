@@ -26,6 +26,27 @@ export const requestStyles = {
     width: "100%",
   }),
 
+  typeExtractionContainer: style({
+    display: "flex",
+    width: "100%",
+    padding: "15px 0",
+    borderBottom: `1px solid ${vars.color.scrollbar}`,
+    backgroundColor: vars.color.darkGrey,
+  }),
+
+  typeExtractionButtons: style({
+    display: "flex",
+    gap: "12px",
+    width: "100%",
+    justifyContent: "center",
+  }),
+
+  modalTriggerContainer: style({
+    display: "flex",
+    flexDirection: "column",
+    width: "100%",
+  }),
+
   requestBlock: style({
     overflowY: "auto",
     maxHeight: "70%",

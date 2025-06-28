@@ -3,6 +3,7 @@ import Button from "@/shared/ui/Button";
 import Input from "@/shared/ui/Input";
 import Modal from "@/shared/ui/Modal";
 import { vars } from "@/shared/ui/styles/theme.css";
+import { noop } from "@/shared/util/common";
 import { ChangeEvent } from "react";
 import { FcLock as LockIcon } from "react-icons/fc";
 import { authModalStyle } from "./auth.css";
@@ -19,7 +20,7 @@ const AuthModal = ({ authorized, onChange, onSaveAuth }: AuthModalProps) => {
     <Modal>
       <Modal.Trigger
         as={
-          <button onClick={() => {}}>
+          <button onClick={noop}>
             <LockIcon size={24} />
           </button>
         }

@@ -1,6 +1,5 @@
 import { ForwardRefRenderFunction, forwardRef } from "react";
 
-import { Mode } from "@/pages/popup/pages/RequestPage/RequestPage";
 import Button from "@/shared/ui/Button";
 import { vars } from "@/shared/ui/styles/theme.css";
 import { IoMdClose as CloseIcon } from "react-icons/io";
@@ -12,7 +11,8 @@ interface CodeBlockProps {
   description: string;
   descriptionColor?: keyof typeof vars.color;
   code: string;
-  mode: Mode;
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  mode: "base" | (string & {});
   isModal?: boolean;
   onClose?: () => void;
   onClickBack?: () => void;
@@ -55,16 +55,16 @@ const CodeBlockView: ForwardRefRenderFunction<
               <>
                 <button
                   onClick={() => {
-                    mode === "RESPONSE" && onClose && onClose();
-                    mode !== "RESPONSE" && onClickBack && onClickBack();
+                    mode === "base" && onClose && onClose();
+                    mode !== "base" && onClickBack && onClickBack();
                   }}
                   className={codeBlockModalStyles.iconButton}
                   type="button"
                 >
-                  {mode === "RESPONSE" && (
+                  {mode === "base" && (
                     <CloseIcon size={24} color={vars.color.white} />
                   )}
-                  {mode !== "RESPONSE" && (
+                  {mode !== "base" && (
                     <BackIcon size={24} color={vars.color.white} />
                   )}
                 </button>
@@ -79,7 +79,7 @@ const CodeBlockView: ForwardRefRenderFunction<
                 </h3>
               </>
             )}
-            {!isModal && mode !== "RESPONSE" && (
+            {!isModal && mode !== "base" && (
               <>
                 <button
                   onClick={() => {

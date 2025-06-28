@@ -10,23 +10,22 @@ import useHandleCode from "@/widgets/code-block/module/hooks/useHandleCode";
 import ModalCodeBlock from "@/widgets/code-block/ui/code-block-modal/CodeBlockView";
 import { RequestBody } from "@/widgets/request-body/ui/api-body/RequestBody";
 import { RequestParam } from "@/widgets/request-param/ui/api-param/RequestParam";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useReducer } from "react";
 import { VscBracketError as ErrorIcon } from "react-icons/vsc";
 import { useLocation } from "react-router-dom";
 import { Flip, ToastContainer } from "react-toastify";
 import { apiListStyle } from "../ApiListPage/ui/apiList.css";
 import { requestStyles } from "./request.css";
 
+import {
+  ApiMode,
+  initialState,
+  requestReducer,
+  SchemaMode,
+} from "@/features/request-api/module/requestReducer";
+import { noop } from "@/shared/util/common";
+import { openApiToLiteralJson } from "@/shared/util/typeGenerator";
 import "react-toastify/dist/ReactToastify.css";
-
-export type Mode =
-  | "RESPONSE"
-  | "TS"
-  | "ERROR"
-  | "AXIOS"
-  | "FETCH"
-  | "LOADING"
-  | "ZOD";
 
 export const RequestPage = () => {
   // FIRST RENDER
@@ -36,23 +35,51 @@ export const RequestPage = () => {
 
   // INTERACTION
   // 1. mode 상태 관리
-  const [mode, setMode] = useState<Mode>("RESPONSE");
+  const [state, dispatch] = useReducer(requestReducer, initialState);
+
   // 2. modal 닫기
   const onCloseModal = () => {
     // modal 애니메이션 끝나고 mode 변경
     setTimeout(() => {
-      setMode("RESPONSE");
+      dispatch({ type: "INITIALIZE" });
     }, 500);
   };
   // 3. modal 상태 초기화
-  const initializeMode = useCallback(() => setMode("RESPONSE"), []);
+  const initializeMode = useCallback(
+    () => dispatch({ type: "INITIALIZE_TYPE" }),
+    []
+  );
+
+  const handleMode = (mode: "RESPONSE" | "ERROR" | "LOADING") => {
+    if (state.type === "API_RESPONSE") {
+      dispatch({ type: "SET_API_MODE", payload: mode as ApiMode });
+      return;
+    }
+
+    dispatch({ type: "SET_SCHEMA_MODE", payload: mode as SchemaMode });
+  };
 
   // 2. Request 비지니스 로직
   const { response, formValues, handleChange, handleSubmit, handleArray } =
     useHandleRequest({
       api,
-      setMode,
+      setMode: handleMode,
     });
+
+  // 상태에 따라 code비즈니스 로직에 해당하는 코드 반환
+  const baseCode = useMemo(() => {
+    if (state.type === "API_RESPONSE") return response;
+
+    if (state.schemaType === "REQUEST_TYPE") {
+      const Json = openApiToLiteralJson(api.detailSchema?.requestType);
+      return Json ?? "Request type is not defined for this API";
+    }
+
+    if (state.schemaType === "RESPONSE_TYPE") {
+      const Json = openApiToLiteralJson(api.detailSchema?.responseType);
+      return Json ?? "Response type is not defined for this API";
+    }
+  }, [state, api.detailSchema]);
 
   // 3. Code 비지니스 로직
   const {
@@ -63,13 +90,19 @@ export const RequestPage = () => {
     onClickFetch,
     onClickTS,
     onClickZod,
-  } = useHandleCode({ api, response, setMode });
+  } = useHandleCode({ api, response: baseCode, setMode: handleMode });
 
   return (
     <div className={apiListStyle.app}>
       <Header showBackButton />
       <div className={requestStyles.requestWrapper}>
-        <form className={requestStyles.body} onSubmit={handleSubmit}>
+        <form
+          className={requestStyles.body}
+          onSubmit={(e) => {
+            dispatch({ type: "SET_API_MODE", payload: "RESPONSE" });
+            handleSubmit(e);
+          }}
+        >
           <div className={requestStyles.apiItemContainer}>
             <APIItem api={api} />
           </div>
@@ -101,21 +134,60 @@ export const RequestPage = () => {
           </div>
           <div className={requestStyles.fixedButtonWrapper}>
             <Modal>
-              <Modal.Trigger
-                as={
-                  // eslint-disable-next-line @typescript-eslint/no-empty-function
-                  <Button onClick={() => {}} type="submit">
-                    SUBMIT
-                  </Button>
-                }
-              />
+              <div className={requestStyles.modalTriggerContainer}>
+                <div className={requestStyles.typeExtractionContainer}>
+                  <div className={requestStyles.typeExtractionButtons}>
+                    <Modal.Trigger
+                      as={
+                        <Button
+                          type="button"
+                          color="blue"
+                          style={{ flex: 1 }}
+                          onClick={() => {
+                            dispatch({
+                              type: "SET_SCHEMA_TYPE",
+                              payload: "REQUEST_TYPE",
+                            });
+                          }}
+                        >
+                          Extract Request
+                        </Button>
+                      }
+                    />
+                    <Modal.Trigger
+                      as={
+                        <Button
+                          type="button"
+                          color="green"
+                          style={{ flex: 1 }}
+                          onClick={() => {
+                            dispatch({
+                              type: "SET_SCHEMA_TYPE",
+                              payload: "RESPONSE_TYPE",
+                            });
+                          }}
+                        >
+                          Extract Response
+                        </Button>
+                      }
+                    />
+                  </div>
+                </div>
+                <Modal.Trigger
+                  as={
+                    <Button type="submit" onClick={noop}>
+                      SUBMIT
+                    </Button>
+                  }
+                />
+              </div>
               <Modal.Content>
-                {mode === "LOADING" && <Loading />}
-                {response && mode === "RESPONSE" && (
+                {state.mode === "LOADING" && <Loading />}
+                {state.type === "API_RESPONSE" && state.mode === "RESPONSE" && (
                   <ModalCodeBlock
                     description="Response"
                     code={JSON.stringify(response, null, 2)}
-                    mode="RESPONSE"
+                    mode="base"
                     ref={codeRef}
                     onClose={onCloseModal}
                     onClickCopy={copyToClipboard}
@@ -125,7 +197,22 @@ export const RequestPage = () => {
                     onClickZod={onClickZod}
                   />
                 )}
-                {mode === "TS" && (
+                {state.type === "SCHEMA_DEFINITION" &&
+                  state.mode === "BASE" && (
+                    <ModalCodeBlock
+                      description={state.schemaType}
+                      code={JSON.stringify(baseCode, null, 2)}
+                      mode="base"
+                      ref={codeRef}
+                      onClose={onCloseModal}
+                      onClickCopy={copyToClipboard}
+                      onClickTS={onClickTS}
+                      onClickAxios={onClickAxios}
+                      onClickFetch={onClickFetch}
+                      onClickZod={onClickZod}
+                    />
+                  )}
+                {state.mode === "TS" && (
                   <ModalCodeBlock
                     description="Type"
                     code={code}
@@ -135,7 +222,7 @@ export const RequestPage = () => {
                     onClickCopy={copyToClipboard}
                   />
                 )}
-                {mode === "ERROR" && (
+                {state.mode === "ERROR" && (
                   <ModalCodeBlock
                     description="Error"
                     descriptionColor="red"
@@ -146,7 +233,7 @@ export const RequestPage = () => {
                     onClickCopy={copyToClipboard}
                   />
                 )}
-                {mode === "AXIOS" && (
+                {state.mode === "AXIOS" && (
                   <ModalCodeBlock
                     description="AXIOS"
                     descriptionColor="red"
@@ -157,7 +244,7 @@ export const RequestPage = () => {
                     onClickCopy={copyToClipboard}
                   />
                 )}
-                {mode === "FETCH" && (
+                {state.mode === "FETCH" && (
                   <ModalCodeBlock
                     description="FETCH"
                     descriptionColor="orange"
@@ -168,7 +255,7 @@ export const RequestPage = () => {
                     onClickCopy={copyToClipboard}
                   />
                 )}
-                {mode === "ZOD" && (
+                {state.mode === "ZOD" && (
                   <ModalCodeBlock
                     description="ZOD"
                     descriptionColor="purple"
