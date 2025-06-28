@@ -311,24 +311,24 @@ describe("openApiToLiteralJson", () => {
       typeName: "TestSchema",
       properties: {
         id: {
-          type: "integer",
-          format: "int32",
+          type: "integer" as const,
+          format: "int32" as const,
           description: "게시글 ID",
         },
         title: {
-          type: "string",
+          type: "string" as const,
           description: "게시글 제목",
         },
         isActive: {
-          type: "boolean",
+          type: "boolean" as const,
           description: "활성화 여부",
         },
         content: {
-          type: "string",
+          type: "string" as const,
         },
       },
       required: ["id", "title", "isActive"],
-      type: "object",
+      type: "object" as const,
     };
 
     const expected = {
@@ -347,14 +347,14 @@ describe("openApiToLiteralJson", () => {
       typeName: "RequiredOptionalSchema",
       properties: {
         requiredField: {
-          type: "string",
+          type: "string" as const,
         },
         optionalField: {
-          type: "number",
+          type: "number" as const,
         },
       },
       required: ["requiredField"],
-      type: "object",
+      type: "object" as const,
     };
 
     const expected = {
@@ -371,20 +371,20 @@ describe("openApiToLiteralJson", () => {
       typeName: "NestedObjectSchema",
       properties: {
         user: {
-          type: "object",
+          type: "object" as const,
           properties: {
             id: {
-              type: "integer",
-              format: "int32",
+              type: "integer" as const,
+              format: "int32" as const,
             },
             profile: {
-              type: "object",
+              type: "object" as const,
               properties: {
                 name: {
-                  type: "string",
+                  type: "string" as const,
                 },
                 age: {
-                  type: "integer",
+                  type: "integer" as const,
                 },
               },
               required: ["name", "age"],
@@ -394,7 +394,7 @@ describe("openApiToLiteralJson", () => {
         },
       },
       required: ["user"],
-      type: "object",
+      type: "object" as const,
     };
 
     const expected = {
@@ -416,28 +416,28 @@ describe("openApiToLiteralJson", () => {
       typeName: "ArraySchema",
       properties: {
         tags: {
-          type: "array",
+          type: "array" as const,
           items: {
-            type: "string",
+            type: "string" as const,
           },
         },
         scores: {
-          type: "array",
+          type: "array" as const,
           items: {
-            type: "integer",
-            format: "int32",
+            type: "integer" as const,
+            format: "int32" as const,
           },
         },
         users: {
-          type: "array",
+          type: "array" as const,
           items: {
-            type: "object",
+            type: "object" as const,
             properties: {
               id: {
-                type: "integer",
+                type: "integer" as const,
               },
               name: {
-                type: "string",
+                type: "string" as const,
               },
             },
             required: ["id", "name"],
@@ -445,7 +445,7 @@ describe("openApiToLiteralJson", () => {
         },
       },
       required: ["tags", "scores", "users"],
-      type: "object",
+      type: "object" as const,
     };
 
     const expected = {
@@ -468,24 +468,24 @@ describe("openApiToLiteralJson", () => {
       typeName: "FormatStringSchema",
       properties: {
         createdAt: {
-          type: "string",
-          format: "date-time",
+          type: "string" as const,
+          format: "date-time" as const,
         },
         birthDate: {
-          type: "string",
-          format: "date",
+          type: "string" as const,
+          format: "date" as const,
         },
         password: {
-          type: "string",
-          format: "password",
+          type: "string" as const,
+          format: "password" as const,
         },
         fileData: {
-          type: "string",
-          format: "binary",
+          type: "string" as const,
+          format: "binary" as const,
         },
       },
       required: ["createdAt", "birthDate", "password", "fileData"],
-      type: "object",
+      type: "object" as const,
     };
 
     const expected = {
@@ -508,7 +508,7 @@ describe("openApiToLiteralJson", () => {
       typeName: "EmptySchema",
       properties: {},
       required: [],
-      type: "object",
+      type: "object" as const,
     };
 
     const expected = {};
@@ -522,34 +522,34 @@ describe("openApiToLiteralJson", () => {
       typeName: "ComplexNestedSchema",
       properties: {
         posts: {
-          type: "array",
+          type: "array" as const,
           items: {
-            type: "object",
+            type: "object" as const,
             properties: {
               id: {
-                type: "integer",
+                type: "integer" as const,
               },
               title: {
-                type: "string",
+                type: "string" as const,
               },
               author: {
-                type: "object",
+                type: "object" as const,
                 properties: {
                   id: {
-                    type: "integer",
+                    type: "integer" as const,
                   },
                   name: {
-                    type: "string",
+                    type: "string" as const,
                   },
                   profile: {
-                    type: "object",
+                    type: "object" as const,
                     properties: {
                       avatar: {
-                        type: "string",
-                        format: "binary",
+                        type: "string" as const,
+                        format: "binary" as const,
                       },
                       bio: {
-                        type: "string",
+                        type: "string" as const,
                       },
                     },
                     required: ["avatar"],
@@ -558,9 +558,9 @@ describe("openApiToLiteralJson", () => {
                 required: ["id", "name", "profile"],
               },
               tags: {
-                type: "array",
+                type: "array" as const,
                 items: {
-                  type: "string",
+                  type: "string" as const,
                 },
               },
             },
@@ -568,20 +568,20 @@ describe("openApiToLiteralJson", () => {
           },
         },
         metadata: {
-          type: "object",
+          type: "object" as const,
           properties: {
             total: {
-              type: "integer",
+              type: "integer" as const,
             },
             page: {
-              type: "integer",
+              type: "integer" as const,
             },
           },
           required: ["total", "page"],
         },
       },
       required: ["posts", "metadata"],
-      type: "object",
+      type: "object" as const,
     };
 
     const expected = {

@@ -7,7 +7,8 @@ export type SwaggerType =
   | "boolean"
   | "array"
   | "object"
-  | "binary";
+  | "binary"
+  | "object";
 
 export type SwaggerFormat =
   | "int32"
@@ -31,10 +32,10 @@ export type RefArraySchema = {
 
 export interface SchemaInfo {
   schema: string;
-  typeName: string;
-  properties: Record<string, unknown>;
-  required: string[];
-  type: string;
+  typeName?: string;
+  properties?: Record<string, SchemasProperties>;
+  required?: string[];
+  type: SwaggerType;
 }
 
 export interface DetailSchema {
@@ -44,38 +45,28 @@ export interface DetailSchema {
 
 export interface Schema {
   title: string;
-  type: string;
-  properties: {
-    [key: string]: {
-      title: string;
-      type: string;
-      items?: {
-        type: string;
-        format?: string;
-      };
-      example?: string | number;
-      default?: string | number;
-    };
-  };
+  type: SwaggerType;
+  properties: Record<string, SchemasProperties>;
   required?: string[];
 }
 
 export interface SchemasProperties {
   type: SwaggerType;
   format?: SwaggerFormat;
+  additionalProperties?: SchemasProperties;
   description?: string;
-  example?: string | number;
+  example?: string | number | string[] | number[] | boolean;
   default?: string | number;
   title?: string;
-  items?: {
-    type: SwaggerType;
-    format?: SwaggerFormat;
-  };
+  items?: SchemasProperties;
+  enum?: string[] | number[];
+  required?: boolean | string[];
+  properties?: Record<string, SchemasProperties>;
   $ref?: string;
 }
 
 export interface Schemas {
-  type: string;
+  type: SwaggerType;
   description?: string;
   required?: string[];
   properties: {

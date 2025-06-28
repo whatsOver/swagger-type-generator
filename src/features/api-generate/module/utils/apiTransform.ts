@@ -9,6 +9,7 @@ import {
   Schema,
   SchemaInfo,
   Schemas,
+  SchemasProperties,
   SwaggerDocs,
 } from "@/entities/swagger/types";
 import { Method } from "axios";
@@ -121,10 +122,10 @@ const extractSchemaInfo = (
 };
 
 const processNestedProperties = (
-  properties: Record<string, unknown>,
+  properties: Record<string, SchemasProperties>,
   components: SwaggerDocs["components"]
-): Record<string, unknown> => {
-  const processed: Record<string, unknown> = {};
+): Record<string, SchemasProperties> => {
+  const processed: Record<string, SchemasProperties> = {};
 
   Object.entries(properties).forEach(([key, value]) => {
     if (typeof value === "object" && value !== null) {
@@ -167,9 +168,9 @@ const processNestedProperties = (
 };
 
 const processArrayItems = (
-  items: unknown,
+  items: SchemasProperties,
   components: SwaggerDocs["components"]
-): unknown => {
+): SchemasProperties => {
   if (typeof items === "object" && items !== null) {
     const itemProp = items as FormSchemaProperty;
 
