@@ -138,7 +138,10 @@ export const MultipleTestPage = () => {
 
   const codeAction = useHandleCode({
     api: currentSwaggerAPI,
-    response,
+    sourceData: {
+      data: response,
+      type: "JSON",
+    },
     setMode,
   });
 

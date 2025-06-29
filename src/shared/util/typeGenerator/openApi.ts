@@ -3,7 +3,7 @@ import { SchemaInfo, SchemasProperties } from "@/entities/swagger/types";
 export const openApiToTs = (
   schema: SchemaInfo,
   rootName = "Interface"
-): string => {
+): { interfaceArray: string[]; rootInterfaceKey: string } => {
   const interfaces: string[] = [];
   const interfaceMap = new Map<string, string>();
 
@@ -84,7 +84,10 @@ export const openApiToTs = (
 
   interfaces.unshift(rootInterface);
 
-  return interfaces.join("\n");
+  return {
+    interfaceArray: interfaces,
+    rootInterfaceKey: rootName,
+  };
 };
 
 export const openApiToZod = (

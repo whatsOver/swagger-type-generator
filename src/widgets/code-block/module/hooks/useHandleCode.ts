@@ -8,6 +8,7 @@ import {
 
 import { APIWithParamsAndBodyAndHost } from "@/entities/docs/model/types/docs";
 import { useSettingStore } from "@/entities/setting/model/setting-store";
+import { SchemaInfo } from "@/entities/swagger/types";
 import {
   generateAxiosAPICode,
   generateFetchAPICode,
@@ -16,10 +17,21 @@ import {
 import { generateReactQueryHook } from "@/features/react-query-generate/module/queryGenerator";
 import { useCopy } from "@/shared/hooks/useCopy";
 import { jsonToTs, jsonToZod } from "@/shared/util/typeGenerator/json";
+import { openApiToTs, openApiToZod } from "@/shared/util/typeGenerator/openApi";
+
+export type SourceData =
+  | {
+      data: unknown;
+      type: "JSON";
+    }
+  | {
+      type: "OPEN_API";
+      data: SchemaInfo | null;
+    };
 
 interface HandleCode {
   api: APIWithParamsAndBodyAndHost | null;
-  response: unknown;
+  sourceData: SourceData;
   setMode: Dispatch<SetStateAction<string>>;
 }
 
@@ -35,7 +47,7 @@ export interface HandleCodeReturn {
 
 const useHandleCode = ({
   api,
-  response,
+  sourceData,
   setMode,
 }: HandleCode): HandleCodeReturn => {
   // FIRST RENDER
@@ -47,7 +59,15 @@ const useHandleCode = ({
   // 2. 유저 > TS 버튼 클릭
   const onClickTS = () => {
     setMode("TS");
-    setCode(jsonToTs("json", response).interfaceArray.join("\n"));
+    if (sourceData.type === "JSON") {
+      setCode(jsonToTs("json", sourceData.data).interfaceArray.join("\n"));
+      return;
+    }
+
+    if (sourceData.data) {
+      setCode(openApiToTs(sourceData.data, "Schema").interfaceArray.join("\n"));
+      return;
+    }
   };
 
   // 3. 유저 > Axios 버튼 클릭
@@ -55,7 +75,19 @@ const useHandleCode = ({
 
   const onClickAxios = () => {
     setMode("AXIOS");
-    const { interfaceArray, rootInterfaceKey } = jsonToTs("json", response);
+    let interfaceArray: string[];
+    let rootInterfaceKey: string;
+
+    if (sourceData.type === "JSON") {
+      const result = jsonToTs("json", sourceData.data);
+      interfaceArray = result.interfaceArray;
+      rootInterfaceKey = result.rootInterfaceKey;
+    } else {
+      const result = openApiToTs(sourceData.data, "Schema");
+      interfaceArray = result.interfaceArray;
+      rootInterfaceKey = result.rootInterfaceKey;
+    }
+
     setCode(interfaceArray.join("\n"));
     setCode(
       (prev) =>
@@ -87,7 +119,18 @@ const useHandleCode = ({
   // 4. 유저 > Fetch 버튼 클릭
   const onClickFetch = () => {
     setMode("FETCH");
-    const { interfaceArray, rootInterfaceKey } = jsonToTs("json", response);
+    let interfaceArray: string[];
+    let rootInterfaceKey: string;
+
+    if (sourceData.type === "JSON") {
+      const result = jsonToTs("json", sourceData.data);
+      interfaceArray = result.interfaceArray;
+      rootInterfaceKey = result.rootInterfaceKey;
+    } else {
+      const result = openApiToTs(sourceData.data, "Schema");
+      interfaceArray = result.interfaceArray;
+      rootInterfaceKey = result.rootInterfaceKey;
+    }
     setCode(interfaceArray.join("\n"));
     setCode(
       (prev) =>
@@ -119,8 +162,17 @@ const useHandleCode = ({
   // 5. 유저 > Zod 버튼 클릭
   const onClickZod = () => {
     setMode("ZOD");
-    const zodSchema = jsonToZod(response, "Response");
-    setCode(zodSchema);
+    if (sourceData.type === "JSON") {
+      const zodSchema = jsonToZod(sourceData.data, "Response");
+      setCode(zodSchema);
+      return;
+    }
+
+    if (sourceData.data) {
+      const zodSchema = openApiToZod(sourceData.data, "Response");
+      setCode(zodSchema);
+      return;
+    }
   };
 
   // 6. 유저 > 복사 버튼 클릭

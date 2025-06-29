@@ -19,9 +19,12 @@ describe("openApiToTs", () => {
 
       const result = openApiToTs(schema, "StringTest");
 
-      expect(result).toEqual(
-        "export interface StringTest {\n" + "  name: string;\n" + "}\n\n"
-      );
+      expect(result).toEqual({
+        interfaceArray: [
+          "export interface StringTest {\n" + "  name: string;\n" + "}\n\n",
+        ],
+        rootInterfaceKey: "StringTest",
+      });
     });
 
     it("integer 타입을 올바르게 처리한다", () => {
@@ -41,9 +44,12 @@ describe("openApiToTs", () => {
 
       const result = openApiToTs(schema, "IntegerTest");
 
-      expect(result).toEqual(
-        "export interface IntegerTest {\n" + "  id: number;\n" + "}\n\n"
-      );
+      expect(result).toEqual({
+        interfaceArray: [
+          "export interface IntegerTest {\n" + "  id: number;\n" + "}\n\n",
+        ],
+        rootInterfaceKey: "IntegerTest",
+      });
     });
 
     it("number 타입을 올바르게 처리한다", () => {
@@ -63,9 +69,12 @@ describe("openApiToTs", () => {
 
       const result = openApiToTs(schema, "NumberTest");
 
-      expect(result).toEqual(
-        "export interface NumberTest {\n" + "  price: number;\n" + "}\n\n"
-      );
+      expect(result).toEqual({
+        interfaceArray: [
+          "export interface NumberTest {\n" + "  price: number;\n" + "}\n\n",
+        ],
+        rootInterfaceKey: "NumberTest",
+      });
     });
 
     it("boolean 타입을 올바르게 처리한다", () => {
@@ -84,9 +93,14 @@ describe("openApiToTs", () => {
 
       const result = openApiToTs(schema, "BooleanTest");
 
-      expect(result).toEqual(
-        "export interface BooleanTest {\n" + "  isActive: boolean;\n" + "}\n\n"
-      );
+      expect(result).toEqual({
+        interfaceArray: [
+          "export interface BooleanTest {\n" +
+            "  isActive: boolean;\n" +
+            "}\n\n",
+        ],
+        rootInterfaceKey: "BooleanTest",
+      });
     });
   });
 
@@ -108,9 +122,14 @@ describe("openApiToTs", () => {
 
       const result = openApiToTs(schema, "DateTimeTest");
 
-      expect(result).toEqual(
-        "export interface DateTimeTest {\n" + "  createdAt: string;\n" + "}\n\n"
-      );
+      expect(result).toEqual({
+        interfaceArray: [
+          "export interface DateTimeTest {\n" +
+            "  createdAt: string;\n" +
+            "}\n\n",
+        ],
+        rootInterfaceKey: "DateTimeTest",
+      });
     });
 
     it("date 포맷을 올바르게 처리한다", () => {
@@ -130,9 +149,12 @@ describe("openApiToTs", () => {
 
       const result = openApiToTs(schema, "DateTest");
 
-      expect(result).toEqual(
-        "export interface DateTest {\n" + "  birthDate: string;\n" + "}\n\n"
-      );
+      expect(result).toEqual({
+        interfaceArray: [
+          "export interface DateTest {\n" + "  birthDate: string;\n" + "}\n\n",
+        ],
+        rootInterfaceKey: "DateTest",
+      });
     });
 
     it("password 포맷을 올바르게 처리한다", () => {
@@ -152,9 +174,14 @@ describe("openApiToTs", () => {
 
       const result = openApiToTs(schema, "PasswordTest");
 
-      expect(result).toEqual(
-        "export interface PasswordTest {\n" + "  password: string;\n" + "}\n\n"
-      );
+      expect(result).toEqual({
+        interfaceArray: [
+          "export interface PasswordTest {\n" +
+            "  password: string;\n" +
+            "}\n\n",
+        ],
+        rootInterfaceKey: "PasswordTest",
+      });
     });
 
     it("binary 포맷을 올바르게 처리한다", () => {
@@ -174,9 +201,12 @@ describe("openApiToTs", () => {
 
       const result = openApiToTs(schema, "BinaryTest");
 
-      expect(result).toEqual(
-        "export interface BinaryTest {\n" + "  file: File;\n" + "}\n\n"
-      );
+      expect(result).toEqual({
+        interfaceArray: [
+          "export interface BinaryTest {\n" + "  file: File;\n" + "}\n\n",
+        ],
+        rootInterfaceKey: "BinaryTest",
+      });
     });
   });
 
@@ -200,9 +230,14 @@ describe("openApiToTs", () => {
 
       const result = openApiToTs(schema, "StringArrayTest");
 
-      expect(result).toEqual(
-        "export interface StringArrayTest {\n" + "  tags: string[];\n" + "}\n\n"
-      );
+      expect(result).toEqual({
+        interfaceArray: [
+          "export interface StringArrayTest {\n" +
+            "  tags: string[];\n" +
+            "}\n\n",
+        ],
+        rootInterfaceKey: "StringArrayTest",
+      });
     });
 
     it("숫자 배열을 올바르게 처리한다", () => {
@@ -225,11 +260,14 @@ describe("openApiToTs", () => {
 
       const result = openApiToTs(schema, "NumberArrayTest");
 
-      expect(result).toEqual(
-        "export interface NumberArrayTest {\n" +
-          "  scores: number[];\n" +
-          "}\n\n"
-      );
+      expect(result).toEqual({
+        interfaceArray: [
+          "export interface NumberArrayTest {\n" +
+            "  scores: number[];\n" +
+            "}\n\n",
+        ],
+        rootInterfaceKey: "NumberArrayTest",
+      });
     });
 
     it("빈 배열을 올바르게 처리한다", () => {
@@ -248,11 +286,14 @@ describe("openApiToTs", () => {
 
       const result = openApiToTs(schema, "EmptyArrayTest");
 
-      expect(result).toEqual(
-        "export interface EmptyArrayTest {\n" +
-          "  emptyArray: unknown[];\n" +
-          "}\n\n"
-      );
+      expect(result).toEqual({
+        interfaceArray: [
+          "export interface EmptyArrayTest {\n" +
+            "  emptyArray: unknown[];\n" +
+            "}\n\n",
+        ],
+        rootInterfaceKey: "EmptyArrayTest",
+      });
     });
   });
 
@@ -274,11 +315,14 @@ describe("openApiToTs", () => {
 
       const result = openApiToTs(schema, "EnumTest");
 
-      expect(result).toEqual(
-        "export interface EnumTest {\n" +
-          '  status: "ACTIVE" | "INACTIVE" | "PENDING";\n' +
-          "}\n\n"
-      );
+      expect(result).toEqual({
+        interfaceArray: [
+          "export interface EnumTest {\n" +
+            '  status: "ACTIVE" | "INACTIVE" | "PENDING";\n' +
+            "}\n\n",
+        ],
+        rootInterfaceKey: "EnumTest",
+      });
     });
 
     it("숫자 enum을 올바르게 처리한다", () => {
@@ -298,11 +342,14 @@ describe("openApiToTs", () => {
 
       const result = openApiToTs(schema, "NumberEnumTest");
 
-      expect(result).toEqual(
-        "export interface NumberEnumTest {\n" +
-          '  priority: "1" | "2" | "3" | "4" | "5";\n' +
-          "}\n\n"
-      );
+      expect(result).toEqual({
+        interfaceArray: [
+          "export interface NumberEnumTest {\n" +
+            '  priority: "1" | "2" | "3" | "4" | "5";\n' +
+            "}\n\n",
+        ],
+        rootInterfaceKey: "NumberEnumTest",
+      });
     });
   });
 
@@ -327,12 +374,15 @@ describe("openApiToTs", () => {
 
       const result = openApiToTs(schema, "OptionalTest");
 
-      expect(result).toEqual(
-        "export interface OptionalTest {\n" +
-          "  requiredField: string;\n" +
-          "  optionalField?: number;\n" +
-          "}\n\n"
-      );
+      expect(result).toEqual({
+        interfaceArray: [
+          "export interface OptionalTest {\n" +
+            "  requiredField: string;\n" +
+            "  optionalField?: number;\n" +
+            "}\n\n",
+        ],
+        rootInterfaceKey: "OptionalTest",
+      });
     });
 
     it("모든 필드가 선택적인 경우를 처리한다", () => {
@@ -353,12 +403,15 @@ describe("openApiToTs", () => {
 
       const result = openApiToTs(schema, "AllOptionalTest");
 
-      expect(result).toEqual(
-        "export interface AllOptionalTest {\n" +
-          "  field1?: string;\n" +
-          "  field2?: number;\n" +
-          "}\n\n"
-      );
+      expect(result).toEqual({
+        interfaceArray: [
+          "export interface AllOptionalTest {\n" +
+            "  field1?: string;\n" +
+            "  field2?: number;\n" +
+            "}\n\n",
+        ],
+        rootInterfaceKey: "AllOptionalTest",
+      });
     });
   });
 
@@ -379,11 +432,14 @@ describe("openApiToTs", () => {
 
       const result = openApiToTs(schema, "EmptyObjectTest");
 
-      expect(result).toEqual(
-        "export interface EmptyObjectTest {\n" +
-          "  emptyObject: Record<string, unknown>;\n" +
-          "}\n\n"
-      );
+      expect(result).toEqual({
+        interfaceArray: [
+          "export interface EmptyObjectTest {\n" +
+            "  emptyObject: Record<string, unknown>;\n" +
+            "}\n\n",
+        ],
+        rootInterfaceKey: "EmptyObjectTest",
+      });
     });
 
     it("properties가 없는 객체를 올바르게 처리한다", () => {
@@ -402,11 +458,14 @@ describe("openApiToTs", () => {
 
       const result = openApiToTs(schema, "NoPropertiesTest");
 
-      expect(result).toEqual(
-        "export interface NoPropertiesTest {\n" +
-          "  noProps: Record<string, unknown>;\n" +
-          "}\n\n"
-      );
+      expect(result).toEqual({
+        interfaceArray: [
+          "export interface NoPropertiesTest {\n" +
+            "  noProps: Record<string, unknown>;\n" +
+            "}\n\n",
+        ],
+        rootInterfaceKey: "NoPropertiesTest",
+      });
     });
   });
 
@@ -427,11 +486,14 @@ describe("openApiToTs", () => {
 
       const result = openApiToTs(schema, "UnknownTest");
 
-      expect(result).toEqual(
-        "export interface UnknownTest {\n" +
-          "  unknownField: unknown;\n" +
-          "}\n\n"
-      );
+      expect(result).toEqual({
+        interfaceArray: [
+          "export interface UnknownTest {\n" +
+            "  unknownField: unknown;\n" +
+            "}\n\n",
+        ],
+        rootInterfaceKey: "UnknownTest",
+      });
     });
   });
 
@@ -451,7 +513,12 @@ describe("openApiToTs", () => {
 
       const result = openApiToTs(schema);
 
-      expect(result).toContain("export interface Interface {");
+      expect(result).toEqual({
+        interfaceArray: [
+          "export interface Interface {\n" + "  name: string;\n" + "}\n\n",
+        ],
+        rootInterfaceKey: "Interface",
+      });
     });
 
     it("커스텀 루트 이름을 사용한다", () => {
@@ -469,7 +536,12 @@ describe("openApiToTs", () => {
 
       const result = openApiToTs(schema, "CustomName");
 
-      expect(result).toContain("export interface CustomName {");
+      expect(result).toEqual({
+        interfaceArray: [
+          "export interface CustomName {\n" + "  name: string;\n" + "}\n\n",
+        ],
+        rootInterfaceKey: "CustomName",
+      });
     });
   });
 });

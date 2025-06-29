@@ -6,7 +6,9 @@ import Loading from "@/shared/ui/Loading/Loading";
 import Modal from "@/shared/ui/Modal";
 import { vars } from "@/shared/ui/styles/theme.css";
 import APIItem from "@/widgets/api-list/ui/api-item/ApiItem";
-import useHandleCode from "@/widgets/code-block/module/hooks/useHandleCode";
+import useHandleCode, {
+  SourceData,
+} from "@/widgets/code-block/module/hooks/useHandleCode";
 import ModalCodeBlock from "@/widgets/code-block/ui/code-block-modal/CodeBlockView";
 import { RequestBody } from "@/widgets/request-body/ui/api-body/RequestBody";
 import { RequestParam } from "@/widgets/request-param/ui/api-param/RequestParam";
@@ -24,7 +26,7 @@ import {
   SchemaMode,
 } from "@/features/request-api/module/requestReducer";
 import { noop } from "@/shared/util/common";
-import { openApiToLiteralJson } from "@/shared/util/typeGenerator/json";
+import { openApiToTs } from "@/shared/util/typeGenerator/openApi";
 import "react-toastify/dist/ReactToastify.css";
 
 export const RequestPage = () => {
@@ -67,19 +69,21 @@ export const RequestPage = () => {
     });
 
   // 상태에 따라 code비즈니스 로직에 해당하는 코드 반환
-  const baseCode = useMemo(() => {
-    if (state.type === "API_RESPONSE") return response;
+  const baseCode = useMemo((): SourceData => {
+    if (state.type === "API_RESPONSE") {
+      return { data: response, type: "JSON" };
+    }
 
     if (state.schemaType === "REQUEST_TYPE") {
-      const Json = openApiToLiteralJson(api.detailSchema?.requestType);
-      return Json ?? "Request type is not defined for this API";
+      return { data: api.detailSchema?.requestType, type: "OPEN_API" };
     }
 
     if (state.schemaType === "RESPONSE_TYPE") {
-      const Json = openApiToLiteralJson(api.detailSchema?.responseType);
-      return Json ?? "Response type is not defined for this API";
+      return { data: api.detailSchema?.responseType, type: "OPEN_API" };
     }
-  }, [state, api.detailSchema]);
+
+    return { data: null, type: "OPEN_API" };
+  }, [state, api.detailSchema, response]);
 
   // 3. Code 비지니스 로직
   const {
@@ -90,7 +94,11 @@ export const RequestPage = () => {
     onClickFetch,
     onClickTS,
     onClickZod,
-  } = useHandleCode({ api, response: baseCode, setMode: handleMode });
+  } = useHandleCode({
+    api,
+    sourceData: baseCode,
+    setMode: handleMode,
+  });
 
   return (
     <div className={apiListStyle.app}>
@@ -197,22 +205,27 @@ export const RequestPage = () => {
                     onClickZod={onClickZod}
                   />
                 )}
-                {state.type === "SCHEMA_DEFINITION" &&
-                  state.mode === "BASE" && (
-                    <ModalCodeBlock
-                      description={state.schemaType}
-                      code={JSON.stringify(baseCode, null, 2)}
-                      mode="base"
-                      ref={codeRef}
-                      onClose={onCloseModal}
-                      onClickCopy={copyToClipboard}
-                      onClickTS={onClickTS}
-                      onClickAxios={onClickAxios}
-                      onClickFetch={onClickFetch}
-                      onClickZod={onClickZod}
-                    />
-                  )}
-                {state.mode === "TS" && (
+                {state.type === "SCHEMA_DEFINITION" && state.mode === "TS" && (
+                  <ModalCodeBlock
+                    description={state.schemaType}
+                    code={
+                      baseCode.type === "OPEN_API" && baseCode.data
+                        ? openApiToTs(
+                            baseCode.data,
+                            "Schema"
+                          ).interfaceArray.join("\n")
+                        : `No schema defined for ${state.schemaType}`
+                    }
+                    mode="base"
+                    ref={codeRef}
+                    onClose={onCloseModal}
+                    onClickCopy={copyToClipboard}
+                    onClickAxios={onClickAxios}
+                    onClickFetch={onClickFetch}
+                    onClickZod={onClickZod}
+                  />
+                )}
+                {state.type === "API_RESPONSE" && state.mode === "TS" && (
                   <ModalCodeBlock
                     description="Type"
                     code={code}
