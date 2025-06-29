@@ -24,7 +24,7 @@ import {
   SchemaMode,
 } from "@/features/request-api/module/requestReducer";
 import { noop } from "@/shared/util/common";
-import { openApiToLiteralJson } from "@/shared/util/typeGenerator";
+import { openApiToLiteralJson } from "@/shared/util/typeGenerator/json";
 import "react-toastify/dist/ReactToastify.css";
 
 export const RequestPage = () => {

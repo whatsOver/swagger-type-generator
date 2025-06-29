@@ -15,7 +15,7 @@ import {
 } from "@/features/api-generate/module/utils/apiGenerator";
 import { generateReactQueryHook } from "@/features/react-query-generate/module/queryGenerator";
 import { useCopy } from "@/shared/hooks/useCopy";
-import { jsonToTs, jsonToZod } from "@/shared/util/typeGenerator";
+import { jsonToTs, jsonToZod } from "@/shared/util/typeGenerator/json";
 
 interface HandleCode {
   api: APIWithParamsAndBodyAndHost | null;
