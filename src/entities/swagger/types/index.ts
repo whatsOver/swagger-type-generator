@@ -55,7 +55,7 @@ export interface SchemasProperties {
   format?: SwaggerFormat;
   additionalProperties?: SchemasProperties;
   description?: string;
-  example?: string | number | string[] | number[] | boolean;
+  example?: string | number | string[] | number[] | boolean | unknown[];
   default?: string | number;
   title?: string;
   items?: SchemasProperties;
@@ -63,6 +63,8 @@ export interface SchemasProperties {
   required?: boolean | string[];
   properties?: Record<string, SchemasProperties>;
   $ref?: string;
+  oneOf?: SchemasProperties[];
+  anyOf?: SchemasProperties[];
 }
 
 export interface Schemas {

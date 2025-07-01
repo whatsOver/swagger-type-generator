@@ -8,6 +8,12 @@ export const openApiToTs = (
   const interfaceMap = new Map<string, string>();
 
   const generateTsType = (prop: SchemasProperties, name: string): string => {
+    if (prop.oneOf && Array.isArray(prop.oneOf)) {
+      return prop.oneOf.map((item) => generateTsType(item, name)).join(" | ");
+    }
+    if (prop.anyOf && Array.isArray(prop.anyOf)) {
+      return prop.anyOf.map((item) => generateTsType(item, name)).join(" | ");
+    }
     if (prop.enum) {
       const enumValues = prop.enum.map((v) => `"${v}"`).join(" | ");
       return enumValues;
@@ -30,6 +36,18 @@ export const openApiToTs = (
 
       case "array":
         if (prop.items) {
+          if (prop.items.oneOf && Array.isArray(prop.items.oneOf)) {
+            const unionType = prop.items.oneOf
+              .map((item) => generateTsType(item, `${name}Item`))
+              .join(" | ");
+            return `(${unionType})[]`;
+          }
+          if (prop.items.anyOf && Array.isArray(prop.items.anyOf)) {
+            const unionType = prop.items.anyOf
+              .map((item) => generateTsType(item, `${name}Item`))
+              .join(" | ");
+            return `(${unionType})[]`;
+          }
           const itemType = generateTsType(prop.items, `${name}Item`);
           return `${itemType}[]`;
         }
@@ -98,7 +116,18 @@ export const openApiToZod = (
   const schemaMap = new Map<string, string>();
 
   const generateZodSchema = (prop: SchemasProperties, name: string): string => {
-    // Enum 처리
+    if (prop.oneOf && Array.isArray(prop.oneOf)) {
+      const unionSchemas = prop.oneOf
+        .map((item) => generateZodSchema(item, name))
+        .join(", ");
+      return `z.union([${unionSchemas}])`;
+    }
+    if (prop.anyOf && Array.isArray(prop.anyOf)) {
+      const unionSchemas = prop.anyOf
+        .map((item) => generateZodSchema(item, name))
+        .join(", ");
+      return `z.union([${unionSchemas}])`;
+    }
     if (prop.enum) {
       const enumValues = prop.enum.map((v) => `"${v}"`).join(", ");
       return `z.enum([${enumValues}])`;
@@ -124,6 +153,18 @@ export const openApiToZod = (
 
       case "array":
         if (prop.items) {
+          if (prop.items.oneOf && Array.isArray(prop.items.oneOf)) {
+            const unionSchemas = prop.items.oneOf
+              .map((item) => generateZodSchema(item, `${name}Item`))
+              .join(", ");
+            return `z.array(z.union([${unionSchemas}]))`;
+          }
+          if (prop.items.anyOf && Array.isArray(prop.items.anyOf)) {
+            const unionSchemas = prop.items.anyOf
+              .map((item) => generateZodSchema(item, `${name}Item`))
+              .join(", ");
+            return `z.array(z.union([${unionSchemas}]))`;
+          }
           const itemSchema = generateZodSchema(prop.items, `${name}Item`);
           return `z.array(${itemSchema})`;
         }

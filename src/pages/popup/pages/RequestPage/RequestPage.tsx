@@ -85,6 +85,8 @@ export const RequestPage = () => {
     return { data: null, type: "OPEN_API" };
   }, [state, api.detailSchema, response]);
 
+  console.log("api", api);
+
   // 3. Code 비지니스 로직
   const {
     code,
