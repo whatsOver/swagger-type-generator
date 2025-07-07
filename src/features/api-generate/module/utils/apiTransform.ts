@@ -73,6 +73,7 @@ export const transformApiFromSwagger = (
     body,
     contentType,
     detailSchema,
+    components: data.components,
   };
 };
 
@@ -90,7 +91,12 @@ function transformDefaultComplexSchema(schema: DefaultComplexSchema): Schemas {
 }
 
 const extractSchemaInfo = (
-  schema: RefSchema | RefArraySchema | DefaultComplexSchema | Schema,
+  schema:
+    | RefSchema
+    | RefArraySchema
+    | DefaultComplexSchema
+    | Schema
+    | SchemasProperties,
   components: SwaggerDocs["components"]
 ): SchemaInfo => {
   if ("$ref" in schema) {
@@ -106,6 +112,38 @@ const extractSchemaInfo = (
       properties: processedProperties,
       required: schemaData?.required || [],
       type: schemaData?.type || "object",
+    };
+  }
+
+  if ("type" in schema && schema.type === "array" && "items" in schema) {
+    const itemsSchema = schema.items;
+    let parsedItems: any = itemsSchema;
+
+    if ("$ref" in itemsSchema) {
+      parsedItems = extractSchemaInfo(itemsSchema, components);
+    } else if ("oneOf" in itemsSchema && Array.isArray(itemsSchema.oneOf)) {
+      parsedItems = {
+        oneOf: itemsSchema.oneOf.map((item) =>
+          extractSchemaInfo(item, components)
+        ),
+      };
+    } else if ("anyOf" in itemsSchema && Array.isArray(itemsSchema.anyOf)) {
+      parsedItems = {
+        anyOf: itemsSchema.anyOf.map((item) =>
+          extractSchemaInfo(item, components)
+        ),
+      };
+    } else if (itemsSchema.type === "object" && itemsSchema.properties) {
+      parsedItems = extractSchemaInfo(itemsSchema, components);
+    }
+
+    return {
+      schema: "inline",
+      typeName: "inline",
+      properties: {},
+      required: [],
+      type: "array",
+      items: parsedItems,
     };
   }
 

@@ -36,6 +36,7 @@ export interface SchemaInfo {
   properties?: Record<string, SchemasProperties>;
   required?: string[];
   type: SwaggerType;
+  items?: SchemaInfo | { oneOf: SchemaInfo[] } | { anyOf: SchemaInfo[] };
 }
 
 export interface DetailSchema {
@@ -43,12 +44,24 @@ export interface DetailSchema {
   responseType: SchemaInfo | null;
 }
 
-export interface Schema {
+interface BaseSchema {
+  properties?: Record<string, SchemasProperties>;
+  required?: string[];
   title: string;
-  type: SwaggerType;
+}
+
+interface ArraySchema extends BaseSchema {
+  type: "array";
+  items: SchemasProperties;
+}
+
+interface NonArraySchema extends BaseSchema {
+  type: Exclude<SwaggerType, "array">;
   properties: Record<string, SchemasProperties>;
   required?: string[];
 }
+
+export type Schema = ArraySchema | NonArraySchema;
 
 export interface SchemasProperties {
   type: SwaggerType;

@@ -27,11 +27,13 @@ import {
 } from "@/features/request-api/module/requestReducer";
 import { noop } from "@/shared/util/common";
 import { openApiToTs } from "@/shared/util/typeGenerator/openApi";
+import { useHandleApiList } from "@/widgets/api-list/module/hooks/useHandleApiList";
 import "react-toastify/dist/ReactToastify.css";
 
 export const RequestPage = () => {
   // FIRST RENDER
   const api = useLocation().state as APIWithParamsAndBodyAndHost;
+  const { apiDocsData } = useHandleApiList();
 
   const { params, body } = api;
 
@@ -100,6 +102,7 @@ export const RequestPage = () => {
     api,
     sourceData: baseCode,
     setMode: handleMode,
+    apiDocsData,
   });
 
   return (
@@ -214,7 +217,8 @@ export const RequestPage = () => {
                       baseCode.type === "OPEN_API" && baseCode.data
                         ? openApiToTs(
                             baseCode.data,
-                            "Schema"
+                            "Schema",
+                            apiDocsData?.components?.schemas
                           ).interfaceArray.join("\n")
                         : `No schema defined for ${state.schemaType}`
                     }

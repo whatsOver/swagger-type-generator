@@ -8,7 +8,7 @@ import {
 
 import { APIWithParamsAndBodyAndHost } from "@/entities/docs/model/types/docs";
 import { useSettingStore } from "@/entities/setting/model/setting-store";
-import { SchemaInfo } from "@/entities/swagger/types";
+import { SchemaInfo, SwaggerDocs } from "@/entities/swagger/types";
 import {
   generateAxiosAPICode,
   generateFetchAPICode,
@@ -33,6 +33,7 @@ interface HandleCode {
   api: APIWithParamsAndBodyAndHost | null;
   sourceData: SourceData;
   setMode: Dispatch<SetStateAction<string>>;
+  apiDocsData?: SwaggerDocs;
 }
 
 export interface HandleCodeReturn {
@@ -49,6 +50,7 @@ const useHandleCode = ({
   api,
   sourceData,
   setMode,
+  apiDocsData,
 }: HandleCode): HandleCodeReturn => {
   // FIRST RENDER
 
@@ -65,7 +67,13 @@ const useHandleCode = ({
     }
 
     if (sourceData.data) {
-      setCode(openApiToTs(sourceData.data, "Schema").interfaceArray.join("\n"));
+      setCode(
+        openApiToTs(
+          sourceData.data,
+          "Schema",
+          apiDocsData?.components?.schemas
+        ).interfaceArray.join("\n")
+      );
       return;
     }
   };
@@ -83,7 +91,11 @@ const useHandleCode = ({
       interfaceArray = result.interfaceArray;
       rootInterfaceKey = result.rootInterfaceKey;
     } else {
-      const result = openApiToTs(sourceData.data, "Schema");
+      const result = openApiToTs(
+        sourceData.data,
+        "Schema",
+        apiDocsData?.components?.schemas
+      );
       interfaceArray = result.interfaceArray;
       rootInterfaceKey = result.rootInterfaceKey;
     }
@@ -127,7 +139,11 @@ const useHandleCode = ({
       interfaceArray = result.interfaceArray;
       rootInterfaceKey = result.rootInterfaceKey;
     } else {
-      const result = openApiToTs(sourceData.data, "Schema");
+      const result = openApiToTs(
+        sourceData.data,
+        "Schema",
+        apiDocsData?.components?.schemas
+      );
       interfaceArray = result.interfaceArray;
       rootInterfaceKey = result.rootInterfaceKey;
     }
@@ -169,7 +185,11 @@ const useHandleCode = ({
     }
 
     if (sourceData.data) {
-      const zodSchema = openApiToZod(sourceData.data, "Response");
+      const zodSchema = openApiToZod(
+        sourceData.data,
+        "Response",
+        apiDocsData?.components?.schemas
+      );
       setCode(zodSchema);
       return;
     }
