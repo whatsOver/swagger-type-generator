@@ -544,6 +544,48 @@ describe("openApiToTs", () => {
       });
     });
   });
+
+  describe("oneOf/anyOf union 타입", () => {
+    it("oneOf: number | boolean 타입을 올바르게 처리한다", () => {
+      const schema: SchemaInfo = {
+        schema: "inline",
+        typeName: "UnionSchema",
+        properties: {
+          price: {
+            type: "number",
+            description: "가격",
+            oneOf: [{ type: "number" }, { type: "boolean" }],
+            example: 1200000,
+          } as any,
+        },
+        required: ["price"],
+        type: "object",
+      };
+      const result = openApiToTs(schema, "UnionTest");
+      expect(result.interfaceArray[0]).toContain("price: number | boolean;");
+    });
+
+    it("배열 items에 oneOf: string | number 타입을 올바르게 처리한다", () => {
+      const schema: SchemaInfo = {
+        schema: "inline",
+        typeName: "ArrayUnionSchema",
+        properties: {
+          tags: {
+            type: "array",
+            items: {
+              oneOf: [{ type: "string" }, { type: "number" }],
+            } as any,
+            description: "상품 태그 (string | number)[]",
+            example: ["전자제품", "컴퓨터", 123],
+          },
+        },
+        required: ["tags"],
+        type: "object",
+      };
+      const result = openApiToTs(schema, "ArrayUnionTest");
+      expect(result.interfaceArray[0]).toContain("tags: (string | number)[];");
+    });
+  });
 });
 
 describe("openApiToZod", () => {
@@ -1012,6 +1054,48 @@ describe("openApiToZod", () => {
       const result = openApiToZod(schema, "CustomName");
 
       expect(result).toContain("const CustomNameSchema = z.object({");
+    });
+  });
+
+  describe("oneOf/anyOf union 타입", () => {
+    it("oneOf: number | boolean 타입을 올바르게 처리한다", () => {
+      const schema: SchemaInfo = {
+        schema: "inline",
+        typeName: "UnionSchema",
+        properties: {
+          price: {
+            type: "number",
+            description: "가격",
+            oneOf: [{ type: "number" }, { type: "boolean" }],
+            example: 1200000,
+          } as any,
+        },
+        required: ["price"],
+        type: "object",
+      };
+      const zodSchema = openApiToZod(schema, "UnionTest");
+      expect(zodSchema).toContain("z.union([z.number(), z.boolean()])");
+    });
+
+    it("배열 items에 oneOf: string | number 타입을 올바르게 처리한다", () => {
+      const schema: SchemaInfo = {
+        schema: "inline",
+        typeName: "ArrayUnionSchema",
+        properties: {
+          tags: {
+            type: "array",
+            items: {
+              oneOf: [{ type: "string" }, { type: "number" }],
+            } as any,
+            description: "상품 태그 (string | number)[]",
+            example: ["전자제품", "컴퓨터", 123],
+          },
+        },
+        required: ["tags"],
+        type: "object",
+      };
+      const zodSchema = openApiToZod(schema, "ArrayUnionTest");
+      expect(zodSchema).toContain("z.array(z.union([z.string(), z.number()]))");
     });
   });
 });
