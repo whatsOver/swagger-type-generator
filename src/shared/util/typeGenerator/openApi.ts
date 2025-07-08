@@ -31,14 +31,20 @@ export const openApiToTs = (
       return typeName || "unknown";
     }
     if (prop.oneOf && Array.isArray(prop.oneOf)) {
-      return prop.oneOf
-        .map((item) => generateTsType(item, name, schemasMap))
-        .join(" | ");
+      const types = prop.oneOf.map((item) => {
+        if (item.type === "null") return "null";
+        return generateTsType(item, name, schemasMap);
+      });
+      const filtered = types.filter((t) => t !== "null");
+      return filtered.join(" | ") + (types.includes("null") ? " | null" : "");
     }
     if (prop.anyOf && Array.isArray(prop.anyOf)) {
-      return prop.anyOf
-        .map((item) => generateTsType(item, name, schemasMap))
-        .join(" | ");
+      const types = prop.anyOf.map((item) => {
+        if (item.type === "null") return "null";
+        return generateTsType(item, name, schemasMap);
+      });
+      const filtered = types.filter((t) => t !== "null");
+      return filtered.join(" | ") + (types.includes("null") ? " | null" : "");
     }
     if (prop.enum) {
       const enumValues = prop.enum.map((v) => `"${v}"`).join(" | ");
@@ -47,11 +53,18 @@ export const openApiToTs = (
 
     switch (prop.type) {
       case "string":
-        if (prop.format === "date-time") return "string";
-        if (prop.format === "date") return "string";
-        if (prop.format === "password") return "string";
-        if (prop.format === "byte" || prop.format === "binary") return "File";
-        return "string";
+        let baseType = "string";
+        if ((prop as any).format === "date-time") baseType = "string";
+        if ((prop as any).format === "date") baseType = "string";
+        if ((prop as any).format === "password") baseType = "string";
+        if (
+          (prop as any).format === "byte" ||
+          (prop as any).format === "binary"
+        )
+          baseType = "File";
+        // nullable 처리
+        if ((prop as any).nullable) baseType += " | null";
+        return baseType;
 
       case "integer":
       case "number":
@@ -125,7 +138,8 @@ export const openApiToTs = (
           return interfaceName;
         }
         return "Record<string, unknown>";
-
+      case "null":
+        return "null";
       default:
         return "unknown";
     }
@@ -221,16 +235,26 @@ export const openApiToZod = (
       return `${typeName}Schema`;
     }
     if (prop.oneOf && Array.isArray(prop.oneOf)) {
-      const unionSchemas = prop.oneOf
-        .map((item) => generateZodSchema(item, name, schemasMap))
-        .join(", ");
-      return `z.union([${unionSchemas}])`;
+      const schemas = prop.oneOf.map((item) => {
+        if (item.type === "null") return "null";
+        return generateZodSchema(item, name, schemasMap);
+      });
+      const filtered = schemas.filter((s) => s !== "null");
+      if (schemas.includes("null")) {
+        return `z.union([${filtered.join(", ")}]).nullable()`;
+      }
+      return `z.union([${filtered.join(", ")}])`;
     }
     if (prop.anyOf && Array.isArray(prop.anyOf)) {
-      const unionSchemas = prop.anyOf
-        .map((item) => generateZodSchema(item, name, schemasMap))
-        .join(", ");
-      return `z.union([${unionSchemas}])`;
+      const schemas = prop.anyOf.map((item) => {
+        if (item.type === "null") return "null";
+        return generateZodSchema(item, name, schemasMap);
+      });
+      const filtered = schemas.filter((s) => s !== "null");
+      if (schemas.includes("null")) {
+        return `z.union([${filtered.join(", ")}]).nullable()`;
+      }
+      return `z.union([${filtered.join(", ")}])`;
     }
     if (prop.enum) {
       const enumValues = prop.enum.map((v) => `"${v}"`).join(", ");
@@ -245,16 +269,12 @@ export const openApiToZod = (
         if (prop.format === "byte" || prop.format === "binary")
           return "z.instanceof(File)";
         return "z.string()";
-
       case "integer":
         return "z.number().int()";
-
       case "number":
         return "z.number()";
-
       case "boolean":
         return "z.boolean()";
-
       case "array":
         if (prop.items) {
           if (
@@ -288,40 +308,37 @@ export const openApiToZod = (
           return `z.array(${itemSchema})`;
         }
         return "z.array(z.unknown())";
-
       case "object":
-        if (prop.properties) {
-          const schemaName = `${
-            name.charAt(0).toUpperCase() + name.slice(1)
-          }Schema`;
-          const schemaKey = `${schemaName}Key`;
+        const schemaName = `${
+          name.charAt(0).toUpperCase() + name.slice(1)
+        }Schema`;
+        const schemaKey = `${schemaName}Key`;
 
-          if (schemaMap.has(schemaKey)) {
-            return schemaName;
-          }
-
-          const schemaEntries = Object.entries(prop.properties)
-            .map(([key, value]) => {
-              const isRequired = Array.isArray(prop.required)
-                ? prop.required.includes(key)
-                : prop.required ?? false;
-              const fieldSchema = generateZodSchema(value, key, schemasMap);
-              const finalSchema = isRequired
-                ? fieldSchema
-                : `${fieldSchema}.optional()`;
-              return `  ${key}: ${finalSchema}`;
-            })
-            .join(",\n");
-
-          const zodSchema = `z.object({\n${schemaEntries}\n})`;
-
-          schemaMap.set(schemaKey, schemaName);
-          schemas.push(`const ${schemaName} = ${zodSchema};`);
-
+        if (schemaMap.has(schemaKey)) {
           return schemaName;
         }
-        return "z.record(z.unknown())";
 
+        const schemaEntries = Object.entries(prop.properties || {})
+          .map(([key, value]) => {
+            const isRequired = Array.isArray(prop.required)
+              ? prop.required.includes(key)
+              : prop.required ?? false;
+            const fieldSchema = generateZodSchema(value, key, schemasMap);
+            const finalSchema = isRequired
+              ? fieldSchema
+              : `${fieldSchema}.optional()`;
+            return `  ${key}: ${finalSchema}`;
+          })
+          .join(",\n");
+
+        const zodSchema = `z.object({\n${schemaEntries}\n})`;
+
+        schemaMap.set(schemaKey, schemaName);
+        schemas.push(`const ${schemaName} = ${zodSchema};`);
+
+        return schemaName;
+      case "null":
+        return "z.null()";
       default:
         return "z.unknown()";
     }
