@@ -9,7 +9,7 @@ export const openApiToTs = (
   const interfaceMap = new Map<string, string>();
 
   const generateTsType = (
-    prop: SchemasProperties,
+    prop: SchemasProperties | SchemaInfo,
     name: string,
     schemasMap?: Record<string, SchemasProperties | SchemaInfo>
   ): string => {
@@ -22,37 +22,35 @@ export const openApiToTs = (
         schemasMap &&
         schemasMap[typeName]
       ) {
-        generateTsType(
-          schemasMap[typeName] as SchemasProperties,
-          typeName,
-          schemasMap
-        );
+        generateTsType(schemasMap[typeName], typeName, schemasMap);
       }
       return typeName || "unknown";
     }
-    if (prop.oneOf && Array.isArray(prop.oneOf)) {
-      const types = prop.oneOf.map((item) => {
+    if ((prop as any).oneOf && Array.isArray((prop as any).oneOf)) {
+      const types = (prop as any).oneOf.map((item: any) => {
         if (item.type === "null") return "null";
         return generateTsType(item, name, schemasMap);
       });
-      const filtered = types.filter((t) => t !== "null");
+      const filtered = types.filter((t: string) => t !== "null");
       return filtered.join(" | ") + (types.includes("null") ? " | null" : "");
     }
-    if (prop.anyOf && Array.isArray(prop.anyOf)) {
-      const types = prop.anyOf.map((item) => {
+    if ((prop as any).anyOf && Array.isArray((prop as any).anyOf)) {
+      const types = (prop as any).anyOf.map((item: any) => {
         if (item.type === "null") return "null";
         return generateTsType(item, name, schemasMap);
       });
-      const filtered = types.filter((t) => t !== "null");
+      const filtered = types.filter((t: string) => t !== "null");
       return filtered.join(" | ") + (types.includes("null") ? " | null" : "");
     }
-    if (prop.enum) {
-      const enumValues = prop.enum.map((v) => `"${v}"`).join(" | ");
+    if ((prop as any).enum) {
+      const enumValues = (prop as any).enum
+        .map((v: any) => `"${v}"`)
+        .join(" | ");
       return enumValues;
     }
 
     switch (prop.type) {
-      case "string":
+      case "string": {
         let baseType = "string";
         if ((prop as any).format === "date-time") baseType = "string";
         if ((prop as any).format === "date") baseType = "string";
@@ -65,6 +63,7 @@ export const openApiToTs = (
         // nullable 처리
         if ((prop as any).nullable) baseType += " | null";
         return baseType;
+      }
 
       case "integer":
       case "number":
@@ -80,26 +79,36 @@ export const openApiToTs = (
             (prop.items as any).typeName !== "inline"
           ) {
             generateTsType(
-              prop.items,
+              prop.items as SchemasProperties | SchemaInfo,
               (prop.items as any).typeName,
               schemasMap
             );
             return `${(prop.items as any).typeName}[]`;
           }
-          if (prop.items.oneOf && Array.isArray(prop.items.oneOf)) {
-            const unionType = prop.items.oneOf
-              .map((item) => generateTsType(item, `${name}Item`, schemasMap))
+          if (
+            (prop.items as any).oneOf &&
+            Array.isArray((prop.items as any).oneOf)
+          ) {
+            const unionType = (prop.items as any).oneOf
+              .map((item: any) =>
+                generateTsType(item, `${name}Item`, schemasMap)
+              )
               .join(" | ");
             return `(${unionType})[]`;
           }
-          if (prop.items.anyOf && Array.isArray(prop.items.anyOf)) {
-            const unionType = prop.items.anyOf
-              .map((item) => generateTsType(item, `${name}Item`, schemasMap))
+          if (
+            (prop.items as any).anyOf &&
+            Array.isArray((prop.items as any).anyOf)
+          ) {
+            const unionType = (prop.items as any).anyOf
+              .map((item: any) =>
+                generateTsType(item, `${name}Item`, schemasMap)
+              )
               .join(" | ");
             return `(${unionType})[]`;
           }
           const itemType = generateTsType(
-            prop.items,
+            prop.items as SchemasProperties | SchemaInfo,
             `${name}Item`,
             schemasMap
           );
@@ -107,7 +116,7 @@ export const openApiToTs = (
         }
         return "unknown[]";
 
-      case "object":
+      case "object": {
         if (prop.properties) {
           const interfaceName = `${
             name.charAt(0).toUpperCase() + name.slice(1)
@@ -138,6 +147,7 @@ export const openApiToTs = (
           return interfaceName;
         }
         return "Record<string, unknown>";
+      }
       case "null":
         return "null";
       default:
@@ -177,7 +187,7 @@ export const openApiToTs = (
     ) {
       generateTsType(
         schema.items as SchemaInfo,
-        (schema.items as SchemaInfo).typeName,
+        (schema.items as SchemaInfo).typeName!,
         schemasMap
       );
       rootInterface = `export type ${rootName} = ${
@@ -185,7 +195,7 @@ export const openApiToTs = (
       }[];\n\n`;
     } else {
       const itemType = generateTsType(
-        schema.items as SchemaInfo,
+        schema.items as SchemasProperties | SchemaInfo,
         rootName + "Item",
         schemasMap
       );
@@ -218,7 +228,7 @@ export const openApiToZod = (
   const schemaMap = new Map<string, string>();
 
   const generateZodSchema = (
-    prop: SchemasProperties,
+    prop: SchemasProperties | SchemaInfo,
     name: string,
     schemasMap?: Record<string, SchemasProperties | SchemaInfo>
   ): string => {
@@ -226,47 +236,49 @@ export const openApiToZod = (
       const ref = (prop as any).$ref;
       const typeName = ref.split("/").pop();
       if (typeName && schemasMap && schemasMap[typeName]) {
-        generateZodSchema(
-          schemasMap[typeName] as SchemasProperties,
-          typeName,
-          schemasMap
-        );
+        generateZodSchema(schemasMap[typeName], typeName, schemasMap);
       }
       return `${typeName}Schema`;
     }
-    if (prop.oneOf && Array.isArray(prop.oneOf)) {
-      const schemas = prop.oneOf.map((item) => {
+    if ((prop as any).oneOf && Array.isArray((prop as any).oneOf)) {
+      const schemas = (prop as any).oneOf.map((item: any) => {
         if (item.type === "null") return "null";
         return generateZodSchema(item, name, schemasMap);
       });
-      const filtered = schemas.filter((s) => s !== "null");
+      const filtered = schemas.filter((s: string) => s !== "null");
       if (schemas.includes("null")) {
         return `z.union([${filtered.join(", ")}]).nullable()`;
       }
       return `z.union([${filtered.join(", ")}])`;
     }
-    if (prop.anyOf && Array.isArray(prop.anyOf)) {
-      const schemas = prop.anyOf.map((item) => {
+    if ((prop as any).anyOf && Array.isArray((prop as any).anyOf)) {
+      const schemas = (prop as any).anyOf.map((item: any) => {
         if (item.type === "null") return "null";
         return generateZodSchema(item, name, schemasMap);
       });
-      const filtered = schemas.filter((s) => s !== "null");
+      const filtered = schemas.filter((s: string) => s !== "null");
       if (schemas.includes("null")) {
         return `z.union([${filtered.join(", ")}]).nullable()`;
       }
       return `z.union([${filtered.join(", ")}])`;
     }
-    if (prop.enum) {
-      const enumValues = prop.enum.map((v) => `"${v}"`).join(", ");
+    if ((prop as any).enum) {
+      const enumValues = (prop as any).enum
+        .map((v: any) => `"${v}"`)
+        .join(", ");
       return `z.enum([${enumValues}])`;
     }
 
     switch (prop.type) {
       case "string":
-        if (prop.format === "date-time") return "z.string().datetime()";
-        if (prop.format === "date") return "z.string().date()";
-        if (prop.format === "password") return "z.string()";
-        if (prop.format === "byte" || prop.format === "binary")
+        if ((prop as any).format === "date-time")
+          return "z.string().datetime()";
+        if ((prop as any).format === "date") return "z.string().date()";
+        if ((prop as any).format === "password") return "z.string()";
+        if (
+          (prop as any).format === "byte" ||
+          (prop as any).format === "binary"
+        )
           return "z.instanceof(File)";
         return "z.string()";
       case "integer":
@@ -282,33 +294,43 @@ export const openApiToZod = (
             (prop.items as any).typeName !== "inline"
           ) {
             generateZodSchema(
-              prop.items,
+              prop.items as SchemasProperties | SchemaInfo,
               (prop.items as any).typeName,
               schemasMap
             );
             return `z.array(${(prop.items as any).typeName}Schema)`;
           }
-          if (prop.items.oneOf && Array.isArray(prop.items.oneOf)) {
-            const unionSchemas = prop.items.oneOf
-              .map((item) => generateZodSchema(item, `${name}Item`, schemasMap))
+          if (
+            (prop.items as any).oneOf &&
+            Array.isArray((prop.items as any).oneOf)
+          ) {
+            const unionSchemas = (prop.items as any).oneOf
+              .map((item: any) =>
+                generateZodSchema(item, `${name}Item`, schemasMap)
+              )
               .join(", ");
             return `z.array(z.union([${unionSchemas}]))`;
           }
-          if (prop.items.anyOf && Array.isArray(prop.items.anyOf)) {
-            const unionSchemas = prop.items.anyOf
-              .map((item) => generateZodSchema(item, `${name}Item`, schemasMap))
+          if (
+            (prop.items as any).anyOf &&
+            Array.isArray((prop.items as any).anyOf)
+          ) {
+            const unionSchemas = (prop.items as any).anyOf
+              .map((item: any) =>
+                generateZodSchema(item, `${name}Item`, schemasMap)
+              )
               .join(", ");
             return `z.array(z.union([${unionSchemas}]))`;
           }
           const itemSchema = generateZodSchema(
-            prop.items,
+            prop.items as SchemasProperties | SchemaInfo,
             `${name}Item`,
             schemasMap
           );
           return `z.array(${itemSchema})`;
         }
         return "z.array(z.unknown())";
-      case "object":
+      case "object": {
         const schemaName = `${
           name.charAt(0).toUpperCase() + name.slice(1)
         }Schema`;
@@ -337,6 +359,7 @@ export const openApiToZod = (
         schemas.push(`const ${schemaName} = ${zodSchema};`);
 
         return schemaName;
+      }
       case "null":
         return "z.null()";
       default:
@@ -352,7 +375,7 @@ export const openApiToZod = (
       (schema.items as any).typeName !== "inline"
     ) {
       generateZodSchema(
-        schema.items,
+        schema.items as SchemasProperties | SchemaInfo,
         (schema.items as any).typeName,
         schemasMap
       );
@@ -361,7 +384,7 @@ export const openApiToZod = (
       }Schema);`;
     } else {
       const itemSchema = generateZodSchema(
-        schema.items,
+        schema.items as SchemasProperties | SchemaInfo,
         rootName + "Item",
         schemasMap
       );

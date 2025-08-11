@@ -8,7 +8,7 @@ export type SwaggerType =
   | "array"
   | "object"
   | "binary"
-  | "object";
+  | "null";
 
 export type SwaggerFormat =
   | "int32"
