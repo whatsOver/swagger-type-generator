@@ -331,6 +331,9 @@ export const openApiToZod = (
         }
         return "z.array(z.unknown())";
       case "object": {
+        if (!prop.properties || Object.keys(prop.properties).length === 0) {
+          return "z.record(z.unknown())";
+        }
         const schemaName = `${
           name.charAt(0).toUpperCase() + name.slice(1)
         }Schema`;
@@ -402,7 +405,7 @@ export const openApiToZod = (
       })
       .join(",\n");
 
-    rootSchema = `const ${rootName}Schema = z.object({\n${rootSchemaEntries}\n})`;
+    rootSchema = `const ${rootName}Schema = z.object({\n${rootSchemaEntries}\n});`;
   }
 
   schemas.push(rootSchema);
