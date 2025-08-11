@@ -117,73 +117,71 @@ export const RequestPage = () => {
           <div className={requestStyles.apiItemContainer}>
             <APIItem api={api} />
           </div>
-          <div className={requestStyles.requestBlock}>
-            {!!params?.length && (
-              <RequestParam
-                params={params}
-                formValues={formValues}
-                handleChange={handleChange}
-                handleArray={handleArray}
-              />
-            )}
-            {!!body?.type.length && (
-              <RequestBody
-                body={body}
-                formValues={formValues}
-                handleChange={handleChange}
-                handleArray={handleArray}
-              />
-            )}
-            {!params?.length && !body?.type.length && (
-              <div className={requestStyles.flexView}>
-                <ErrorIcon size={26} color={vars.color.green} />
-                <span className={requestStyles.description}>
-                  No parameters or body
-                </span>
+          <Modal>
+            <div className={requestStyles.typeExtractionContainer}>
+              <div className={requestStyles.typeExtractionButtons}>
+                <Modal.Trigger
+                  as={
+                    <Button
+                      type="button"
+                      color="blue"
+                      style={{ flex: 1 }}
+                      onClick={() => {
+                        dispatch({
+                          type: "SET_SCHEMA_TYPE",
+                          payload: "REQUEST_TYPE",
+                        });
+                      }}
+                    >
+                      Extract Request
+                    </Button>
+                  }
+                />
+                <Modal.Trigger
+                  as={
+                    <Button
+                      type="button"
+                      color="green"
+                      style={{ flex: 1 }}
+                      onClick={() => {
+                        dispatch({
+                          type: "SET_SCHEMA_TYPE",
+                          payload: "RESPONSE_TYPE",
+                        });
+                      }}
+                    >
+                      Extract Response
+                    </Button>
+                  }
+                />
               </div>
-            )}
-          </div>
-          <div className={requestStyles.fixedButtonWrapper}>
-            <Modal>
-              <div className={requestStyles.modalTriggerContainer}>
-                <div className={requestStyles.typeExtractionContainer}>
-                  <div className={requestStyles.typeExtractionButtons}>
-                    <Modal.Trigger
-                      as={
-                        <Button
-                          type="button"
-                          color="blue"
-                          style={{ flex: 1 }}
-                          onClick={() => {
-                            dispatch({
-                              type: "SET_SCHEMA_TYPE",
-                              payload: "REQUEST_TYPE",
-                            });
-                          }}
-                        >
-                          Extract Request
-                        </Button>
-                      }
-                    />
-                    <Modal.Trigger
-                      as={
-                        <Button
-                          type="button"
-                          color="green"
-                          style={{ flex: 1 }}
-                          onClick={() => {
-                            dispatch({
-                              type: "SET_SCHEMA_TYPE",
-                              payload: "RESPONSE_TYPE",
-                            });
-                          }}
-                        >
-                          Extract Response
-                        </Button>
-                      }
-                    />
-                  </div>
+            </div>
+            <div className={requestStyles.requestBlock}>
+              {!!params?.length && (
+                <RequestParam
+                  params={params}
+                  formValues={formValues}
+                  handleChange={handleChange}
+                  handleArray={handleArray}
+                />
+              )}
+              {!!body?.type.length && (
+                <RequestBody
+                  body={body}
+                  formValues={formValues}
+                  handleChange={handleChange}
+                  handleArray={handleArray}
+                />
+              )}
+              {!params?.length && !body?.type.length && (
+                <div className={requestStyles.flexView}>
+                  <ErrorIcon size={26} color={vars.color.green} />
+                  <span className={requestStyles.description}>
+                    No parameters or body
+                  </span>
                 </div>
+              )}
+              <div className={requestStyles.modalTriggerContainer}>
                 <Modal.Trigger
                   as={
                     <Button type="submit" onClick={noop}>
@@ -192,7 +190,8 @@ export const RequestPage = () => {
                   }
                 />
               </div>
-              <Modal.Content>
+            </div>
+            <Modal.Content>
                 {state.mode === "LOADING" && <Loading />}
                 {state.type === "API_RESPONSE" && state.mode === "RESPONSE" && (
                   <ModalCodeBlock
@@ -285,7 +284,6 @@ export const RequestPage = () => {
                 )}
               </Modal.Content>
             </Modal>
-          </div>
         </form>
         <ToastContainer
           position="top-center"
