@@ -6,7 +6,7 @@ import {
   getQueryParamsArray,
 } from "@/features/request-api/module/utils/request";
 import { checkPathStartWithHttp } from "@/shared/util/api/api";
-import { getBodyProPertyType } from "@/shared/util/typeGenerator";
+import { getBodyProPertyType } from "@/shared/util/typeGenerator/json";
 import { typeConverter } from "./typeConverter";
 
 export const generateInterface = (

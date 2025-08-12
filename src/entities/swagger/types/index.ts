@@ -7,7 +7,8 @@ export type SwaggerType =
   | "boolean"
   | "array"
   | "object"
-  | "binary";
+  | "binary"
+  | "null";
 
 export type SwaggerFormat =
   | "int32"
@@ -31,10 +32,11 @@ export type RefArraySchema = {
 
 export interface SchemaInfo {
   schema: string;
-  typeName: string;
-  properties: Record<string, unknown>;
-  required: string[];
-  type: string;
+  typeName?: string;
+  properties?: Record<string, SchemasProperties>;
+  required?: string[];
+  type: SwaggerType;
+  items?: SchemaInfo | { oneOf: SchemaInfo[] } | { anyOf: SchemaInfo[] };
 }
 
 export interface DetailSchema {
@@ -42,40 +44,44 @@ export interface DetailSchema {
   responseType: SchemaInfo | null;
 }
 
-export interface Schema {
+interface BaseSchema {
+  properties?: Record<string, SchemasProperties>;
+  required?: string[];
   title: string;
-  type: string;
-  properties: {
-    [key: string]: {
-      title: string;
-      type: string;
-      items?: {
-        type: string;
-        format?: string;
-      };
-      example?: string | number;
-      default?: string | number;
-    };
-  };
+}
+
+interface ArraySchema extends BaseSchema {
+  type: "array";
+  items: SchemasProperties;
+}
+
+interface NonArraySchema extends BaseSchema {
+  type: Exclude<SwaggerType, "array">;
+  properties: Record<string, SchemasProperties>;
   required?: string[];
 }
+
+export type Schema = ArraySchema | NonArraySchema;
 
 export interface SchemasProperties {
   type: SwaggerType;
   format?: SwaggerFormat;
+  additionalProperties?: SchemasProperties;
   description?: string;
-  example?: string | number;
+  example?: string | number | string[] | number[] | boolean | unknown[];
   default?: string | number;
   title?: string;
-  items?: {
-    type: SwaggerType;
-    format?: SwaggerFormat;
-  };
+  items?: SchemasProperties;
+  enum?: string[] | number[];
+  required?: boolean | string[];
+  properties?: Record<string, SchemasProperties>;
   $ref?: string;
+  oneOf?: SchemasProperties[];
+  anyOf?: SchemasProperties[];
 }
 
 export interface Schemas {
-  type: string;
+  type: SwaggerType;
   description?: string;
   required?: string[];
   properties: {

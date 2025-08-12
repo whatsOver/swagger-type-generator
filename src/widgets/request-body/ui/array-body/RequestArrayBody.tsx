@@ -52,11 +52,16 @@ export const RequestArrayBody = ({
               type={type}
               name={property}
               onChange={handleChange}
-              defaultValue={
-                body.properties[property].example
+              defaultValue={(() => {
+                const value = body.properties[property].example
                   ? body.properties[property].example
-                  : body.properties[property].default ?? ""
-              }
+                  : body.properties[property].default ?? "";
+                return Array.isArray(value)
+                  ? value.map(String)
+                  : typeof value === "boolean"
+                  ? String(value)
+                  : value;
+              })()}
               id="file"
               autoFocus={idx === 0}
               onFocus={(e) => e.target.select()}

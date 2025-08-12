@@ -31,6 +31,13 @@ export const RequestNormalBody = ({
   const defaultValue = body.properties[property].example
     ? body.properties[property].example
     : body.properties[property].default ?? "";
+
+  const normalizedDefaultValue = Array.isArray(defaultValue)
+    ? defaultValue.map(String)
+    : typeof defaultValue === "boolean"
+    ? String(defaultValue)
+    : defaultValue;
+
   return (
     <>
       <div className={requestNormalBodyStyles.inputWrapper} key={property}>
@@ -53,7 +60,7 @@ export const RequestNormalBody = ({
             placeholder={placeholder}
             required={body.required?.includes(property)}
             onChange={handleChange}
-            defaultValue={defaultValue}
+            defaultValue={normalizedDefaultValue}
             id="file"
             autoFocus={idx === 0}
             onFocus={(e) => e.target.select()}

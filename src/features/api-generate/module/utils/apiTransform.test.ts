@@ -125,6 +125,9 @@ describe("convertSelectedAPI", () => {
           typeName: "RealTimeSearchesView",
         },
       },
+      components: {
+        schemas: {},
+      },
     });
   });
 
@@ -186,6 +189,9 @@ describe("convertSelectedAPI", () => {
           type: "object",
           typeName: "MediaListView",
         },
+      },
+      components: {
+        schemas: {},
       },
     });
   });

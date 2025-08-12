@@ -9,9 +9,7 @@ export type ApiMode =
   | "LOADING"
   | "ZOD";
 
-export type SchemaMode =
-  | Exclude<ApiMode, "LOADING" | "RESPONSE" | "ERROR">
-  | "BASE";
+export type SchemaMode = Exclude<ApiMode, "LOADING" | "RESPONSE" | "ERROR">;
 export type SchemaType = "REQUEST_TYPE" | "RESPONSE_TYPE";
 
 export type RequestState =
@@ -62,7 +60,7 @@ export const requestReducer = (
       }
       return {
         ...state,
-        mode: "BASE",
+        mode: "TS",
       };
     }
 
@@ -98,7 +96,7 @@ export const requestReducer = (
       return {
         type: "SCHEMA_DEFINITION",
         schemaType: action.payload,
-        mode: action.mode || "BASE",
+        mode: action.mode || "TS",
       };
 
     default:

@@ -28,17 +28,20 @@ export const requestStyles = {
 
   typeExtractionContainer: style({
     display: "flex",
+    justifyContent: "center",
     width: "100%",
     padding: "15px 0",
     borderBottom: `1px solid ${vars.color.scrollbar}`,
     backgroundColor: vars.color.darkGrey,
+    position: "sticky",
+    top: "0",
+    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
   }),
 
   typeExtractionButtons: style({
     display: "flex",
     gap: "12px",
     width: "100%",
-    justifyContent: "center",
   }),
 
   modalTriggerContainer: style({
@@ -49,7 +52,7 @@ export const requestStyles = {
 
   requestBlock: style({
     overflowY: "auto",
-    maxHeight: "70%",
+    flex: 1,
     paddingRight: "0",
     padding: "20px",
     selectors: {
@@ -277,16 +280,6 @@ export const requestStyles = {
         backgroundColor: vars.color.darkBlue,
       },
     },
-  }),
-
-  fixedButtonWrapper: style({
-    display: "flex",
-    position: "fixed",
-    bottom: "40px",
-    justifyContent: "flex-end",
-    boxSizing: "border-box",
-    width: "calc(100% - 80px)",
-    left: "40px",
   }),
 
   response: style({

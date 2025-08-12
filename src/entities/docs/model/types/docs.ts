@@ -60,6 +60,7 @@ export interface APIWithParamsOrBody extends API {
   params?: Parameters[];
   body?: Schemas;
   detailSchema?: DetailSchema;
+  components?: SwaggerDocs["components"];
 }
 
 export interface APIWithParamsAndBodyAndHost extends APIWithParamsOrBody {

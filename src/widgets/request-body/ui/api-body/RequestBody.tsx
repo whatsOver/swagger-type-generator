@@ -48,24 +48,41 @@ export const RequestBody = ({
   };
 
   const isFileType = (property: string) => {
-    Object.keys(body.properties).map((property) => {
-      if (body.properties[property]?.format === "binary") {
-        return true;
-      }
-    });
-    if (body.properties[property].items?.format === "binary") return true;
+    // 직접 프로퍼티의 format이 binary인 경우
+    if (body.properties[property]?.format === "binary") {
+      return true;
+    }
+    // 배열 아이템의 format이 binary인 경우
+    if (body.properties[property]?.items?.format === "binary") {
+      return true;
+    }
     return false;
   };
 
   const getType = (property: string) => {
-    const type = body.properties[property].type;
-    if (type) {
-      return typeConverter(type);
+    const propertySchema = body.properties[property];
+    if (!propertySchema) {
+      return "unknown";
     }
-    const fullRef = body.properties[property].$ref;
+
+    // 직접적인 타입이 있는 경우
+    if (propertySchema.type) {
+      return typeConverter(propertySchema.type);
+    }
+
+    // $ref 참조가 있는 경우
+    const fullRef = propertySchema.$ref;
+    if (!fullRef) {
+      return "unknown";
+    }
+
     const ref = fullRef.split("/").pop();
-    const schema = apiDocsData?.components?.schemas[ref];
-    return typeConverter(schema?.type);
+    if (!ref || !apiDocsData?.components?.schemas) {
+      return "unknown";
+    }
+
+    const schema = apiDocsData.components.schemas[ref];
+    return schema?.type ? typeConverter(schema.type) : "unknown";
   };
 
   return (

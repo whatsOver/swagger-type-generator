@@ -9,6 +9,7 @@ import {
   Schema,
   SchemaInfo,
   Schemas,
+  SchemasProperties,
   SwaggerDocs,
 } from "@/entities/swagger/types";
 import { Method } from "axios";
@@ -72,6 +73,7 @@ export const transformApiFromSwagger = (
     body,
     contentType,
     detailSchema,
+    components: data.components,
   };
 };
 
@@ -89,7 +91,12 @@ function transformDefaultComplexSchema(schema: DefaultComplexSchema): Schemas {
 }
 
 const extractSchemaInfo = (
-  schema: RefSchema | RefArraySchema | DefaultComplexSchema | Schema,
+  schema:
+    | RefSchema
+    | RefArraySchema
+    | DefaultComplexSchema
+    | Schema
+    | SchemasProperties,
   components: SwaggerDocs["components"]
 ): SchemaInfo => {
   if ("$ref" in schema) {
@@ -108,6 +115,38 @@ const extractSchemaInfo = (
     };
   }
 
+  if ("type" in schema && schema.type === "array" && "items" in schema) {
+    const itemsSchema = schema.items;
+    let parsedItems: any = itemsSchema;
+
+    if ("$ref" in itemsSchema) {
+      parsedItems = extractSchemaInfo(itemsSchema, components);
+    } else if ("oneOf" in itemsSchema && Array.isArray(itemsSchema.oneOf)) {
+      parsedItems = {
+        oneOf: itemsSchema.oneOf.map((item) =>
+          extractSchemaInfo(item, components)
+        ),
+      };
+    } else if ("anyOf" in itemsSchema && Array.isArray(itemsSchema.anyOf)) {
+      parsedItems = {
+        anyOf: itemsSchema.anyOf.map((item) =>
+          extractSchemaInfo(item, components)
+        ),
+      };
+    } else if (itemsSchema.type === "object" && itemsSchema.properties) {
+      parsedItems = extractSchemaInfo(itemsSchema, components);
+    }
+
+    return {
+      schema: "inline",
+      typeName: "inline",
+      properties: {},
+      required: [],
+      type: "array",
+      items: parsedItems,
+    };
+  }
+
   const properties = (schema as Schema).properties || {};
   const processedProperties = processNestedProperties(properties, components);
 
@@ -121,10 +160,10 @@ const extractSchemaInfo = (
 };
 
 const processNestedProperties = (
-  properties: Record<string, unknown>,
+  properties: Record<string, SchemasProperties>,
   components: SwaggerDocs["components"]
-): Record<string, unknown> => {
-  const processed: Record<string, unknown> = {};
+): Record<string, SchemasProperties> => {
+  const processed: Record<string, SchemasProperties> = {};
 
   Object.entries(properties).forEach(([key, value]) => {
     if (typeof value === "object" && value !== null) {
@@ -167,9 +206,9 @@ const processNestedProperties = (
 };
 
 const processArrayItems = (
-  items: unknown,
+  items: SchemasProperties,
   components: SwaggerDocs["components"]
-): unknown => {
+): SchemasProperties => {
   if (typeof items === "object" && items !== null) {
     const itemProp = items as FormSchemaProperty;
 
